@@ -1,5 +1,8 @@
 package com.example.demo.user;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Admin extends User {
     public Admin() {
     }

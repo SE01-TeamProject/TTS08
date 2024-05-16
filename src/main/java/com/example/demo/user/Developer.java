@@ -1,7 +1,10 @@
 package com.example.demo.user;
 
+import org.springframework.stereotype.Component;
+
 import com.example.demo.Issue;
 
+@Component
 public class Developer extends User {
     public Developer() {
     }

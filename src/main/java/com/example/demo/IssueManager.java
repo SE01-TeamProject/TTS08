@@ -1,7 +1,10 @@
 package com.example.demo;
 
+import org.springframework.stereotype.Component;
+
 import com.example.demo.user.Developer;
 
+@Component
 public class IssueManager {
 	private Developer rec;
 	private Issue issues;

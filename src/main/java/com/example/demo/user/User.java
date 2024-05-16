@@ -1,5 +1,8 @@
 package com.example.demo.user;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public abstract class User {
     private String id;
     private String name;

@@ -2,8 +2,11 @@ package com.example.demo;
 
 import java.util.Date;
 
+import org.springframework.stereotype.Component;
+
 import com.example.demo.user.User;
 
+@Component
 public class Comment {
 	private String comment;
 	private User writer;
