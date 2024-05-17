@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name="Log")
 public class DB_log {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -3,6 +3,7 @@ package DB;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "User")
 public class DB_User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

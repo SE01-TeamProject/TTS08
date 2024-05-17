@@ -1,11 +1,11 @@
 package DB;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "Comment")
 public class DB_comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

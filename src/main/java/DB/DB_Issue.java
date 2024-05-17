@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name="Issue")
 public class DB_Issue {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

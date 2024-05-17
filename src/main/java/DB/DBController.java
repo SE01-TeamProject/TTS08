@@ -6,9 +6,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class DBController {
+
     @GetMapping("/DB")
     @ResponseBody
-    public String DB() {
-        return "db test";
+    public String testdb(){
+        return "Hello World";
     }
 }

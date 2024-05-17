@@ -18,11 +18,12 @@ repositories {
 dependencies {
 	//DB dependency
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.xerial:sqlite-jdbc:3.32.0'
+	implementation 'org.xerial:sqlite-jdbc:3.34.0'
+	//runtimeOnly 'org.xerial:sqlite-jdbc:3.34.0'
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-	runtimeOnly 'org.postgresql:postgresql'
+	//runtimeOnly 'com.mysql:mysql-connector-j'
+	//runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	//JUnit

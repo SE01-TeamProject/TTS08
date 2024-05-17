@@ -1,15 +1,11 @@
-package DB;
+package com.DB.sbb;
 
-import jakarta.annotation.security.RunAs;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @SpringBootApplication
-public class test_DB {
-
+public class SbbApplication {
     public static void main(String[] args) {
-        SpringApplication.run(test_DB.class,args);
-
+        SpringApplication.run(SbbApplication.class, args);
     }
 }
