@@ -1,0 +1,38 @@
+@charset "utf-8";
+
+  table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+            width: 50px;
+        }
+        thead {
+            background-color : lightskyblue;
+        }
+        tbody {
+            border : 1px solid black;
+        }
+
+        .w200 {
+            width : 200px;
+        }
+
+        .buttonSet {
+            position : relative;
+            left : 660px;
+            top : -10px;
+        }
+        .homebutton {
+            padding : 10px;
+            width : 100px;
+        }
+
+        th > button {
+            padding : 8px;
+            margin : -5px;
+            background-color : lightskyblue;
+            width : 100px;
+        }
