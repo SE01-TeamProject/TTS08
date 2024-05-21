@@ -1,6 +1,6 @@
 @charset "utf-8";
 
-  table, th, td {
+        table, th, td {
             border: 1px solid black;
             border-collapse: collapse;
         }
@@ -14,6 +14,11 @@
         }
         tbody {
             border : 1px solid black;
+        }
+        button {
+            border-radius : 10px;
+            font-size : 15px;
+            padding : 6px;
         }
         .tc {
             text-align: center;
@@ -30,14 +35,13 @@
 
         .buttonSet {
             position : relative;
-            left : 660px;
+            left : 645px;
             top : -10px;
         }
         .homebutton {
             padding : 10px;
             width : 100px;
         }
-
         .addbutton {
             position : relative;
             left : 900px;
@@ -67,6 +71,7 @@
             padding : 8px;
             margin : -5px;
             background-color : lightskyblue;
+            border : none;
             width : 100px;
         }
         .bg-page {
@@ -84,7 +89,9 @@
         .popup-page {
             z-index : 2;
             position : absolute;
-            left : 600px;
+            top : 50%;
+            left : 50%;
+            transform : translate(-50%, -50%);
             background-color : white;
             width : 600px;
             height : 450px;
