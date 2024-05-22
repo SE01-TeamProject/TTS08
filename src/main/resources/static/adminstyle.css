@@ -1,15 +1,91 @@
 @charset "utf-8";
 
- button {
-     padding : 10px;
-     margin: 20px;
-     width : 300px;
-     font-size : 20px;
-     border-radius : 15px;
- }
-
- .button-set {
-     display : flex;
-     flex-direction : column;
- }
-
+        button {
+            padding : 10px;
+            margin: 20px;
+            width : 300px;
+            font-size : 15px;
+            border-radius : 15px;
+        }
+        .button-set {
+            display : flex;
+            flex-direction : column;
+         }
+        .tc {
+            text-align: center;
+        }
+        .center {
+            position : absolute;
+            left : 50%;
+            transform : translateX(-50%);
+        }
+        #bg-page {
+            z-index: 1;
+            position: absolute;
+            top : 50%;
+            left : 50%;
+            transform : translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background-color: lightgrey;
+            opacity: 0.8;
+        }
+        .popup-page {
+            z-index : 2;
+            position : absolute;
+            top : 50%;
+            left : 50%;
+            transform : translate(-50%, -50%);
+            background-color : white;
+            width : 600px;
+            height : 450px;
+            border : 1px solid black;
+        }
+        .hide{
+            display : none;
+        }
+        .input-box {
+            display : flex;
+            flex-direction : column;
+            align-items : center;
+        }
+         .popup-addbutton {
+            position : absolute;
+            right : 0%;
+            bottom : 0%;
+            padding : 8px;
+            width : 80px;
+        }
+        .xbutton {
+            position : absolute;
+            right : -2%;
+            top : -3%;
+            float: right;
+            width : 40px;
+            background-color: pink;
+        }
+        .backbutton {
+            width : 100px;
+            background-color : lightgoldenrodyellow;
+        }
+         table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+            width: 100px;
+        }
+        thead {
+            position : sticky;
+            top : 0;
+            background-color : lightskyblue;
+        }
+        tbody {
+            border : 1px solid black;
+        }
+        .user-table {
+            height : 300px;
+            overflow-y : scroll;
+        }

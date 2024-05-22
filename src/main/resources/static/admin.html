@@ -6,11 +6,139 @@
     <link rel="stylesheet" href="adminstyle.css">
 </head>
 <body>
-    <h1>Admin Page</h1>
-    <div class="button-set">
-        <button>Add User</button>
-        <button>Add Project</button>
-        <button>Project Management</button>
+    <button class="backbutton">뒤로가기</button>
+    <h1 class="tc">Admin Page</h1>
+    <div class="button-set center">
+        <button onclick="openPopUp('useradd-pop')">Add User</button>
+        <button onclick="openPopUp('projectadd-pop')">Add Project</button>
+        <button onclick="openPopUp('usermanage-pop')">User Management</button>
     </div>
+    <div id="useradd-pop" class="popup-page hide">
+         <button class="xbutton" onclick="closePopUp('useradd-pop')">X</button>
+         <h1 class="tc">User Add</h1>
+         <div class="input-box">
+             이름<input type="text" class="input-text" id="name-input" placeholder="이름을 입력하세요." style="width: 50%">
+             <br>
+             ID<input type="text" class="input-text" id="id-input" placeholder="ID를 입력하세요." style="width: 50%">
+             <br>
+             Password<input type="password" class="input-text" id="password-input" placeholder="Password를 입력하세요." style="width: 50%">
+             <br>
+             Level<select name="level">
+                 <option value="PL">PL</option>
+                 <option value="Tester">Tester</option>
+                 <option value="Developer">Developer</option>
+             </select>
+         </div>
+         <button class="popup-addbutton">Add</button>
+    </div>
+
+    <div id="projectadd-pop" class="popup-page hide">
+         <button class="xbutton" onclick="closePopUp('projectadd-pop')">X</button>
+         <h1 class="tc">Project Add</h1>
+         <div class="input-box">
+             제목<input type="text" class="text-input" id="title-input" placeholder="제목을 입력하세요." style="width: 50%">
+             <br>
+             내용<textarea id="description-input" rows="10" cols="40" style="resize: none"></textarea>
+         </div>
+         <button class="popup-addbutton">Add</button>
+    </div>
+
+    <div id="usermanage-pop" class="popup-page hide">
+         <button class="xbutton" onclick="closePopUp('usermanage-pop')">X</button>
+         <h1 class="tc">User Manage</h1>
+        <div class="user-table center">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Level</th>
+                    </tr>
+                </thead>
+                <tbody id="user-table-body">
+                    <tr>
+                        <td>sihun</td>
+                        <td>Developer</td>
+                    </tr>
+                    <tr>
+                        <td>sihun</td>
+                        <td>Developer</td>
+                    </tr>
+                    <tr>
+                        <td>sihun</td>
+                        <td>Developer</td>
+                    </tr>
+                                        <tr>
+                        <td>sihun</td>
+                        <td>Developer</td>
+                    </tr>
+                                        <tr>
+                        <td>sihun</td>
+                        <td>Developer</td>
+                    </tr>
+                                        <tr>
+                        <td>sihun</td>
+                        <td>Developer</td>
+                    </tr>
+                                        <tr>
+                        <td>sihun</td>
+                        <td>Developer</td>
+                    </tr>
+                                        <tr>
+                        <td>sihun</td>
+                        <td>Developer</td>
+                    </tr>
+                                        <tr>
+                        <td>sihun</td>
+                        <td>Developer</td>
+                    </tr>
+                                        <tr>
+                        <td>sihun</td>
+                        <td>Developer</td>
+                    </tr>
+                                        <tr>
+                        <td>sihun</td>
+                        <td>Developer</td>
+                    </tr>
+                                        <tr>
+                        <td>sihun</td>
+                        <td>Developer</td>
+                    </tr>
+                                        <tr>
+                        <td>sihun</td>
+                        <td>Developer</td>
+                    </tr>
+                                        <tr>
+                        <td>sihun</td>
+                        <td>Developer</td>
+                    </tr>
+                                        <tr>
+                        <td>sihun</td>
+                        <td>Developer</td>
+                    </tr>
+
+
+                <!-- User info will be appended here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="bg-page" class="hide"></div>
+
+    <script>
+          function closePopUp(pageId) {
+              document.getElementById(pageId).classList.add('hide');
+              document.getElementById('bg-page').classList.add('hide');
+          }
+
+          function openPopUp(pageId) {
+              document.getElementById(pageId).classList.remove('hide');
+              document.getElementById('bg-page').classList.remove('hide');
+              document.querySelectorAll('.input-text').forEach(function(element) {
+                 element.value = '';
+              });
+              document.getElementById('description-input').value = '내용을 입력하세요.';
+          }
+    </script>
 </body>
 </html>
