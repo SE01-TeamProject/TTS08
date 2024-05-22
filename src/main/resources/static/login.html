@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LoginPage</title>
+    <style>
+        .container {
+            display : flex;
+            flex-direction: column;
+            border : 4px solid;
+            width : 200px;
+        }
+    </style>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+</head>
+<body>
+<h3>Issue Ticketing System</h3>
+<form hx-post="http://localhost:8080/user" hx-swap="outerHTML">
+    <div class="container">
+        <input type="text" placeholder="ID" name="userid">
+        <input type="password" placeholder="Password" name="password">
+    </div>
+
+    <button type="submit">Sign in</button>
+</form>
+</body>
+</html>

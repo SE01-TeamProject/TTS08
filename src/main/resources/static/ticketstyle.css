@@ -1,0 +1,108 @@
+@charset "utf-8";
+
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+            width: 50px;
+        }
+        thead {
+            background-color : lightskyblue;
+        }
+        tbody {
+            border : 1px solid black;
+        }
+        button {
+            border-radius : 10px;
+            font-size : 15px;
+            padding : 6px;
+        }
+        .tc {
+            text-align: center;
+        }
+        .w200 {
+            width : 200px;
+        }
+        .w700 {
+            width : 700px;
+        }
+        .h200 {
+            height : 200px;
+        }
+
+        .buttonSet {
+            position : relative;
+            left : 645px;
+            top : -10px;
+        }
+        .homebutton {
+            padding : 10px;
+            width : 100px;
+        }
+        .addbutton {
+            position : relative;
+            left : 900px;
+            top : 500px;
+            padding : 10px;
+            width : 100px;
+        }
+
+        .popup-addbutton {
+            position : absolute;
+            right : 3%;
+            bottom : 3%;
+            padding : 8px;
+            width : 80px;
+        }
+
+        .xbutton {
+            position : absolute;
+            left : 93%;
+            top : 1%;
+            float: right;
+            background-color: pink;
+            padding : 12px;
+        }
+
+        th > button {
+            padding : 8px;
+            margin : -5px;
+            background-color : lightskyblue;
+            border : none;
+            width : 100px;
+        }
+        .bg-page {
+            z-index: 1;
+            position: absolute;
+            top : 50%;
+            left : 50%;
+            transform : translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background-color: lightgrey;
+            opacity: 0.8;
+        }
+
+        .popup-page {
+            z-index : 2;
+            position : absolute;
+            top : 50%;
+            left : 50%;
+            transform : translate(-50%, -50%);
+            background-color : white;
+            width : 600px;
+            height : 450px;
+            border : 1px solid black;
+        }
+        .hideable{
+            display : none;
+        }
+        .input-box {
+            display : flex;
+            flex-direction : column;
+            align-items : center;
+        }
+

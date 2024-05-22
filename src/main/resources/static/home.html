@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>home</title>
+    <link rel="stylesheet" href="ticketstyle.css">
+</head>
+<body>
+
+<div class="base-page">
+    <h1>Project List</h1>
+     <div class="buttonSet" style="left: 815px">
+          <button>Timeline</button>
+          <button>Tickets</button>
+          <button>Admin</button>
+     </div>
+    <table>
+        <thead>
+            <tr>
+                <th class="w200">ProjectTitle</th>
+                <th class="w700">Description</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody id="project-table-body">
+            <!-- Project info will be appended here -->
+        </tbody>
+    </table>
+
+     <button class="addbutton" onclick="showElements()">Project Add</button>
+</div>
+
+<div class="popup-page hideable">
+    <button class="xbutton" onclick="hideElements()">X</button>
+    <h1 class="tc">Project Add</h1>
+    <div class="input-box">
+        제목<input type="text" id="title-input" placeholder="제목을 입력하세요." style="width: 50%">
+        <br>
+        내용<textarea id="description-input" rows="10" cols="40" style="resize: none"></textarea>
+    </div>
+    <button class="popup-addbutton">Add</button>
+</div>
+<div class="bg-page hideable"></div>
+
+  <script>
+        function hideElements() {
+            const hideableElements = document.querySelectorAll('.hideable');
+            hideableElements.forEach(function(element) {
+                element.style.display = 'none';
+            });
+        }
+
+        function showElements() {
+            const hideableElements = document.querySelectorAll('.hideable');
+            hideableElements.forEach(function(element) {
+                element.style.display = 'block';
+            });
+            document.getElementById('title-input').value = '';
+            document.getElementById('description-input').value = '내용을 입력하세요.';
+        }
+  </script>
+
+</body>
+</html>

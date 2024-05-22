@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TicketPage</title>
+    <link rel="stylesheet" href="ticketstyle.css">
+</head>
+<body>
+      <h1>Ticket Information</h1>
+
+      <button class="homebutton">Home</button>
+
+      <div class="buttonSet">
+          <button>Timeline</button>
+          <button>Tickets</button>
+          <button>Admin</button>
+      </div>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th><button>Number#</button></th>
+                <th><button class="w200">Title</button></th>
+                <th><button>Milestone</button></th>
+                <th><button>Sort</button></th>
+                <th><button>Importance</button></th>
+                <th><button>State</button></th>
+                <th><button>Date</button></th>
+            </tr>
+        </thead>
+        <tbody id="user-table-body">
+            <!-- User info will be appended here -->
+        </tbody>
+    </table>
+
+
+    <script>
+        //html이 load되는 즉시 실행되는 함수
+        /*
+         document.addEventListener('DOMContentLoaded', function() {
+            // 이 부분에 실행시키고 싶은 함수를 넣습니다.
+            loadUser();
+        });
+         */
+           async function loadUser() {
+            try {
+                const response = await fetch('http://localhost:8080/user');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const user = await response.json();
+
+                const tableBody = document.getElementById('user-table-body');
+                const newRow = document.createElement('tr');
+
+                const nameCell = document.createElement('td');
+                nameCell.textContent = user.name;
+                newRow.appendChild(nameCell);
+
+                const idCell = document.createElement('td');
+                idCell.textContent = user.id;
+                newRow.appendChild(idCell);
+
+                const ageCell = document.createElement('td');
+                ageCell.textContent = user.age;
+                newRow.appendChild(ageCell);
+
+                tableBody.appendChild(newRow);
+            } catch (error) {
+                console.error('Fetch error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
