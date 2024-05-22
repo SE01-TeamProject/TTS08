@@ -40,6 +40,6 @@ TTS08을 실행하기 위해서는 다음과 같은 프로그램이 필요합니
 
    - Set project encoding to 'UTF-8' 선택 후 Finish
    
-4. H2Database의 build.bat을 실행해서 데이터베이스를 생성합니다.
+4. H2Database의 H2/bin/h2.bat을 실행해서 데이터베이스를 생성합니다.
 
 5. 프로젝트를 실행합니다.
