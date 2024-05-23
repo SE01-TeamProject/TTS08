@@ -18,6 +18,8 @@ TTS08을 실행하기 위해서는 다음과 같은 프로그램이 필요합니
 
 ## 초기 설정
 
+아래의 과정을 수행 중 컴퓨터가 구성하는데 시간이 걸리므로 천천히 해야 합니다.
+
 1. 저장소를 복제합니다:
 
    ```sh
@@ -32,7 +34,7 @@ TTS08을 실행하기 위해서는 다음과 같은 프로그램이 필요합니
 
    - 좌측 Package Explorer에서 프로젝트 선택 -> File의 Properties -> Java Build Path -> Libraries -> JRE System Library 선택 후 Edit
 
-   - Workspace default JRE 선택 후 Finish -> Apply and Close
+   - Workspace default JRE(jdk-22) 선택 후 Finish -> Apply and Close
 
 - Warnings: Project 'TTS08' has no explicit encoding set 해결 방법
 
