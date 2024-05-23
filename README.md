@@ -33,8 +33,12 @@ TTS08을 실행하기 위해서는 다음과 같은 프로그램이 필요합니
 - Error: Unbound class container 해결 방법
 
    - 좌측 Package Explorer에서 프로젝트 선택 -> File의 Properties -> Java Build Path -> Libraries -> JRE System Library 선택 후 Edit
+ 
+   - Alternate JRE의 Installed JREs -> Add 선택
+ 
+   - Standard VM 선택 다음 Directory에서 jdk-22가 존재하는 경로에서 jdk-22 폴더 선택 -> Finish하고 생성된 jdk(jdk-22) 선택 뒤 Apply and Close
 
-   - Workspace default JRE(jdk-22) 선택 후 Finish -> Apply and Close
+   - Workspace default JRE(jdk-22) 선택 후 Finish -> Apply and Close: JRE 뒤에 jdk-22 표시가 존재해야 함
 
 - Warnings: Project 'TTS08' has no explicit encoding set 해결 방법
 
