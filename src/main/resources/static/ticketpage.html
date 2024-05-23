@@ -3,22 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>TicketPage</title>
+    <link rel="stylesheet" href="globalstyle.css">
     <link rel="stylesheet" href="ticketstyle.css">
+    <script src="globalScript.js"></script>
 </head>
 <body>
-      <h1>Ticket Information</h1>
+    <br>
+    <h1 class="tc">Ticket Information</h1>
+    <br>
+    <button class="homebutton" onclick="gotoHomePage()">Home</button>
 
-      <button class="homebutton">Home</button>
+    <div class="buttonSet">
+        <button>Timeline</button>
+        <button>Tickets</button>
+        <button>Admin</button>
+    </div>
 
-      <div class="buttonSet">
-          <button>Timeline</button>
-          <button>Tickets</button>
-          <button>Admin</button>
-      </div>
-
-
-    <table>
-        <thead>
+    <div class="ticket-table center">
+        <table>
+            <thead>
             <tr>
                 <th><button>Number#</button></th>
                 <th><button class="w200">Title</button></th>
@@ -28,12 +31,12 @@
                 <th><button>State</button></th>
                 <th><button>Date</button></th>
             </tr>
-        </thead>
-        <tbody id="user-table-body">
+            </thead>
+            <tbody id="user-table-body">
             <!-- User info will be appended here -->
-        </tbody>
-    </table>
-
+            </tbody>
+        </table>
+    </div>
 
     <script>
         //html이 load되는 즉시 실행되는 함수
