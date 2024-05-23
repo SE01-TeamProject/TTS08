@@ -6,7 +6,7 @@ TTS08을 실행하기 위해서는 다음과 같은 프로그램이 필요합니
  - JDK Development Kit 22
  - Spring Tool Suite
 
-1. 링크에서 JDK 22 - Windows(MSI)를 설치합니다. JDK는 아래의 디렉터리에 설치됩니다: https://www.oracle.com/java/technologies/downloads/
+1. 링크에서 JDK 22 - Windows(exe)를 설치합니다. JDK는 아래의 디렉터리에 설치됩니다: https://www.oracle.com/java/technologies/downloads/
 
    ```sh
    c:\program files\java\jdk-22
