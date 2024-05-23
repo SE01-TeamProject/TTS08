@@ -39,5 +39,7 @@ TTS08을 실행하기 위해서는 다음과 같은 프로그램이 필요합니
    - Warnings의 세부사항 좌클릭 -> Quick Fix 선택
 
    - Set project encoding to 'UTF-8' 선택 후 Finish
+ 
+4. H2Database의 H2/bin/h2.bat을 실행해서 데이터베이스를 생성합니다.
 
-4. 프로젝트를 실행하고 localhost:8080/(페이지이름).html에 접속합니다. (html파일들은 main>resources>static 폴더 안에 있습니다.)
+5. 프로젝트를 실행하고 localhost:8080/(페이지이름).html에 접속합니다. (html파일들은 main>resources>static 폴더 안에 있습니다.)
