@@ -1,8 +1,9 @@
-package com.example.demo;
+package com.example.demo.service;
 
 import org.springframework.stereotype.Component;
 
-import com.example.demo.user.User;
+import com.example.demo.domain.Project;
+import com.example.demo.domain.User;
 
 @Component
 public class System {

@@ -1,11 +1,6 @@
-package com.example.demo;
+package com.example.demo.domain;
 
 import org.springframework.stereotype.Component;
-
-import com.example.demo.user.Admin;
-import com.example.demo.user.Developer;
-import com.example.demo.user.PL;
-import com.example.demo.user.Tester;
 
 @Component
 public class Project {

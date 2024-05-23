@@ -1,8 +1,6 @@
-package com.example.demo.user;
+package com.example.demo.domain;
 
 import org.springframework.stereotype.Component;
-
-import com.example.demo.Issue;
 
 @Component
 public class Developer extends User {
