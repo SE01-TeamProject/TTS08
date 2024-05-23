@@ -4,33 +4,33 @@ import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
-@Component
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Builder
+@Getter
+@Setter
 public class Comment {
-	private String comment;
-	private User writer;
-	private Date date;
 	
-	public String getComment() {
-        return comment;
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "comment_writer")
+	private User writer;	// 코멘트 작성자
+	private String comment;	// 코멘트 내용
+	private Date date;		// 코멘트 작성 날짜
+	
+	public Comment() {
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public User getWriter() {
-        return writer;
-    }
-
-    public void setWriter(User writer) {
+    public Comment(User writer, String comment, Date date) {
         this.writer = writer;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
+        this.comment = comment;
         this.date = date;
     }
 }

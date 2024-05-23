@@ -1,61 +1,68 @@
 package com.example.demo.domain;
 
-import org.springframework.stereotype.Component;
+import java.util.List;
 
-@Component
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Builder
+@Getter
+@Setter
 public class Project {
+	
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "project_id")
+	private Long id;
 	private String title;
-	private PL pls;
-	private Admin admin;
-	private Tester testers;
-	private Developer developers;
+	private List<PL> pls;
+	private List<Admin> admins;
+	private List<Tester> testers;
+	private List<Developer> developers;
 	private String log;
 	
-	public String getTitle() {
-        return title;
+	public Project() {
     }
 
-    public void setTitle(String title) {
+    public Project(Long id, String title, List<PL> pls, List<Admin> admins, List<Tester> testers, List<Developer> developers, String log) {
+    	this.id = id;
         this.title = title;
-    }
-
-    public PL getPls() {
-        return pls;
-    }
-
-    public void setPls(PL pls) {
         this.pls = pls;
-    }
-
-    public Admin getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
-    }
-
-    public Tester getTesters() {
-        return testers;
-    }
-
-    public void setTesters(Tester testers) {
+        this.admins = admins;
         this.testers = testers;
-    }
-
-    public Developer getDevelopers() {
-        return developers;
-    }
-
-    public void setDevelopers(Developer developers) {
         this.developers = developers;
-    }
-
-    public String getLog() {
-        return log;
-    }
-
-    public void setLog(String log) {
         this.log = log;
+    }
+    
+    public void addPL(PL pls) {}
+    
+    public void addTester(Tester tester) {}
+    
+    public void addDeveloper(Developer developer) {}
+    
+    public void removePL(PL pls) {}
+    
+    public void removeTester(Tester tester) {}
+    
+    public void removeDeveloper(Tester tester) {}
+    
+    public void logActivity(String log) {}
+    
+    public PL getPLs() {
+    	return null;
+    }
+    
+    public Tester getTesters() {
+    	return null;
+    }
+    
+    public Developer getDevelopers() {
+    	return null;
     }
 }
