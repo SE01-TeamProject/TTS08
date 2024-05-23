@@ -1,8 +1,9 @@
-package com.example.demo;
+package com.example.demo.service;
 
 import org.springframework.stereotype.Component;
 
-import com.example.demo.user.Developer;
+import com.example.demo.domain.Developer;
+import com.example.demo.domain.Issue;
 
 @Component
 public class IssueManager {

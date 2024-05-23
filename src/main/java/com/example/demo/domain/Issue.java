@@ -1,11 +1,8 @@
-package com.example.demo;
+package com.example.demo.domain;
 
 import java.util.Date;
 
 import org.springframework.stereotype.Component;
-
-import com.example.demo.user.Developer;
-import com.example.demo.user.Tester;
 
 @Component
 public class Issue {

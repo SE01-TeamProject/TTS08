@@ -1,10 +1,8 @@
-package com.example.demo;
+package com.example.demo.domain;
 
 import java.util.Date;
 
 import org.springframework.stereotype.Component;
-
-import com.example.demo.user.User;
 
 @Component
 public class Comment {

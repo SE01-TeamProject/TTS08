@@ -1,8 +1,8 @@
-package com.example.demo;
+package com.example.demo.service;
 
 import org.springframework.stereotype.Component;
 
-import com.example.demo.user.Developer;
+import com.example.demo.domain.Developer;
 
 @Component
 public class Recommender {
