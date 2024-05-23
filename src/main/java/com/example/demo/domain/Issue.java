@@ -1,6 +1,7 @@
 package com.example.demo.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -45,4 +46,10 @@ public class Issue {
         this.type = type;
         this.comments = comments;
     }
+    
+    public void addComment(Comment comment) {}
+    
+    public void changeStatus(int status) {}
+    
+    public void assignDeveloper(Developer developer) {}
 }

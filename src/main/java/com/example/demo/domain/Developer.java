@@ -1,5 +1,7 @@
 package com.example.demo.domain;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import jakarta.persistence.Column;
@@ -26,5 +28,11 @@ public class Developer extends User {
 
     public Developer(String id, String name, String password, int level) {
         super(id, name, password, level);
+    }
+    
+    public void fixIssue(Issue issue) {}
+    
+    public List<Issue> getAssignedIssues() {
+    	return null;
     }
 }

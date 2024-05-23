@@ -12,4 +12,8 @@ public class Tester extends User {
     public Tester(String id, String name, String password, int level) {
         super(id, name, password, level);
     }
+    
+    public void reportIssue(Issue issue) {}
+    
+    public void validateIssue(Issue issue) {}
 }
