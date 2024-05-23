@@ -14,7 +14,7 @@ TTS08을 실행하기 위해서는 다음과 같은 프로그램이 필요합니
 
 2. Spring Tool Suite - Spring Tools 4 for Eclipse를 받고 압축을 풉니다: https://spring.io/tools
 
-3. H2Database의 가장 최신 버전인 2.2.224의 Platform-Independent Zip를 받고 압축을 풉니다: https://h2database.com/html/download.html
+3. H2Database의 가장 최신 버전인 2.2.224의 Windows Installer를 받고 설치합니다: https://h2database.com/html/download.html
 
 ## 초기 설정
 
