@@ -1,9 +1,22 @@
 package com.example.demo.domain;
 
-import org.springframework.stereotype.Component;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-@Component
+@Entity
+@Builder
+@Getter
+@Setter
 public class Project {
+	
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "project_title")
 	private String title;
 	private PL pls;
 	private Admin admin;
@@ -11,51 +24,15 @@ public class Project {
 	private Developer developers;
 	private String log;
 	
-	public String getTitle() {
-        return title;
+	public Project() {
     }
 
-    public void setTitle(String title) {
+    public Project(String title, PL pls, Admin admin, Tester testers, Developer developers, String log) {
         this.title = title;
-    }
-
-    public PL getPls() {
-        return pls;
-    }
-
-    public void setPls(PL pls) {
         this.pls = pls;
-    }
-
-    public Admin getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(Admin admin) {
         this.admin = admin;
-    }
-
-    public Tester getTesters() {
-        return testers;
-    }
-
-    public void setTesters(Tester testers) {
         this.testers = testers;
-    }
-
-    public Developer getDevelopers() {
-        return developers;
-    }
-
-    public void setDevelopers(Developer developers) {
         this.developers = developers;
-    }
-
-    public String getLog() {
-        return log;
-    }
-
-    public void setLog(String log) {
         this.log = log;
     }
 }

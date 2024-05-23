@@ -4,87 +4,45 @@ import java.util.Date;
 
 import org.springframework.stereotype.Component;
 
-@Component
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
+@Entity
+@Builder
+@Getter
+@Setter
 public class Issue {
-	private Date date;
-	private String title;
-	private String description;
-	private Tester reporter;
-	private Developer assignee;
-	private int priority;
-	private int status;
-	private int type;
-	private Comment comments;
 	
-	public Date getDate() {
-        return date;
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "issue_title")
+	private String title;		// 이슈 제목
+	private Date date;			// 이슈 작성 날짜
+	private String description;	// 이슈 내용
+	private Tester reporter;	// 이슈 발견자
+	private Developer assignee;	// 이슈 해결자
+	private int priority;		// 이슈 우선순위
+	private int status;			// 이슈 상태
+	private int type;			// 이슈 형태
+	private Comment comments;	// 이슈의 코멘트
+	
+	public Issue() {
     }
 
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
+    public Issue(String title, Date date, String description, Tester reporter, Developer assignee, int priority, int status, int type, Comment comments) {
         this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
+        this.date = date;
         this.description = description;
-    }
-
-    public Tester getReporter() {
-        return reporter;
-    }
-
-    public void setReporter(Tester reporter) {
         this.reporter = reporter;
-    }
-
-    public Developer getAssignee() {
-        return assignee;
-    }
-
-    public void setAssignee(Developer assignee) {
         this.assignee = assignee;
-    }
-
-    public int getPriority() {
-        return priority;
-    }
-
-    public void setPriority(int priority) {
         this.priority = priority;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
         this.status = status;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
         this.type = type;
-    }
-
-    public Comment getComments() {
-        return comments;
-    }
-
-    public void setComments(Comment comments) {
         this.comments = comments;
     }
 }

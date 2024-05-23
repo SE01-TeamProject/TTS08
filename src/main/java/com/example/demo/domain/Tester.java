@@ -1,8 +1,10 @@
 package com.example.demo.domain;
 
-import org.springframework.stereotype.Component;
+import jakarta.persistence.Entity;
+import lombok.Builder;
 
-@Component
+@Entity
+@Builder
 public class Tester extends User {
     public Tester() {
     }
