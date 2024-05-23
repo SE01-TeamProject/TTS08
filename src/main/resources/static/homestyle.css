@@ -1,11 +1,11 @@
-@charset "utf-8";
+@charset "UTF-8";
 
-        table, th, td {
+ table, th, td {
             border: 1px solid black;
             border-collapse: collapse;
         }
         th, td {
-            padding: 15px;
+            padding: 8px;
             text-align: center;
             width: 50px;
         }
@@ -20,20 +20,15 @@
         button {
             border-radius : 10px;
             font-size : 15px;
-            padding : 10px;
+            padding : 6px;
         }
         .buttonSet {
             position : relative;
-            left : 66%;
-            top : -10px;
+            left : 64%;
         }
         .homebutton {
-            position : absolute;
-            left : 4%;
-            top : 5%;
-            padding : 15px;
-            width : 120px;
-            background-color : lightgoldenrodyellow;
+            padding : 10px;
+            width : 100px;
         }
         .addbutton {
             position : relative;
@@ -65,7 +60,7 @@
             margin : -5px;
             background-color : lightskyblue;
             border : none;
-            width : 120px;
+            width : 100px;
         }
         .bg-page {
             z-index: 1;
@@ -78,7 +73,6 @@
             background-color: lightgrey;
             opacity: 0.8;
         }
-
         .popup-page {
             z-index : 2;
             position : absolute;
@@ -99,7 +93,7 @@
             flex-direction : column;
             align-items : center;
         }
-        .ticket-table {
-            height : 600px;
+        .proj-table {
+            height : 450px;
             overflow-y : scroll;
         }
