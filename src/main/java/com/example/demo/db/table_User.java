@@ -3,8 +3,9 @@ package com.example.demo.db;
 import jakarta.persistence.*;
 
 import lombok.Getter;
-
+import lombok.Setter;
 @Getter
+@Setter
 @Entity
 @Table(name = "IST_User")
 public class table_User {

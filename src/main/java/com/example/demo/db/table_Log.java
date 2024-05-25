@@ -1,11 +1,13 @@
 package com.example.demo.db;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
+
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Entity
 @Table(name="Log")
 public class table_Log {
