@@ -14,9 +14,9 @@ import com.example.demo.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 
-@Component
-@Getter
-@Setter
+//@Component
+//@Getter
+//@Setter
 public class System {
 	private List<User> users;
 	private List<Project> projects;

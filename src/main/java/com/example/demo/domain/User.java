@@ -9,14 +9,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Builder
-@Getter
-@Setter
+//@Entity
+//@Builder
+//@Getter
+//@Setter
 public abstract class User {
 	
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+	//@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Column(name = "user_id")
     private String id;		// 사용자 id
     private String name;	// 사용자 이름
     private String password;// 사용자 비밀번호

@@ -11,14 +11,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Builder
-@Getter
-@Setter
+//@Entity
+//@Builder
+//@Getter
+//@Setter
 public class Project {
 	
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "project_id")
+	//@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Column(name = "project_id")
 	private Long id;
 	private String title;
 	private List<PL> pls;
