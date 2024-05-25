@@ -1,7 +1,5 @@
 package ui;
 
-import ui.*;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.event.*;
@@ -12,24 +10,25 @@ public class MainWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	//private control control
+	private SwingController controller;
+	
 	
 	private JPanel contentPane;
 	private JPanel dpPanel;
 	private JPanel btnPanel;
+	private ProjectPanel projectPanel = new ProjectPanel();
+	private TicketPanel ticketPanel = new TicketPanel();
+	private TimelinePanel timelinePanel = new TimelinePanel();
+	private AdminPanel adminPanel = new AdminPanel();
 	
-	private ProjectPanel testProjectPanel = new ProjectPanel();
-	private TicketPanel testTicketPanel = new TicketPanel();
-	private TimelinePanel testTimelinePanel = new TimelinePanel();
-	private ArrayList<JPanel> panelList = new ArrayList<JPanel>();{{
-		panelList.add(testProjectPanel);
-		panelList.add(testTimelinePanel);
-		panelList.add(testTicketPanel);
-	}};
 	
 	private JButton homeBtn;
+	private JButton logoutBtn;
 	private JButton timelineBtn;
 	private JButton ticketBtn;
 	private JButton adminBtn;
+	private JButton addBtn;
+	private JTextField userIdTextField;
 	
 	/* Private project -> Selected project. If project NOT SELECTED -> btn disabled
 	 * 
@@ -57,6 +56,17 @@ public class MainWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	public MainWindow(SwingController sc) {
+		this();
+		System.out.println("Main Window Create with Controller");
+		
+		controller = sc;
+		projectPanel = new ProjectPanel(controller);
+		ticketPanel = new TicketPanel(controller);
+		timelinePanel = new TimelinePanel(controller);
+		adminPanel = new AdminPanel(controller);
+		this.setDpPanel(projectPanel);
+	}
 	public MainWindow() {
 		super("Issue Ticketing System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,11 +76,10 @@ public class MainWindow extends JFrame {
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		
+			
 		// Panels
 		// DP Panel
-		dpPanel = testProjectPanel;
+		dpPanel = projectPanel;
 		dpPanel.setBounds(12, 189, 1240, 600);
 		contentPane.add(dpPanel);
 		
@@ -78,8 +87,7 @@ public class MainWindow extends JFrame {
 		btnPanel = new JPanel();
 		btnPanel.setBounds(352, 119, 900, 60);
 		contentPane.add(btnPanel);
-		btnPanel.setLayout(new GridLayout(0, 3, 0, 0));
-		
+		btnPanel.setLayout(new GridLayout(0, 3, 0, 0));	
 		
 		// Buttons
 		// Home Btn
@@ -97,6 +105,24 @@ public class MainWindow extends JFrame {
 		// Admin Btn
 		adminBtn = makeAdminBtn("Admin");
 		btnPanel.add(adminBtn);
+		
+		// Add Btn
+		addBtn = makeAddBtn("Add Ticekt");
+		contentPane.add(addBtn);
+		
+		// Logout Btn
+		logoutBtn = makeLogoutBtn("Log Out");
+		contentPane.add(logoutBtn);
+		
+		// Show Current User ID
+		userIdTextField = new JTextField();
+		userIdTextField.setHorizontalAlignment(SwingConstants.CENTER);
+		userIdTextField.setText("USER: temp_name");
+		userIdTextField.setEditable(false);
+		userIdTextField.setBounds(947, 18, 196, 37);
+		contentPane.add(userIdTextField);
+		userIdTextField.setColumns(10);
+		
 	}
 	
 	public void setDpPanel(JPanel panel) {
@@ -113,20 +139,39 @@ public class MainWindow extends JFrame {
 		dpPanel.repaint();
 	}
 	
+	public void setUser(String id) {
+		userIdTextField.setText("USER: " + id);
+	}
+	
 	
 	// Buttons -----------------------------------------------------------------------------------------------
 	private JButton makeHomeBtn(String str) {
 		JButton btn = new JButton(str);
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Timeline Btn ACtion Listenser
+				// Home Btn ACtion Listenser
 				System.out.println("Home btn pressed!");
-				setDpPanel(testProjectPanel);
+				setDpPanel(projectPanel);
 			}
 		});
 		btn.setBounds(12, 10, 150, 53);		
 		return btn;
 		
+	}
+	
+	private JButton makeLogoutBtn(String str) {
+		JButton btn = new JButton(str);
+		btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Home Btn ACtion Listenser
+				System.out.println("Logout btn pressed!");
+				if(controller != null) {
+					controller.logout();
+				}
+			}
+		});
+		btn.setBounds(1155, 10, 97, 53);
+		return btn;
 	}
 	
 	private JButton makeTimelineBtn(String str) {
@@ -135,7 +180,9 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// Timeline Btn ACtion Listenser
 				System.out.println("Timeline btn pressed!");
-				setDpPanel(testTimelinePanel);
+				if(controller.getProjectFlag()) {
+					setDpPanel(timelinePanel);
+				}
 			}
 		});
 		
@@ -146,9 +193,11 @@ public class MainWindow extends JFrame {
 		JButton btn = new JButton(str);
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Timeline Btn ACtion Listenser
+				// Ticket Btn ACtion Listener
 				System.out.println("Ticket btn pressed!");
-				setDpPanel(testTicketPanel);
+				if(controller.getProjectFlag()) {
+					setDpPanel(ticketPanel);
+				}
 			}
 		});
 		return btn;
@@ -158,11 +207,28 @@ public class MainWindow extends JFrame {
 		JButton btn = new JButton(str);
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Timeline Btn ACtion Listenser
+				// Admin Btn ACtion Listener
 				System.out.println("Admin btn pressed!");
+				setDpPanel(adminPanel);
 			}
 		});
 		return btn;
 	}
-	//-----------------------------------------------------------------------------------------------------------
+	
+	private JButton makeAddBtn(String str) {
+		JButton btn = new JButton(str);
+		btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Add Ticket Btn ACtion Listener
+				System.out.println("Add btn pressed!");
+				if(controller.getProjectFlag()) {
+					// Adding Ticket Here
+					
+				}
+			}
+		});
+		btn.setBounds(1138, 799, 114, 37);
+		return btn;
+		
+	}
 }

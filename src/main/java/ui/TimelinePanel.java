@@ -11,22 +11,38 @@ import javax.swing.border.LineBorder;
 public class TimelinePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Create the panel.
-	 */
+	private SwingController controller;
+	private JTextArea timelineTextArea = new JTextArea();
+	private JScrollPane scrollPane;
+	
+	
+	public TimelinePanel(SwingController sc) {
+		this();
+		controller = sc;
+		setTextArea();
+		
+	}
+	
 	public TimelinePanel() {
 		setBorder(new LineBorder(new Color(0, 128, 255), 2, true));
 		setLayout(new BorderLayout(0, 0));
 		
-		JButton btnNewButton = new JButton("Timeline Panel");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("TimelinePanel");
-			}
-		});
-		add(btnNewButton, BorderLayout.CENTER);
-
+		timelineTextArea.setText("");
+		timelineTextArea.setEnabled(false);
+		
+		scrollPane = new JScrollPane(timelineTextArea);
+		add(scrollPane, BorderLayout.CENTER);
+		
+		//timelineTextArea.setText("Hello");
+	}
+	
+	public void setTextArea() {
+		/* Get Timeline from model -> controller (Ask to controller)
+		 * Controller will Parse JSON file, return long~~~~~~ String contain '\n'
+		 */
+		
+		revalidate();
+		repaint();
 	}
 
 }
