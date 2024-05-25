@@ -13,14 +13,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Builder
-@Getter
-@Setter
+//@Entity
+//@Builder
+//@Getter
+//@Setter
 public class Comment {
 	
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_writer")
+	//@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Column(name = "comment_writer")
 	private User writer;	// 코멘트 작성자
 	private String comment;	// 코멘트 내용
 	private Date date;		// 코멘트 작성 날짜

@@ -13,14 +13,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Builder
-@Getter
-@Setter
+//@Entity
+//@Builder
+//@Getter
+//@Setter
 public class Developer extends User {
 	
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "assigned_issue")
+	//@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Column(name = "assigned_issue")
     private Issue assignedIssue;
     
     public Developer() {

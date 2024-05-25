@@ -3,8 +3,8 @@ package com.example.demo.domain;
 import jakarta.persistence.Entity;
 import lombok.Builder;
 
-@Entity
-@Builder
+//@Entity
+//@Builder
 public class Tester extends User {
     public Tester() {
     }

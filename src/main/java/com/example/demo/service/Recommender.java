@@ -10,9 +10,9 @@ import com.example.demo.domain.Issue;
 import lombok.Getter;
 import lombok.Setter;
 
-@Component
-@Getter
-@Setter
+//@Component
+//@Getter
+//@Setter
 public class Recommender {
 	private List<Developer> devs;
 	

@@ -14,14 +14,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Builder
-@Getter
-@Setter
+//@Entity
+//@Builder
+//@Getter
+//@Setter
 public class Issue {
 	
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "issue_title")
+	//@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Column(name = "issue_title")
 	private String title;		// 이슈 제목
 	private Date date;			// 이슈 작성 날짜
 	private String description;	// 이슈 내용

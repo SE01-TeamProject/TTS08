@@ -12,9 +12,9 @@ import com.example.demo.domain.Tester;
 import lombok.Getter;
 import lombok.Setter;
 
-@Component
-@Getter
-@Setter
+//@Component
+//@Getter
+//@Setter
 public class IssueManager {
 	private Developer rec;
 	private Issue issues;
