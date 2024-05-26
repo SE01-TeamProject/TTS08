@@ -40,6 +40,7 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<MemberAssignedPr> memberAssignedPrs = new ArrayList<>();
+    
     @Builder
     public Member(String name, String fullName, String password, int level) {
         this.name = name;
