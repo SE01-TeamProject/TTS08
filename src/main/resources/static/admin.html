@@ -43,7 +43,7 @@
              <br>
              내용<textarea id="description-input" rows="10" cols="40" style="resize: none"></textarea>
          </div>
-         <button class="popup-addbutton">Add</button>
+         <button class="popup-addbutton" onclick="addProject()">Add</button>
     </div>
 
     <div id="usermanage-pop" class="popup-page hide">
@@ -142,6 +142,7 @@
               });
               document.getElementById('description-input').value = '내용을 입력하세요.';
           }
+		  
 		  function addUser() {
 			  const fullName = document.getElementById('name-input').value;
 	          const name = document.getElementById('id-input').value;
@@ -163,6 +164,26 @@
 	                  }
 	              });
 	      }
+		  
+		  function addProject() {
+  			  const title = document.getElementById('title-input').value;
+  	          const description = document.getElementById('description-input').value;
+  	          fetch('http://localhost:8080/addProject', {
+  	              method: 'POST',
+  	              headers: {
+  	                  'Content-Type': 'application/json'
+  	              },
+  	              body: JSON.stringify({title, description})
+  	          })
+  	              .then(response => response.text())
+  	              .then(data => {
+  	                  if (data === 'true') {
+  	                      gotoHomePage();
+  	                  } else if (data === 'false') {
+  	                      alert("중복된 프로젝트입니다.");
+  	                  }
+  	              });
+  	      }
     </script>
 </body>
 </html>

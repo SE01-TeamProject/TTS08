@@ -7,8 +7,8 @@ import lombok.*;
 @AllArgsConstructor
 public class MemberAddDto {
 
-	private String fullName;
-    private String name;
+	private String name;
+    private String fullName;
     private String password;
     private String level;
 
