@@ -1,14 +1,13 @@
 package com.example.demo.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.example.demo.domain.mapping.MemberAssignedPr;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "project")
@@ -34,7 +33,16 @@ public class Project {
 	
 	@Column(name = "TESTER")
 	private Integer tester;
-	
+
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+	private List<Issue> issues = new ArrayList<>();
+
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+	private List<Log> logs = new ArrayList<>();
+
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+	private List<MemberAssignedPr> userAssignedPrs = new ArrayList<>();
+
 	@Builder
     public Project(String title, String description) {
         this.title = title;

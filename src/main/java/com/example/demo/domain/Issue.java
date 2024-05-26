@@ -1,13 +1,10 @@
 package com.example.demo.domain;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -61,7 +58,9 @@ public class Issue {
     private LocalDateTime date; // 이슈 작성 날짜
 	
 	private Integer project;
-	
+
+	@OneToMany(mappedBy = "issue", cascade = CascadeType.ALL)
+	private List<Comment> comments = new ArrayList<>();
 	@Builder
     public Issue(String title, String description, Integer reporter, Integer assignee, int priority, int status, int type) {
         this.title = title;
