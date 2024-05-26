@@ -48,7 +48,7 @@
         <br>
         내용<textarea id="description-input" rows="10" cols="40" style="resize: none"></textarea>
     </div>
-        <button class="popup-addbutton">Add</button>
+        <button class="popup-addbutton" onclick="addIssue()">Add</button>
     </div>
     <div class="bg-page hideable"></div>
 
@@ -88,6 +88,32 @@
                 console.error('Fetch error:', error);
             }
         }
+		
+		function addIssue() {
+		  const title = document.getElementById('title-input').value;
+          const description = document.getElementById('description-input').value;
+		  //const reporter = document.getElementById('reporter-input').value;
+		  //const assignee = document.getElementById('assignee-input').value;
+		  //const priority = document.getElementById('priority-input').value;
+		  //const status = document.getElementById('status-input').value;
+		  //const type = document.getElementById('type-input').value;
+          fetch('http://localhost:8080/addIssue', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({title, description})
+			  //body: JSON.stringify({title, description, reporter, assignee, priority, status, type})
+          })
+              .then(response => response.text())
+              .then(data => {
+                  if (data === 'true') {
+                      gotoHomePage();
+                  } else if (data === 'false') {
+                      alert("중복된 이슈입니다.");
+                  }
+              });
+      }
     </script>
 </body>
 </html>
