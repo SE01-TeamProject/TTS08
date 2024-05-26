@@ -1,9 +1,13 @@
 package com.example.demo.domain;
 
+import com.example.demo.domain.mapping.MemberAssignedPr;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "member")
@@ -34,6 +38,8 @@ public class Member {
     @Column(name = "LEVEL")
     private int level;
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<MemberAssignedPr> memberAssignedPrs = new ArrayList<>();
     @Builder
     public Member(String name, String fullName, String password, int level) {
         this.name = name;
