@@ -1,23 +1,37 @@
 package com.example.demo.ui;
 
-import java.awt.*;
+import java.awt.EventQueue;
+
 import javax.swing.*;
 import javax.swing.border.*;
-
+import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 
 public class IssueWindow extends JFrame {
-	
-	
-
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane;
 	
-	private JTextField newCommentTextField;
+	private SwingController controller;
+	
+	private JPanel contentPane;	
+	private JScrollPane descriptionPanel;
+	private JScrollPane commentPanel;
 	
 	private JButton editBtn;
 	private JButton saveBtn;
-
+	
+	private JComboBox<String> priorityComboBox = new JComboBox();
+	private JComboBox<String> stateComboBox = new JComboBox();
+	private JComboBox<String> milestoneComboBox = new JComboBox();	
+	private JComboBox<String> assigneeComboBox = new JComboBox();
+	private JTextArea decriptionTextArea = new JTextArea();
+	private JTextArea commentTextArea = new JTextArea();
+	private JTextField newCommentTextField = new JTextField();
+	
+	private JLabel numberLabel = new JLabel();
+	private JLabel titleLabel = new JLabel();
+	private JLabel reporterLabel = new JLabel();
+	
 	/**
 	 * Launch the application.
 	 */
@@ -33,10 +47,20 @@ public class IssueWindow extends JFrame {
 			}
 		});
 	}
-
-	/**
-	 * Create the frame.
-	 */
+	
+	public IssueWindow(SwingController sc) {
+		this();
+		controller = sc;
+		
+		setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				setVisible(false);
+			}
+		});
+		
+	}
+	
 	public IssueWindow() {
 		setTitle("Issue Information");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,37 +72,33 @@ public class IssueWindow extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		
-		
-		
-		
-		JScrollPane commentPanel = new JScrollPane();
+		commentPanel = new JScrollPane();
 		commentPanel.setBounds(12, 565, 450, 200);
 		contentPane.add(commentPanel);
 		
-		JScrollPane descriptionPanel = new JScrollPane();
+		descriptionPanel = new JScrollPane();
 		descriptionPanel.setBounds(12, 335, 450, 200);
 		contentPane.add(descriptionPanel);
 		
-		JTextArea commentTextArea = new JTextArea();
+		commentTextArea = new JTextArea();
 		commentTextArea.setEnabled(false);
 		commentTextArea.setEditable(false);
 		commentPanel.setViewportView(commentTextArea);
 		
 		
 		// Labels
-			// Number
-		JLabel numberLabel = new JLabel("number");
+			// **Number
+		numberLabel = new JLabel("number");
 		numberLabel.setBounds(12, 10, 93, 15);
 		contentPane.add(numberLabel);
 		
-			// Reporter
-		JLabel reporterLabel = new JLabel("Reporter_Name");
+			// **Reporter
+		reporterLabel = new JLabel("Reporter_Name");
 		reporterLabel.setBounds(117, 10, 103, 15);
 		contentPane.add(reporterLabel);
 			
-			// Title
-		JLabel titleLabel = new JLabel("Title");
+			// **Title
+		titleLabel = new JLabel("Title");
 		titleLabel.setFont(new Font("굴림", Font.BOLD, 15));
 		titleLabel.setBounds(12, 35, 300, 32);
 		contentPane.add(titleLabel);
@@ -124,6 +144,7 @@ public class IssueWindow extends JFrame {
 		saveBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Save btn action listener
+				setTitle("save");
 			}
 		});
 		saveBtn.setBounds(475, 54, 97, 38);
@@ -134,51 +155,91 @@ public class IssueWindow extends JFrame {
 		editBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Edit btn action listener
+				setTitle("edit");
 			}
 		});
 		editBtn.setBounds(475, 6, 97, 38);
 		contentPane.add(editBtn);
 		
-		
-		
-		// Combo Boxes
-		
-		JComboBox priorityComboBox = new JComboBox();
-		priorityComboBox.setModel(new DefaultComboBoxModel(new String[] {"Blocker", "Critical", "Major", "Minor", "Trivial"}));
+		// Combo Boxes		
+		priorityComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Blocker", "Critical", "Major", "Minor", "Trivial"}));
 		priorityComboBox.setBounds(178, 113, 116, 32);
 		contentPane.add(priorityComboBox);
 		
-		JComboBox stateComboBox = new JComboBox();
-		stateComboBox.setModel(new DefaultComboBoxModel(new String[] {"New", "Assigned", "Resolved", "Closed", "Reopened"}));
+		stateComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"New", "Assigned", "Resolved", "Closed", "Reopened"}));
 		stateComboBox.setBounds(12, 113, 116, 32);
 		contentPane.add(stateComboBox);
 		
-		JComboBox priorityComboBox_1 = new JComboBox();
-		priorityComboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Milestone1", "Milestone2", "Milestone3", "Milestone4"}));
-		priorityComboBox_1.setBounds(12, 215, 116, 32);
-		contentPane.add(priorityComboBox_1);
+		milestoneComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Milestone1", "Milestone2", "Milestone3", "Milestone4"}));
+		milestoneComboBox.setBounds(12, 215, 116, 32);
+		contentPane.add(milestoneComboBox);
 		
-		JComboBox priorityComboBox_1_1 = new JComboBox();
-		priorityComboBox_1_1.setModel(new DefaultComboBoxModel(new String[] {"None"}));
-		priorityComboBox_1_1.setBounds(178, 215, 116, 32);
-		contentPane.add(priorityComboBox_1_1);
+		assigneeComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"None"}));
+		assigneeComboBox.setBounds(178, 215, 116, 32);
+		contentPane.add(assigneeComboBox);		
 		
-		
-		
-		
-		
-		JTextArea decriptionTextArea = new JTextArea();
+		decriptionTextArea = new JTextArea();
 		decriptionTextArea.setEnabled(false);
 		decriptionTextArea.setEditable(false);
 		descriptionPanel.setViewportView(decriptionTextArea);
-		
-		
-		
+
 		newCommentTextField = new JTextField();
-		newCommentTextField.setText("Write Comment");
+		newCommentTextField.setText("");
 		newCommentTextField.setBounds(12, 795, 450, 32);
 		contentPane.add(newCommentTextField);
 		newCommentTextField.setColumns(10);
+	}
+	
+	public void setNumber(String str) {
+		if(numberLabel != null) {
+			numberLabel.setText(str);
+			redraw();
+		}
+	}
+	public void setNumber(int num) {
+		if(numberLabel != null) {
+			numberLabel.setText("" + num);
+			redraw();
+		}
+	}
+	
+	public void setTitle(String str) {
+		if(titleLabel != null) {
+			titleLabel.setText(str);	
+			redraw();
+		}
+	}
+	
+	public void setReporter(String str) {
+		if(reporterLabel != null) {
+			reporterLabel.setText(str);
+			redraw();
+		}
+	}
+
+	public void initPriorityCBox() {
+		if(controller != null) {
+			ArrayList<String> list = controller.getPriorties();
+			String priority[] = list.toArray(new String[list.size()]);
+			priorityComboBox.setModel(new DefaultComboBoxModel<String>(priority));
+		}
+		
+	}
+	
+	public void initStateCBox() {
+		if(controller != null) {
+			ArrayList<String> list = controller.getStates();
+			String priority[] = list.toArray(new String[list.size()]);
+			priorityComboBox.setModel(new DefaultComboBoxModel<String>(priority));
+		}
+		
+	}
+	
+ 	private void redraw() {
+		if(contentPane != null) {
+			contentPane.revalidate();
+			contentPane.repaint();
+		}
 	}
 	
 }

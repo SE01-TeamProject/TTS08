@@ -1,19 +1,23 @@
 package com.example.demo.ui;
 
-import com.example.demo.ui.*;
-import javax.swing.border.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 
 public class LoginWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	
+	private SwingController controller;
+	
 	private JPanel contentPane;
 	private JTextField idTextField;
 	private JTextField pwTextField;
-	private JLabel laberTop;
+	private JLabel labelTop;
+	
 
 	/**
 	 * Launch the application.
@@ -34,6 +38,11 @@ public class LoginWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	public LoginWindow(SwingController sc) {
+		this();
+		controller = sc;
+		
+	}
 	public LoginWindow() {
 		setTitle("Login");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -63,21 +72,29 @@ public class LoginWindow extends JFrame {
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Edit Here
+				String id = idTextField.getText();
+				String pw = pwTextField.getText();
+				boolean loginFlag = false;
+				
 				System.out.println("LoginButton pressed");
 				System.out.println("ID : " + idTextField.getText());
 				System.out.println("Password : " + pwTextField.getText() + "\n");
+				
+				if(controller != null) {
+					loginFlag = controller.login(id, pw);
+				}
 			}
 		});
 		loginBtn.setBounds(175, 54, 97, 66);
 		contentPane.add(loginBtn);
 		
 		
-		laberTop = new JLabel("Issue Ticketing System");
-		laberTop.setFont(new Font("굴림", Font.PLAIN, 16));
-		laberTop.setBackground(new Color(255, 255, 255));
-		laberTop.setHorizontalAlignment(SwingConstants.CENTER);
-		laberTop.setBounds(12, 23, 260, 15);
-		contentPane.add(laberTop);
+		labelTop = new JLabel("Issue Ticketing System");
+		labelTop.setFont(new Font("굴림", Font.PLAIN, 16));
+		labelTop.setBackground(new Color(255, 255, 255));
+		labelTop.setHorizontalAlignment(SwingConstants.CENTER);
+		labelTop.setBounds(12, 23, 260, 15);
+		contentPane.add(labelTop);
 	}
 }
 
