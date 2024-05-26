@@ -1,15 +1,16 @@
-@charset "utf-8";
+@charset "UTF-8";
 
-        table, th, td {
+ table, th, td {
             border: 1px solid black;
             border-collapse: collapse;
         }
         th, td {
-            padding: 8px;
-            text-align: center;
-            width: 50px;
+            padding: 10px;
+            width: 150px;
         }
         thead {
+            position : sticky;
+            top : 0;
             background-color : lightskyblue;
         }
         tbody {
@@ -18,25 +19,11 @@
         button {
             border-radius : 10px;
             font-size : 15px;
-            padding : 6px;
+            padding : 10px;
         }
-        .tc {
-            text-align: center;
-        }
-        .w200 {
-            width : 200px;
-        }
-        .w700 {
-            width : 700px;
-        }
-        .h200 {
-            height : 200px;
-        }
-
         .buttonSet {
             position : relative;
-            left : 645px;
-            top : -10px;
+            left : 67%;
         }
         .homebutton {
             padding : 10px;
@@ -44,10 +31,10 @@
         }
         .addbutton {
             position : relative;
-            left : 900px;
+            left : 75%;
             top : 500px;
             padding : 10px;
-            width : 100px;
+            width : 130px;
         }
 
         .popup-addbutton {
@@ -85,8 +72,6 @@
             background-color: lightgrey;
             opacity: 0.8;
         }
-
-
         .popup-page {
             z-index : 2;
             position : absolute;
@@ -97,6 +82,7 @@
             width : 600px;
             height : 450px;
             border : 1px solid black;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
         }
         .hideable{
             display : none;
@@ -106,4 +92,9 @@
             flex-direction : column;
             align-items : center;
         }
-
+        .proj-table {
+            width : 1000px;
+            height : 450px;
+            border : 1px solid black;
+            overflow-y : scroll;
+        }

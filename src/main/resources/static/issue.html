@@ -2,23 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TicketPage</title>
-    <link rel="stylesheet" href="ticketstyle.css">
+    <title>IssuePage</title>
+    <link rel="stylesheet" href="globalstyle.css">
+    <link rel="stylesheet" href="issuestyle.css">
+    <script src="globalScript.js"></script>
 </head>
 <body>
-      <h1>Ticket Information</h1>
+    <h1 class="tc">Issue Information</h1>
+    <button class="homebutton" onclick="gotoHomePage()">Home</button>
 
-      <button class="homebutton">Home</button>
+    <span class="buttonSet">
+        <button>Timeline</button>
+        <button onclick="gotoIssuePage()">Issues</button>
+        <button onclick="gotoAdminPage()">Admin</button>
+    </span>
 
-      <div class="buttonSet">
-          <button>Timeline</button>
-          <button>Tickets</button>
-          <button>Admin</button>
-      </div>
-
-
-    <table>
-        <thead>
+    <div class="issue-table center">
+        <table>
+            <thead>
             <tr>
                 <th><button>Number#</button></th>
                 <th><button class="w200">Title</button></th>
@@ -28,12 +29,28 @@
                 <th><button>State</button></th>
                 <th><button>Date</button></th>
             </tr>
-        </thead>
-        <tbody id="user-table-body">
+            </thead>
+            <tbody id="user-table-body">
             <!-- User info will be appended here -->
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 
+    <span><input type="text" class="searchinput" placeholder="search..."></span>
+    <button class="searchbutton">Search</button>
+    <button class="addbutton" onclick="showElements()">Issue Add</button>
+
+    <div class="popup-page hideable">
+         <button class="xbutton" onclick="hideElements()">X</button>
+    <h1 class="tc">Project Add</h1>
+    <div class="input-box">
+        제목<input type="text" id="title-input" placeholder="제목을 입력하세요." style="width: 50%">
+        <br>
+        내용<textarea id="description-input" rows="10" cols="40" style="resize: none"></textarea>
+    </div>
+        <button class="popup-addbutton">Add</button>
+    </div>
+    <div class="bg-page hideable"></div>
 
     <script>
         //html이 load되는 즉시 실행되는 함수

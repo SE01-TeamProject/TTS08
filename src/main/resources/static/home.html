@@ -3,29 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>home</title>
-    <link rel="stylesheet" href="ticketstyle.css">
+    <link rel="stylesheet" href="globalstyle.css">
+    <link rel="stylesheet" href="homestyle.css">
+    <script src="globalScript.js"></script>
 </head>
 <body>
 
 <div class="base-page">
-    <h1>Project List</h1>
-     <div class="buttonSet" style="left: 815px">
+    <h1 class="tc">Project List</h1>
+     <div class="buttonSet">
           <button>Timeline</button>
-          <button>Tickets</button>
-          <button>Admin</button>
+          <button onclick="gotoIssuePage()">Issues</button>
+          <button onclick="gotoAdminPage()">Admin</button>
      </div>
-    <table>
-        <thead>
-            <tr>
-                <th class="w200">ProjectTitle</th>
-                <th class="w700">Description</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody id="project-table-body">
+     <br>
+    <div class="proj-table center">
+         <table>
+             <thead>
+                    <tr>
+                        <th class="w200">ProjectTitle</th>
+                        <th class="w700">Description</th>
+                        <th>Date</th>
+                    </tr>
+             </thead>
+             <tbody id="project-table-body">
             <!-- Project info will be appended here -->
-        </tbody>
-    </table>
+             </tbody>
+         </table>
+    </div>
 
      <button class="addbutton" onclick="showElements()">Project Add</button>
 </div>
@@ -41,24 +46,5 @@
     <button class="popup-addbutton">Add</button>
 </div>
 <div class="bg-page hideable"></div>
-
-  <script>
-        function hideElements() {
-            const hideableElements = document.querySelectorAll('.hideable');
-            hideableElements.forEach(function(element) {
-                element.style.display = 'none';
-            });
-        }
-
-        function showElements() {
-            const hideableElements = document.querySelectorAll('.hideable');
-            hideableElements.forEach(function(element) {
-                element.style.display = 'block';
-            });
-            document.getElementById('title-input').value = '';
-            document.getElementById('description-input').value = '내용을 입력하세요.';
-        }
-  </script>
-
 </body>
 </html>
