@@ -10,6 +10,7 @@ public class MainWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	//private control control
+	private SwingController controller;
 	
 	private JPanel contentPane;
 	private JPanel dpPanel;
@@ -28,6 +29,7 @@ public class MainWindow extends JFrame {
 	private JButton timelineBtn;
 	private JButton ticketBtn;
 	private JButton adminBtn;
+	private JButton addBtn;
 	
 	/* Private project -> Selected project. If project NOT SELECTED -> btn disabled
 	 * 
@@ -55,6 +57,10 @@ public class MainWindow extends JFrame {
 	/**
 	 * Create the frame.
 	 */
+	public MainWindow(SwingController sc) {
+		this();
+		controller = sc;
+	}
 	public MainWindow() {
 		super("Issue Ticketing System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -95,6 +101,10 @@ public class MainWindow extends JFrame {
 		// Admin Btn
 		adminBtn = makeAdminBtn("Admin");
 		btnPanel.add(adminBtn);
+		
+		addBtn = makeAddBtn("Add");
+		contentPane.add(addBtn);
+		
 	}
 	
 	public void setDpPanel(JPanel panel) {
@@ -117,7 +127,7 @@ public class MainWindow extends JFrame {
 		JButton btn = new JButton(str);
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Timeline Btn ACtion Listenser
+				// Home Btn ACtion Listenser
 				System.out.println("Home btn pressed!");
 				setDpPanel(testProjectPanel);
 			}
@@ -144,7 +154,7 @@ public class MainWindow extends JFrame {
 		JButton btn = new JButton(str);
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Timeline Btn ACtion Listenser
+				// Ticket Btn ACtion Listener
 				System.out.println("Ticket btn pressed!");
 				setDpPanel(testTicketPanel);
 			}
@@ -156,11 +166,23 @@ public class MainWindow extends JFrame {
 		JButton btn = new JButton(str);
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// Timeline Btn ACtion Listenser
+				// Admin Btn ACtion Listener
 				System.out.println("Admin btn pressed!");
 			}
 		});
 		return btn;
 	}
-	//-----------------------------------------------------------------------------------------------------------
+	
+	private JButton makeAddBtn(String str) {
+		JButton btn = new JButton(str);
+		btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Add Btn ACtion Listener
+				System.out.println("Add btn pressed!");
+			}
+		});
+		btn.setBounds(1138, 799, 114, 37);
+		return btn;
+		
+	}
 }
