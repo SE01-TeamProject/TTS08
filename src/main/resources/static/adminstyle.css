@@ -46,8 +46,12 @@
             width : 40px;
             background-color: pink;
         }
-        .backbutton {
-            width : 100px;
+         .homebutton {
+            position : absolute;
+            left : 4%;
+            top : 5%;
+            padding : 15px;
+            width : 120px;
             background-color : lightgoldenrodyellow;
         }
          table, th, td {

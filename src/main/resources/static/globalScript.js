@@ -8,6 +8,9 @@
             function gotoIssuePage() {
                 location.href = "http://localhost:8080/issue.html";
             }
+            function gotoLoginPage() {
+                location.href = "http://localhost:8080/login.html";
+            }
 
              function hideElements() {
             const hideableElements = document.querySelectorAll('.hideable');
