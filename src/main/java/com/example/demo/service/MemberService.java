@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.MemberDto;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.Member;
@@ -16,7 +17,13 @@ public class MemberService {
 	public Member findById(Integer id) {
 		return memberRepository.findById(id).get();
 	}
-	
+
+	public MemberDto saveMember(MemberDto memberDto) {
+		Member member = Member.createMember(memberDto.getName(), memberDto.getFullName(), memberDto.getPassword(), memberDto.getLevel());
+		Member savedMember = memberRepository.save(member);
+		return MemberDto.from(savedMember);
+	}
+
 	public boolean login(MemberLoginDto memberLoginDto) {
 		// MemberEntity타입의 객체 생성 후 jpa의 findBy 메서드 호출 및 정보 저장
 		// MemberLoginDTO의 memberEmail을 보내 값을 memberEntity에 담는것임.
