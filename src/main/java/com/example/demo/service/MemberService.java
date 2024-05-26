@@ -3,6 +3,7 @@ package com.example.demo.service;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.Member;
+import com.example.demo.dto.MemberAddDto;
 import com.example.demo.dto.MemberLoginDto;
 import com.example.demo.repository.MemberRepository;
 
@@ -17,7 +18,7 @@ public class MemberService {
 		return memberRepository.findById(id).get();
 	}
 	
-	public boolean login(MemberLoginDto memberLoginDto) {
+	public String login(MemberLoginDto memberLoginDto) {
 		// MemberEntity타입의 객체 생성 후 jpa의 findBy 메서드 호출 및 정보 저장
 		// MemberLoginDTO의 memberEmail을 보내 값을 memberEntity에 담는것임.
 		Member member = memberRepository.findByName(memberLoginDto.getId());
@@ -25,12 +26,23 @@ public class MemberService {
 		if (member != null) {
 			// 로그인을 시도한 데이터의 비밀번호와 jpa에서 받아온 데이터의 비밀번호를 비교
 			if(member.getPassword().equals(memberLoginDto.getPassword())) {
-				return true;
+				return "true";
 			} else {
-				return false;
+				return "false";
 			}
 		} else {
-			return false;
+			return "false";
 		}
+	}
+	
+	public String addUser(MemberAddDto memberAddDto) {
+		Member member = memberRepository.findByName(memberAddDto.getName());
+		if (member != null) {
+			return "false";
+		} else {
+			int level = Member.getLevelFromString(memberAddDto.getLevel());
+			memberRepository.save(new Member(memberAddDto.getName(), memberAddDto.getFullName(), memberAddDto.getPassword(), level));
+		}
+		return "true";
 	}
 }
