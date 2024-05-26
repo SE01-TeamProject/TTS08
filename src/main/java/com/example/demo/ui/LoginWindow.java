@@ -80,6 +80,9 @@ public class LoginWindow extends JFrame {
 				System.out.println("ID : " + idTextField.getText());
 				System.out.println("Password : " + pwTextField.getText() + "\n");
 				
+				
+				
+				
 				if(controller != null) {
 					loginFlag = controller.login(id, pw);
 				}

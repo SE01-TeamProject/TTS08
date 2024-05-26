@@ -1,16 +1,36 @@
 package com.example.demo.ui;
 
 import java.util.*;
+import org.json.*;
+import org.json.simple.*;
+import com.example.demo.service.*;
+
+import java.io.IOException;
+import java.net.*;
+
 
 public class SwingController {
 	private LoginWindow loginWindow = new LoginWindow(this);
 	private MainWindow mainWindow;// = new MainWindow(this);;
 	private boolean projectSelectFlag = false;
+	private String urlString = "http://localhost:8080/";
+	
+	private URL url;
+	private HttpURLConnection connection;
 	
 	// SwingController(Model model){}
 	
-	public SwingController() {
+	public SwingController() throws IOException {
 		loginWindow.setVisible(true);
+		
+		try {
+			url = new URL("http://localhost:8080/");
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		
+		connection = (HttpURLConnection) url.openConnection();
+		
 	
 	}
 	
@@ -38,7 +58,14 @@ public class SwingController {
 	public boolean login(String id, String password) {
 		/* Ask Model to Login -> if True, on the Main, off the Login
 		 * */
-		System.out.println("SC - ID: " + id + ",  PASSWORD: " + password);
+		//System.out.println("SC - ID: " + id + ",  PASSWORD: " + password);
+		
+		JSONObject loginInfo = new JSONObject();
+		loginInfo.put("name", id);
+		loginInfo.put("password", password);
+		
+		System.out.println(loginInfo.toString());
+		
 		
 		if(true) {
 			// Login Success. Every login, initialize mainWindow
