@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.ProjectAddDto;
@@ -21,8 +21,12 @@ public class ProjectController {
 	
 	@PostMapping("/addProject")
 	public String addProject(@RequestBody ProjectAddDto projectAddDto) {
-System.out.println(">>> ProjectController::addProject");
 		return ps.addProject(projectAddDto);
 	}
+	
+//	@GetMapping("/listProject")
+//	public String listProject() {
+//		return null;
+//	}
 	
 }
