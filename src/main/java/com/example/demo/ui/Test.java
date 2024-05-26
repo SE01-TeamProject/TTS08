@@ -1,5 +1,7 @@
 package com.example.demo.ui;
 
+import java.io.IOException;
+
 public class Test {
 	/* Should - Do List
 	 * 1. Access Deny rely on access level - IssueWindow
@@ -8,7 +10,11 @@ public class Test {
 	 */
 	
 	public static void main(String[] args) {
-		SwingController sc = new SwingController();
+		try {
+			SwingController sc = new SwingController();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 	

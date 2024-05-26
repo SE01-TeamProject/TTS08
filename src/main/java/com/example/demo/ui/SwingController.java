@@ -1,16 +1,43 @@
 package com.example.demo.ui;
 
 import java.util.*;
+import org.json.*;
+import org.json.JSONObject;
+import org.json.simple.*;
+import com.example.demo.service.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.*;
+
 
 public class SwingController {
 	private LoginWindow loginWindow = new LoginWindow(this);
 	private MainWindow mainWindow;// = new MainWindow(this);;
 	private boolean projectSelectFlag = false;
+	private String urlString = "http://localhost:8080";
+	
+	//private URL url;
+	//private HttpURLConnection connection;
 	
 	// SwingController(Model model){}
 	
-	public SwingController() {
+	public SwingController() throws IOException {
 		loginWindow.setVisible(true);
+		
+		
+		try {
+			//url = new URL("http://localhost:8080/");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		//connection = (HttpURLConnection) url.openConnection();
+		
 	
 	}
 	
@@ -35,21 +62,67 @@ public class SwingController {
 	}
 	
 	// Log in & out --------------------------------------------	
-	public boolean login(String id, String password) {
+	public boolean login(String id, String password) throws UnsupportedEncodingException, IOException {
 		/* Ask Model to Login -> if True, on the Main, off the Login
 		 * */
-		System.out.println("SC - ID: " + id + ",  PASSWORD: " + password);
+		//System.out.println("SC - ID: " + id + ",  PASSWORD: " + password);
 		
-		if(true) {
-			// Login Success. Every login, initialize mainWindow
-			mainWindow = new MainWindow(this);
-			mainWindow.setUser(id);
+		try {
+			JSONObject loginInfo = new JSONObject();
+			loginInfo.put("id", id);
+			loginInfo.put("password", password);
 			
-			loginWindow.setVisible(false);
-			mainWindow.setVisible(true);
-			return true;
-		}		
-		return false;
+			URL url = new URL(urlString+"/login");
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			
+			connection.setRequestMethod("POST");
+			connection.setDoOutput(true);
+	
+			connection.setRequestProperty("Content-Type", "application/json; utf-8");
+            connection.setRequestProperty("Accept", "application/json");
+			
+			System.out.println(loginInfo.toString());
+			
+			// JSON 데이터를 바이트 스트림으로 변환하여 출력 스트림에 작성
+			try(OutputStream os = connection.getOutputStream();
+	                OutputStreamWriter osw = new OutputStreamWriter(os, "UTF-8")) {
+	                osw.write(loginInfo.toString());
+	                osw.flush(); // 데이터 전송
+	        }
+
+			 
+			int responseCode = connection.getResponseCode();
+			System.out.println("Response Code: " + responseCode);
+
+			
+			try(BufferedReader br = new BufferedReader(
+	                new InputStreamReader(connection.getInputStream(), "utf-8"))) {
+	                StringBuilder response = new StringBuilder();
+	                String responseLine = null;
+	                while ((responseLine = br.readLine()) != null) {
+	                    response.append(responseLine.trim());
+	                }
+	                System.out.println("HTTP Response Body:" + response.toString());
+	                
+	                if(response.toString().equals("true")) {
+	    				// Login Success. Every login, initialize mainWindow
+	    				mainWindow = new MainWindow(this);
+	    				mainWindow.setUser(id);
+	    				
+	    				loginWindow.setVisible(false);
+	    				mainWindow.setVisible(true);
+	    				return true;
+	    			}
+	                
+	    			return false;
+	        }
+			
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 		
 	public void logout() {

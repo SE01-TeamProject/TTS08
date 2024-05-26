@@ -4,6 +4,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 
@@ -54,13 +55,13 @@ public class LoginWindow extends JFrame {
 		contentPane.setLayout(null);
 		
 		idTextField = new JTextField();
-		idTextField.setText("ID");
+		idTextField.setText("");
 		idTextField.setBounds(12, 54, 116, 21);
 		contentPane.add(idTextField);
 		idTextField.setColumns(10);
 		
 		pwTextField = new JTextField();
-		pwTextField.setText("Password");
+		pwTextField.setText("");
 		pwTextField.setBounds(12, 99, 116, 21);
 		contentPane.add(pwTextField);
 		pwTextField.setColumns(10);
@@ -81,7 +82,11 @@ public class LoginWindow extends JFrame {
 				System.out.println("Password : " + pwTextField.getText() + "\n");
 				
 				if(controller != null) {
-					loginFlag = controller.login(id, pw);
+					try {
+						loginFlag = controller.login(id, pw);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
