@@ -52,5 +52,17 @@ public class Member {
     	Member member = new Member(name, fullName, password, level);
     	return member;
     }
+	
+	public static int getLevelFromString(String level) {
+		switch(level) {
+		case "PL":
+			return Level.PL.ordinal();
+		case "Developer":
+			return Level.DEVELOPER.ordinal();
+		case "Tester":
+			return Level.TESTER.ordinal();
+		}
+		return 0;
+	}
 
 }

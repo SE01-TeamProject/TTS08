@@ -18,7 +18,7 @@
     </div>
     <div id="useradd-pop" class="popup-page hide">
          <button class="xbutton" onclick="closePopUp('useradd-pop')">X</button>
-         <h1 class="tc">User Add</h1>
+         <h1 class="tc">Add User</h1>
          <div class="input-box">
              이름<input type="text" class="input-text" id="name-input" placeholder="이름을 입력하세요." style="width: 50%">
              <br>
@@ -26,13 +26,13 @@
              <br>
              Password<input type="password" class="input-text" id="password-input" placeholder="Password를 입력하세요." style="width: 50%">
              <br>
-             Level<select name="level">
+             Level<select name="level" id="level-input">
                  <option value="PL">PL</option>
+				 <option value="Developer">Developer</option>
                  <option value="Tester">Tester</option>
-                 <option value="Developer">Developer</option>
              </select>
          </div>
-         <button class="popup-addbutton">Add</button>
+         <button class="popup-addbutton" onclick="addUser()">Add</button>
     </div>
 
     <div id="projectadd-pop" class="popup-page hide">
@@ -142,6 +142,27 @@
               });
               document.getElementById('description-input').value = '내용을 입력하세요.';
           }
+		  function addUser() {
+			  const fullName = document.getElementById('name-input').value;
+	          const name = document.getElementById('id-input').value;
+	          const password = document.getElementById('password-input').value;
+			  const level = document.getElementById('level-input').value;
+	          fetch('http://localhost:8080/addUser', {
+	              method: 'POST',
+	              headers: {
+	                  'Content-Type': 'application/json'
+	              },
+	              body: JSON.stringify({fullName, name, password, level})
+	          })
+	              .then(response => response.text())
+	              .then(data => {
+	                  if (data === 'true') {
+	                      gotoHomePage();
+	                  } else if (data === 'false') {
+	                      alert("중복된 아이디입니다.");
+	                  }
+	              });
+	      }
     </script>
 </body>
 </html>
