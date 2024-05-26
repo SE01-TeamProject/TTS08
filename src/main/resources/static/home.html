@@ -3,34 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>home</title>
-    <link rel="stylesheet" href="globalstyle.css">
-    <link rel="stylesheet" href="homestyle.css">
-    <script src="globalScript.js"></script>
+    <link rel="stylesheet" href="ticketstyle.css">
 </head>
 <body>
 
 <div class="base-page">
-    <h1 class="tc">Project List</h1>
-     <div class="buttonSet">
+    <h1>Project List</h1>
+     <div class="buttonSet" style="left: 815px">
           <button>Timeline</button>
           <button>Tickets</button>
           <button>Admin</button>
      </div>
-     <br>
-    <div class="proj-table center">
-         <table>
-             <thead>
-                    <tr>
-                        <th class="w200">ProjectTitle</th>
-                        <th class="w700">Description</th>
-                        <th>Date</th>
-                    </tr>
-             </thead>
-             <tbody id="project-table-body">
+    <table>
+        <thead>
+            <tr>
+                <th class="w200">ProjectTitle</th>
+                <th class="w700">Description</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody id="project-table-body">
             <!-- Project info will be appended here -->
-             </tbody>
-         </table>
-    </div>
+        </tbody>
+    </table>
 
      <button class="addbutton" onclick="showElements()">Project Add</button>
 </div>
