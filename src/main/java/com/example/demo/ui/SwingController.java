@@ -61,7 +61,7 @@ public class SwingController {
 	}
 	
 	// Log in & out --------------------------------------------	
-	public boolean login(String id, String password) throws UnsupportedEncodingException, IOException {
+	public boolean login(String id, String password){
 		/* Ask Model to Login -> if True, on the Main, off the Login
 		 * */
 		//System.out.println("SC - ID: " + id + ",  PASSWORD: " + password);

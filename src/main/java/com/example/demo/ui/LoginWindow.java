@@ -82,11 +82,7 @@ public class LoginWindow extends JFrame {
 				System.out.println("Password : " + pwTextField.getText() + "\n");
 				
 				if(controller != null) {
-					try {
 						loginFlag = controller.login(id, pw);
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
 				}
 			}
 		});
