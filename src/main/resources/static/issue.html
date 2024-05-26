@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IssuePage</title>
+    <link rel="stylesheet" href="globalstyle.css">
+    <link rel="stylesheet" href="issuestyle.css">
+    <script src="globalScript.js"></script>
+</head>
+<body>
+    <h1 class="tc">Issue Information</h1>
+    <button class="homebutton" onclick="gotoHomePage()">Home</button>
+
+    <span class="buttonSet">
+        <button>Timeline</button>
+        <button onclick="gotoIssuePage()">Issues</button>
+        <button onclick="gotoAdminPage()">Admin</button>
+    </span>
+
+    <div class="issue-table center">
+        <table>
+            <thead>
+            <tr>
+                <th><button>Number#</button></th>
+                <th><button class="w200">Title</button></th>
+                <th><button>Milestone</button></th>
+                <th><button>Sort</button></th>
+                <th><button>Importance</button></th>
+                <th><button>State</button></th>
+                <th><button>Date</button></th>
+            </tr>
+            </thead>
+            <tbody id="user-table-body">
+            <!-- User info will be appended here -->
+            </tbody>
+        </table>
+    </div>
+
+    <span><input type="text" class="searchinput" placeholder="search by title..."></span>
+    <button class="searchbutton">Search</button>
+    <button class="addbutton" onclick="showElements()">Issue Add</button>
+
+    <div class="popup-page hideable">
+         <button class="xbutton" onclick="hideElements()">X</button>
+    <h1 class="tc">Issue Add</h1>
+    <div class="input-box">
+        제목<input type="text" id="title-input" placeholder="제목을 입력하세요." style="width: 50%">
+        <br>
+        내용<textarea id="description-input" rows="10" cols="40" style="resize: none"></textarea>
+    </div>
+        <button class="popup-addbutton" onclick="addIssue()">Add</button>
+    </div>
+    <div class="bg-page hideable"></div>
+
+    <script>
+        //html이 load되는 즉시 실행되는 함수
+        /*
+         document.addEventListener('DOMContentLoaded', function() {
+            // 이 부분에 실행시키고 싶은 함수를 넣습니다.
+            loadUser();
+        });
+         */
+           async function loadUser() {
+            try {
+                const response = await fetch('http://localhost:8080/user');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const user = await response.json();
+
+                const tableBody = document.getElementById('user-table-body');
+                const newRow = document.createElement('tr');
+
+                const nameCell = document.createElement('td');
+                nameCell.textContent = user.name;
+                newRow.appendChild(nameCell);
+
+                const idCell = document.createElement('td');
+                idCell.textContent = user.id;
+                newRow.appendChild(idCell);
+
+                const ageCell = document.createElement('td');
+                ageCell.textContent = user.age;
+                newRow.appendChild(ageCell);
+
+                tableBody.appendChild(newRow);
+            } catch (error) {
+                console.error('Fetch error:', error);
+            }
+        }
+
+		function addIssue() {
+		  const title = document.getElementById('title-input').value;
+          const description = document.getElementById('description-input').value;
+		  //const reporter = document.getElementById('reporter-input').value;
+		  //const assignee = document.getElementById('assignee-input').value;
+		  //const priority = document.getElementById('priority-input').value;
+		  //const status = document.getElementById('status-input').value;
+		  //const type = document.getElementById('type-input').value;
+          fetch('http://localhost:8080/addIssue', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({title, description})
+			  //body: JSON.stringify({title, description, reporter, assignee, priority, status, type})
+          })
+              .then(response => response.text())
+              .then(data => {
+                  if (data === 'true') {
+                      gotoHomePage();
+                  } else if (data === 'false') {
+                      alert("중복된 이슈입니다.");
+                  }
+              });
+      }
+    </script>
+</body>
+</html>
