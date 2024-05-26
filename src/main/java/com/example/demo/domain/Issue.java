@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.domain.Member.Level;
+
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -61,6 +63,7 @@ public class Issue {
 
 	@OneToMany(mappedBy = "issue", cascade = CascadeType.ALL)
 	private List<Comment> comments = new ArrayList<>();
+	
 	@Builder
     public Issue(String title, String description, Integer reporter, Integer assignee, int priority, int status, int type) {
         this.title = title;
@@ -77,8 +80,53 @@ public class Issue {
 		Issue issue = new Issue(title, description, reporter, assignee, priority, status, type);
     	return issue;
     }
-    
-    public void changeStatus(int status) {
+	
+	public void changeStatus(int status) {
     	this.status = status;
     }
+	
+	public static int getPriorityFromString(String priority) {
+		switch(priority) {
+		case "Open":
+			return Status.OPEN.ordinal();
+		case "Progress":
+			return Status.PROGRESS.ordinal();
+		case "Closed":
+			return Status.CLOSED.ordinal();
+		}
+		return 0;
+	}
+	
+	public static int getStatusFromString(String status) {
+		switch(status) {
+		case "Normal":
+			return Priority.NORMAL.ordinal();
+		case "Urgent":
+			return Priority.URGENT.ordinal();
+		}
+		return 0;
+	}
+	
+	public static int getTypeFromString(String type) {
+		switch(type) {
+		case "Bug":
+			return Type.BUG.ordinal();
+		case "Task":
+			return Type.TASK.ordinal();
+		}
+		return 0;
+	}
+	
+	// TODO: 임시 Issue 생성 - 프론트엔드가 위의 요소 모두 받아야 함 - 그 후 아래 삭제
+	@Builder
+    public Issue(String title, String description) {
+        this.title = title;
+        this.description = description;
+    }
+	
+	public static Issue createIssue(String title, String description) {
+		Issue issue = new Issue(title, description);
+    	return issue;
+    }
+    
 }
