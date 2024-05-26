@@ -7,6 +7,9 @@
             font-size : 15px;
             border-radius : 15px;
         }
+        input {
+            padding : 10px;
+        }
         .button-set {
             display : flex;
             flex-direction : column;
@@ -54,6 +57,12 @@
             width : 120px;
             background-color : lightgoldenrodyellow;
         }
+         .confirmbutton {
+             position : relative;
+             left : 128px;
+             top : 295px;
+             background-color : aliceblue;
+         }
          table, th, td {
             border: 1px solid black;
             border-collapse: collapse;
@@ -75,4 +84,12 @@
             height : 300px;
             border : 1px solid black;
             overflow-y : scroll;
+        }
+        .projectlist {
+            padding : 10px;
+            width : 120px;
+            position : absolute;
+            font-size : 15px;
+            border : 4px solid black;
+            left : 4%;
         }

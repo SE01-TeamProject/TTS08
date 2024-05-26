@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AdminPage</title>
     <link rel="stylesheet" href="globalstyle.css">
     <link rel="stylesheet" href="adminstyle.css">
@@ -49,81 +50,31 @@
     <div id="usermanage-pop" class="popup-page hide">
          <button class="xbutton" onclick="closePopUp('usermanage-pop')">X</button>
          <h1 class="tc">User Manage</h1>
+         <select id="project-list" class="projectlist"> <!---get으로 모든 프로젝트 받아와서 여기에서 보여줘야함--->
+             <option>project1</option>
+             <option>project2</option>
+             <option>project3</option>
+         </select>
         <div class="user-table center">
             <table>
                 <thead>
                     <tr>
                         <th>Name</th>
                         <th>Level</th>
+                        <th>Check</th>
                     </tr>
                 </thead>
-                <tbody id="user-table-body">
+                <tbody id="user-table-body"> <!---여기서 모든 user를 get으로 받아와서 보여줘야함--->
                     <tr>
-                        <td>sihun</td>
+                        <td>Sihun</td>
                         <td>Developer</td>
+                        <td><input type="checkbox"></td>
                     </tr>
-                    <tr>
-                        <td>sihun</td>
-                        <td>Developer</td>
-                    </tr>
-                    <tr>
-                        <td>sihun</td>
-                        <td>Developer</td>
-                    </tr>
-                                        <tr>
-                        <td>sihun</td>
-                        <td>Developer</td>
-                    </tr>
-                                        <tr>
-                        <td>sihun</td>
-                        <td>Developer</td>
-                    </tr>
-                                        <tr>
-                        <td>sihun</td>
-                        <td>Developer</td>
-                    </tr>
-                                        <tr>
-                        <td>sihun</td>
-                        <td>Developer</td>
-                    </tr>
-                                        <tr>
-                        <td>sihun</td>
-                        <td>Developer</td>
-                    </tr>
-                                        <tr>
-                        <td>sihun</td>
-                        <td>Developer</td>
-                    </tr>
-                                        <tr>
-                        <td>sihun</td>
-                        <td>Developer</td>
-                    </tr>
-                                        <tr>
-                        <td>sihun</td>
-                        <td>Developer</td>
-                    </tr>
-                                        <tr>
-                        <td>sihun</td>
-                        <td>Developer</td>
-                    </tr>
-                                        <tr>
-                        <td>sihun</td>
-                        <td>Developer</td>
-                    </tr>
-                                        <tr>
-                        <td>sihun</td>
-                        <td>Developer</td>
-                    </tr>
-                                        <tr>
-                        <td>sihun</td>
-                        <td>Developer</td>
-                    </tr>
-
-
                 <!-- User info will be appended here -->
                 </tbody>
             </table>
         </div>
+        <button class="confirmbutton">Confirm</button>
     </div>
 
     <div id="bg-page" class="hide"></div>
@@ -148,6 +99,12 @@
 	          const name = document.getElementById('id-input').value;
 	          const password = document.getElementById('password-input').value;
 			  const level = document.getElementById('level-input').value;
+
+               if(fullName === "" || name === "" || password === "") {
+                    alert("내용을 모두 기입 후 다시 시도해주세요.");
+                    return;
+              }
+
 	          fetch('http://localhost:8080/addUser', {
 	              method: 'POST',
 	              headers: {
@@ -169,6 +126,11 @@
 		  function addProject() {
   			  const title = document.getElementById('title-input').value;
   	          const description = document.getElementById('description-input').value;
+              if(title === "" || description === "내용을 입력하세요.") {
+                    alert("제목이 비었거나 내용을 적지 않았습니다. 모두 기입 후 시도해주세요.");
+                    return;
+              }
+
   	          fetch('http://localhost:8080/addProject', {
   	              method: 'POST',
   	              headers: {
@@ -180,7 +142,7 @@
   	              .then(data => {
   	                  if (data === 'true') {
                           alert("프로젝트 추가 완료");
-  	                      gotoHomePage();
+  	                      gotoAdminPage();
   	                  } else if (data === 'false') {
   	                      alert("중복된 프로젝트입니다.");
   	                  }
