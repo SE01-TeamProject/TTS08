@@ -40,27 +40,26 @@
     <button class="searchbutton">Search</button>
     <button class="addbutton" onclick="showElements()">Issue Add</button>
 
-    <div class="popup-page hideable"> <!--- need to add hideable --->
+    <div class="popup-page hideable">
          <button class="xbutton" onclick="hideElements()">X</button>
     <h1 class="tc">Issue Add</h1>
-        <div class="input-box">
-            <p>
-            Issue Num : <span id="issue-num">2<!---fill this with GETapi ---></span>
-            &nbsp;&nbsp;&nbsp;Reporter : <span id="reporter-name">양시훈<!---fill this with GETapi---></span>
-            </p>
-            제목 <input type ="text" id="title" placeholder="Title">
-            
-        </div>
-        <button class="popup-addbutton">Add</button>
+    <div class="input-box">
+        제목<input type="text" id="title-input" placeholder="제목을 입력하세요." style="width: 50%">
+        <br>
+        내용<textarea id="description-input" rows="10" cols="40" style="resize: none"></textarea>
+    </div>
+        <button class="popup-addbutton" onclick="addIssue()">Add</button>
     </div>
     <div class="bg-page hideable"></div>
 
     <script>
         //html이 load되는 즉시 실행되는 함수
+        /*
          document.addEventListener('DOMContentLoaded', function() {
-            disableInput();
+            // 이 부분에 실행시키고 싶은 함수를 넣습니다.
+            loadUser();
         });
-         //get받아서 처리하기 예시
+         */
            async function loadUser() {
             try {
                 const response = await fetch('http://localhost:8080/user');
@@ -89,11 +88,32 @@
                 console.error('Fetch error:', error);
             }
         }
-        function disableInput() {
-            //get처리로 권한 받아서 해줘야함.
-             const level = 2; //get처리로 받은 권한레벨 순서대로 admin, PL, developer, tester
-             document.getElementById('title').disabled = true;
-        }
+
+		function addIssue() {
+		  const title = document.getElementById('title-input').value;
+          const description = document.getElementById('description-input').value;
+		  //const reporter = document.getElementById('reporter-input').value;
+		  //const assignee = document.getElementById('assignee-input').value;
+		  //const priority = document.getElementById('priority-input').value;
+		  //const status = document.getElementById('status-input').value;
+		  //const type = document.getElementById('type-input').value;
+          fetch('http://localhost:8080/addIssue', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({title, description})
+			  //body: JSON.stringify({title, description, reporter, assignee, priority, status, type})
+          })
+              .then(response => response.text())
+              .then(data => {
+                  if (data === 'true') {
+                      gotoHomePage();
+                  } else if (data === 'false') {
+                      alert("중복된 이슈입니다.");
+                  }
+              });
+      }
     </script>
 </body>
 </html>
