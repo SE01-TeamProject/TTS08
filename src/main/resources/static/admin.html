@@ -179,6 +179,7 @@
   	              .then(response => response.text())
   	              .then(data => {
   	                  if (data === 'true') {
+                          alert("프로젝트 추가 완료");
   	                      gotoHomePage();
   	                  } else if (data === 'false') {
   	                      alert("중복된 프로젝트입니다.");
