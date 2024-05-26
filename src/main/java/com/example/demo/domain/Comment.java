@@ -1,36 +1,47 @@
 package com.example.demo.domain;
 
-import java.util.Date;
-
-import org.springframework.stereotype.Component;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
-//@Entity
-//@Builder
-//@Getter
-//@Setter
+@Entity
+@Table(name = "comment")
+@NoArgsConstructor
+@Getter
 public class Comment {
 	
-	//@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@Column(name = "comment_writer")
-	private User writer;	// 코멘트 작성자
-	private String comment;	// 코멘트 내용
-	private Date date;		// 코멘트 작성 날짜
-	
-	public Comment() {
+	@Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
+    private Integer id;
+    
+    @Column(name = "WRITER")
+	private Integer writer;
+    
+    @Column(name = "NOTE")
+    private String note;
+    
+    @Column(name = "DATE")
+    private LocalDateTime date;
+    
+    private Integer issue;
+    
+    @Builder
+    public Comment(Integer writer, String note) {
+    	this.writer = writer;
+    	this.note = note;
+        this.date = LocalDateTime.now();
     }
-
-    public Comment(User writer, String comment, Date date) {
-        this.writer = writer;
-        this.comment = comment;
-        this.date = date;
+    
+	public static Comment createComment(Integer writer, String note) {
+		Comment comment = new Comment(writer, note);
+    	return comment;
     }
 }
