@@ -10,25 +10,6 @@
         .button-set {
             display : flex;
             flex-direction : column;
-         }
-        .tc {
-            text-align: center;
-        }
-        .center {
-            position : absolute;
-            left : 50%;
-            transform : translateX(-50%);
-        }
-        #bg-page {
-            z-index: 1;
-            position: absolute;
-            top : 50%;
-            left : 50%;
-            transform : translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            background-color: lightgrey;
-            opacity: 0.8;
         }
         .popup-page {
             z-index : 2;
@@ -40,6 +21,7 @@
             width : 600px;
             height : 450px;
             border : 1px solid black;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
         }
         .hide{
             display : none;
@@ -87,5 +69,6 @@
         }
         .user-table {
             height : 300px;
+            border : 1px solid black;
             overflow-y : scroll;
         }
