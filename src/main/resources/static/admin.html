@@ -158,7 +158,8 @@
 	              .then(response => response.text())
 	              .then(data => {
 	                  if (data === 'true') {
-	                      gotoHomePage();
+                          alert("유저 추가 완료");
+                          gotoAdminPage();
 	                  } else if (data === 'false') {
 	                      alert("중복된 아이디입니다.");
 	                  }
