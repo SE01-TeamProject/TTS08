@@ -27,10 +27,9 @@ public class SwingController {
 	// SwingController(Model model){}
 	
 	public SwingController() throws IOException {
-		loginWindow.setVisible(true);
-		
-		
+	
 		try {
+			loginWindow.setVisible(true);
 			//url = new URL("http://localhost:8080/");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -116,8 +115,6 @@ public class SwingController {
 	                
 	    			return false;
 	        }
-			
-			
 		}
 		catch (Exception e) {
 			e.printStackTrace();

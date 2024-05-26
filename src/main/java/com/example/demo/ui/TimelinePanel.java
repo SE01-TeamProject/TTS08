@@ -28,7 +28,7 @@ public class TimelinePanel extends JPanel {
 		setLayout(new BorderLayout(0, 0));
 		
 		timelineTextArea.setText("afsg\nagaga\nasgargar");
-		timelineTextArea.setEnabled(false);
+		timelineTextArea.setEditable(false);
 		
 		scrollPane = new JScrollPane(timelineTextArea);
 		add(scrollPane, BorderLayout.CENTER);

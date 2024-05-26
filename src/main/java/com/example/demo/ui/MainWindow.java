@@ -28,34 +28,10 @@ public class MainWindow extends JFrame {
 	private JButton ticketBtn;
 	private JButton adminBtn;
 	private JButton addBtn;
+	private JButton searchBtn;
 	private JTextField userIdTextField;
-	
-	/* Private project -> Selected project. If project NOT SELECTED -> btn disabled
-	 * 
-	 *
-	 *
-	 **/
-	
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainWindow frame = new MainWindow();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private JTextField searchTextField;
 
-	/**
-	 * Create the frame.
-	 */
 	public MainWindow(SwingController sc) {
 		this();
 		System.out.println("Main Window Create with Controller");
@@ -70,7 +46,7 @@ public class MainWindow extends JFrame {
 	public MainWindow() {
 		super("Issue Ticketing System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1280, 900);
+		setBounds(100, 0, 1280, 850);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -80,12 +56,12 @@ public class MainWindow extends JFrame {
 		// Panels
 		// DP Panel
 		dpPanel = projectPanel;
-		dpPanel.setBounds(12, 189, 1240, 600);
+		dpPanel.setBounds(12, 143, 1240, 600);
 		contentPane.add(dpPanel);
 		
 		// Btn Panel
 		btnPanel = new JPanel();
-		btnPanel.setBounds(352, 119, 900, 60);
+		btnPanel.setBounds(352, 73, 900, 60);
 		contentPane.add(btnPanel);
 		btnPanel.setLayout(new GridLayout(0, 3, 0, 0));	
 		
@@ -123,6 +99,15 @@ public class MainWindow extends JFrame {
 		contentPane.add(userIdTextField);
 		userIdTextField.setColumns(10);
 		
+		// About Searching
+		searchTextField = new JTextField();
+		searchTextField.setBounds(12, 761, 167, 21);
+		contentPane.add(searchTextField);
+		searchTextField.setColumns(10);
+		
+		JButton searchBtn = makeSearchBtn("Search");		
+		contentPane.add(searchBtn);
+		
 	}
 	
 	public void setDpPanel(JPanel panel) {
@@ -132,7 +117,7 @@ public class MainWindow extends JFrame {
 		
 		contentPane.remove(dpPanel);
 		dpPanel = panel;		
-		dpPanel.setBounds(12, 189, 1240, 600);
+		dpPanel.setBounds(12, 143, 1240, 600);
 		contentPane.add(dpPanel);
 		
 		dpPanel.revalidate();
@@ -227,8 +212,24 @@ public class MainWindow extends JFrame {
 				}
 			}
 		});
-		btn.setBounds(1138, 799, 114, 37);
-		return btn;
-		
+		btn.setBounds(1138, 753, 114, 37);
+		return btn;	
+	}
+	
+	private JButton makeSearchBtn(String str) {
+		JButton btn = new JButton(str);
+		btn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Search Issue Btn ACtion Listener
+				System.out.println("Search btn pressed!");
+				if(controller.getProjectFlag()) {
+					String text = searchTextField.getText();
+					System.out.println("Search with [" + text + "]");
+					searchTextField.setText("");
+				}
+			}
+		});
+		btn.setBounds(189, 760, 93, 23);
+		return btn;	
 	}
 }
