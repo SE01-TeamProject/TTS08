@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -33,6 +34,10 @@ public class Project {
 	
 	@Column(name = "TESTER")
 	private Integer tester;
+
+	@Column(name = "CREATED_DATE")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date date;
 
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
 	private List<Issue> issues = new ArrayList<>();
