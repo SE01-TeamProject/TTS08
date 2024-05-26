@@ -48,18 +48,23 @@
         <br>
         내용<textarea id="description-input" rows="10" cols="40" style="resize: none"></textarea>
     </div>
+          <div class="input-box">
+            <p>
+            Issue Num : <span id="issue-num">2<!---fill this with GETapi ---></span>
+            &nbsp;&nbsp;&nbsp;Reporter : <span id="reporter-name">양시훈<!---fill this with GETapi---></span>
+            </p>
+            제목 <input type ="text" id="title" placeholder="Title">
+        </div>
         <button class="popup-addbutton" onclick="addIssue()">Add</button>
     </div>
     <div class="bg-page hideable"></div>
 
     <script>
         //html이 load되는 즉시 실행되는 함수
-        /*
          document.addEventListener('DOMContentLoaded', function() {
-            // 이 부분에 실행시키고 싶은 함수를 넣습니다.
-            loadUser();
+             disableInput();
         });
-         */
+         //get 받아서 처리하기 예시
            async function loadUser() {
             try {
                 const response = await fetch('http://localhost:8080/user');
@@ -114,6 +119,11 @@
                   }
               });
       }
+       function disableInput() {
+            //get처리로 권한 받아서 해줘야함.
+             const level = 2; //get처리로 받은 권한레벨 순서대로 admin, PL, developer, tester
+             document.getElementById('title').disabled = true;
+       }
     </script>
 </body>
 </html>
