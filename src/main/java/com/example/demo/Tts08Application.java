@@ -8,6 +8,7 @@ import com.example.demo.domain.Member;
 import com.example.demo.domain.Project;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.ProjectRepository;
+import com.example.demo.ui.SwingController;
 
 @SpringBootApplication
 public class Tts08Application {
@@ -15,7 +16,11 @@ public class Tts08Application {
 	public static void main(String[] args) {
 		//SpringApplication.run(Tts08Application.class, args);
 
+		System.setProperty("java.awt.headless", "false");
+		
+		
 		// 테스트옹 코드
+		
 		ConfigurableApplicationContext context = SpringApplication.run(Tts08Application.class, args);
 		MemberRepository memberRepository = context.getBean(MemberRepository.class);
 		
@@ -28,6 +33,15 @@ public class Tts08Application {
 		projectRepository.save(new Project("Project1", "This is Project1"));
 		Project project = projectRepository.findByTitle("Project1");
 		System.out.println("title: " + project.getTitle() + ", description: " + project.getDescription());
+		
+		
+		try {
+			SwingController sc = new SwingController();
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }
