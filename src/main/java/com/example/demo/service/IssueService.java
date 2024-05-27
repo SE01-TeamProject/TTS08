@@ -1,8 +1,11 @@
 package com.example.demo.service;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+import org.json.JSONArray;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.Comment;
@@ -48,10 +51,37 @@ public class IssueService {
 	}
 	
 	// 그냥 이슈의 리스트 나열
-	public List<Issue> getIssueList() {
-		List<Issue> issues = new ArrayList<Issue>();
-		issueRepository.findAll().forEach(item -> issues.add(item));
-		return issues;
+//	public List<Issue> getIssueList() {
+//		List<Issue> issues = new ArrayList<Issue>();
+//		issueRepository.findAll().forEach(item -> issues.add(item));
+//		return issues;
+//	}
+	
+	public String getIssueList() {
+		JSONArray issues = new JSONArray();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		issueRepository.findAll().forEach(item -> {
+			JSONObject obj = new JSONObject();
+			obj.put("title", item.getTitle());
+			obj.put("description", item.getDescription());
+			obj.put("date", item.getDate().format(formatter));
+			issues.put(obj);
+		});
+		return issues.toString();
 	}
 
+	public String getIssueList(Integer id) {
+		JSONArray issues = new JSONArray();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		issueRepository.findAll().forEach(item -> {
+			if (item.getProject() == id) {
+				JSONObject obj = new JSONObject();
+				obj.put("title", item.getTitle());
+				obj.put("description", item.getDescription());
+				obj.put("date", item.getDate().format(formatter));
+				issues.put(obj);
+			}
+		});
+		return issues.toString();
+	}
 }
