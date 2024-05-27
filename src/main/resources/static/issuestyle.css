@@ -44,14 +44,14 @@
         }
         .searchbutton {
             position : relative;
-            left : -2.5%;
+            left : 30px;
             top : 600px;
             padding : 10px;
             width : 100px;
         }
         .searchinput {
             position : relative;
-            left : -2.5%;
+            left : 30px;
             top : 600px;
             padding : 10px;
             width : 200px;
