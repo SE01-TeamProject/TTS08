@@ -26,9 +26,9 @@ TTS08을 실행하기 위해서는 다음과 같은 프로그램이 필요합니
    git clone https://github.com/SE01-TeamProject/TTS08.git
    ```
 
-2. Spring Tool Suite로 프로젝트를 엽니다.
+2. Spring Tool Suite(STS) 또는 Intellij로 프로젝트를 엽니다.
 
-3. 프로젝트를 열면 Error와 Warning이 하나씩 발생합니다. 
+3-1. STS로 프로젝트를 열면 Error와 Warning이 하나씩 발생합니다. 
 
 - Error: Unbound class container 해결 방법
 
@@ -45,5 +45,13 @@ TTS08을 실행하기 위해서는 다음과 같은 프로그램이 필요합니
    - Warnings의 세부사항 좌클릭 -> Quick Fix 선택
 
    - Set project encoding to 'UTF-8' 선택 후 Finish
+
+3-2. Intellij로 프로젝트에서의 실행은 다음과 같습니다.    
+    -현재 default로는 JDK22를 기준으로 프로젝트가 구동됩니다.   
+    -Module Setting > Module SDK가 22   
+    -Settings > Build Tools > gradle > gradeJVM이 22   
+    -build.gradle에서 sourceCompatibility = '22'   
+    만약 JDK22가 없다면 오류가 발생할 수 있으며, JDK22 설치 후 다음과 같이 세팅을 한 뒤   
+    다시 실행하십시오. 만약 이 세팅으로 실행했는데도 gradle 8.7과 JDK22의 호환 문제가 발생한다면 위의 세팅을 전부 21로 설정한 후 다시 실행하면 됩니다.
 
 4. 프로젝트를 실행하고 localhost:8080/(페이지이름).html에 접속합니다. (html파일들은 main>resources>static 폴더 안에 있습니다.)
