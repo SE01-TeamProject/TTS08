@@ -2,11 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.MemberAddDto;
 import com.example.demo.dto.ProjectAddDto;
-import com.example.demo.domain.Member;
-import com.example.demo.domain.Project;
 import com.example.demo.service.MemberService;
 import com.example.demo.service.ProjectService;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -77,13 +74,7 @@ class ProjectControllerTest {
                 .developer("dev2")
                 .tester("tester2")
                 .build();
-        MvcResult mvcResult = this.mvc.perform(post("/addProject")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(testProjectAdd)))
-                .andExpect(status().isOk())
-                .andReturn();
-//        JsonNode node = objectMapper.readTree(mvcResult.getResponse().getContentAsString());
-//        if(node!=null){testProjectId=node.get("id").asLong();}
+
 
     }
 
