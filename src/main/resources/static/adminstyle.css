@@ -10,6 +10,10 @@
         input {
             padding : 10px;
         }
+        select {
+            width : 100px;
+            padding : 10px;
+        }
         .button-set {
             display : flex;
             flex-direction : column;
@@ -25,6 +29,9 @@
             height : 450px;
             border : 1px solid black;
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        }
+        #projectadd-pop {
+            height : 600px;
         }
         .hide{
             display : none;
@@ -44,7 +51,7 @@
         .xbutton {
             position : absolute;
             right : -2%;
-            top : -3%;
+            top : -2%;
             float: right;
             width : 40px;
             background-color: pink;
@@ -92,4 +99,26 @@
             font-size : 15px;
             border : 4px solid black;
             left : 4%;
+        }
+        .select-container {
+            display : flex;
+            flex-direction : row;
+            align-items : center;
+        }
+        .select-container>select {
+            margin : 10px;
+            width : 150px;
+        }
+        .select-head {
+            position : absolute;
+            top : -20px;
+        }
+        .PL-head {
+            left : 76px;
+        }
+        .Dev-head {
+            left : 240px;
+        }
+        .Tester-head {
+            right : 60px;
         }
