@@ -20,11 +20,11 @@ import lombok.Setter;
 public class Issue {
 	
 	public enum Priority {
-		NORMAL, URGENT
+		MAJOR, MINOR, BLOCKER, CRITICAL, TRIVIAL
 	}
 	
 	public enum Status {
-		OPEN, PROGRESS, CLOSED
+		NEW, ASSIGNED, RESOLVED, CLOSED, REOPENED
 	}
 	
 	public enum Type {
@@ -87,22 +87,32 @@ public class Issue {
 	
 	public static int getPriorityFromString(String priority) {
 		switch(priority) {
-		case "Open":
-			return Status.OPEN.ordinal();
-		case "Progress":
-			return Status.PROGRESS.ordinal();
-		case "Closed":
-			return Status.CLOSED.ordinal();
+		case "Major":
+			return Priority.MAJOR.ordinal();
+		case "Minor":
+			return Priority.MINOR.ordinal();
+		case "Blocker":
+			return Priority.BLOCKER.ordinal();
+		case "Critical":
+			return Priority.CRITICAL.ordinal();
+		case "Trivial":
+			return Priority.TRIVIAL.ordinal();
 		}
 		return 0;
 	}
 	
 	public static int getStatusFromString(String status) {
 		switch(status) {
-		case "Normal":
-			return Priority.NORMAL.ordinal();
-		case "Urgent":
-			return Priority.URGENT.ordinal();
+		case "New":
+			return Status.NEW.ordinal();
+		case "Assigned":
+			return Status.ASSIGNED.ordinal();
+		case "Resolved":
+			return Status.RESOLVED.ordinal();
+		case "Closed":
+			return Status.CLOSED.ordinal();
+		case "Reopened":
+			return Status.REOPENED.ordinal();
 		}
 		return 0;
 	}
