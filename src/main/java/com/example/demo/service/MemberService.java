@@ -1,5 +1,8 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.Member;
@@ -44,5 +47,11 @@ public class MemberService {
 			memberRepository.save(new Member(memberAddDto.getName(), memberAddDto.getFullName(), memberAddDto.getPassword(), level));
 		}
 		return "true";
+	}
+	
+	public List<Member> getMemberList(){
+        List<Member> members = new ArrayList<Member>();
+        memberRepository.findAll().forEach(member->members.add(member));
+        return members;
 	}
 }

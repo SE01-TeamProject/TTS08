@@ -1,8 +1,11 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.demo.domain.Member;
 import com.example.demo.dto.MemberAddDto;
 import com.example.demo.dto.MemberLoginDto;
 import com.example.demo.service.MemberService;
@@ -25,8 +28,12 @@ public class MemberController {
 	
 	@PostMapping("/addUser")
 	public String addUser(@RequestBody MemberAddDto memberAddDto) {
-System.out.println(">>> MemberController::addUser");
 		return ms.addUser(memberAddDto);
+	}
+	
+	@GetMapping("/listUser")	// admin의 User 나열
+	public List<Member> getMemberList() {
+		return ms.getMemberList();
 	}
 	
 }
