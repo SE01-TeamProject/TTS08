@@ -44,9 +44,9 @@ public class ProjectService {
 		} else {
 			projectRepository.save(new Project(projectAddDto.getTitle(), 
 					projectAddDto.getDescription(), 
-					projectAddDto.getPL(), 
-					projectAddDto.getDeveloper(),
-					projectAddDto.getTester()));
+					memberRepository.findByName(projectAddDto.getPL()).getId(), 
+					memberRepository.findByName(projectAddDto.getDeveloper()).getId(),
+					memberRepository.findByName(projectAddDto.getTester()).getId()));
 		}
 		return "true";
 	}

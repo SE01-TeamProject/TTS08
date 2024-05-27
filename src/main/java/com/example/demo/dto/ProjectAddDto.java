@@ -9,8 +9,8 @@ public class ProjectAddDto {
 
 	private String title;
     private String description;
-    private Integer PL;
-	private Integer developer;
-	private Integer tester;
+    private String PL;
+	private String developer;
+	private String tester;
 
 }
