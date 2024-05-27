@@ -4,8 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import com.example.demo.domain.Issue;
 import com.example.demo.domain.Member;
 import com.example.demo.domain.Project;
+import com.example.demo.repository.IssueRepository;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.ProjectRepository;
 import com.example.demo.ui.SwingController;
@@ -33,6 +35,16 @@ public class Tts08Application {
 		projectRepository.save(new Project("Project1", "This is Project1"));
 		Project project = projectRepository.findByTitle("Project1");
 		System.out.println("title: " + project.getTitle() + ", description: " + project.getDescription());
+		
+		IssueRepository issueRepository = context.getBean(IssueRepository.class);
+		
+		issueRepository.save(new Issue("Issue1", "This is Issue1", 0, 0, 0, 0, 0));
+		Issue issue1 = issueRepository.findByTitle("Issue1");
+		System.out.println("title: " + issue1.getTitle() + ", description: " + issue1.getDescription());
+		
+		issueRepository.save(new Issue("Issue2", "This is Issue2", 0, 0, 0, 0, 0));
+		Issue issue2 = issueRepository.findByTitle("Issue2");
+		System.out.println("title: " + issue2.getTitle() + ", description: " + issue2.getDescription());
 		
 		
 		try {

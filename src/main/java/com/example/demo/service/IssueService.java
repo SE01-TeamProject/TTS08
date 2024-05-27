@@ -1,5 +1,8 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.example.demo.domain.Comment;
@@ -43,4 +46,12 @@ public class IssueService {
 		}
 		return "true";
 	}
+	
+	// 그냥 이슈의 리스트 나열
+	public List<Issue> getIssueList() {
+		List<Issue> issues = new ArrayList<Issue>();
+		issueRepository.findAll().forEach(item -> issues.add(item));
+		return issues;
+	}
+
 }
