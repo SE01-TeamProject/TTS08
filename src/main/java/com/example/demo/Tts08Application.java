@@ -38,11 +38,11 @@ public class Tts08Application {
 		
 		IssueRepository issueRepository = context.getBean(IssueRepository.class);
 		
-		issueRepository.save(new Issue("Issue1", "This is Issue1", 0, 0, 0, 0, 0));
+		issueRepository.save(new Issue(1, "Issue1", "This is Issue1", 0, 0, 0, 0, 0));
 		Issue issue1 = issueRepository.findByTitle("Issue1");
 		System.out.println("title: " + issue1.getTitle() + ", description: " + issue1.getDescription());
 		
-		issueRepository.save(new Issue("Issue2", "This is Issue2", 0, 0, 0, 0, 0));
+		issueRepository.save(new Issue(1, "Issue2", "This is Issue2", 0, 0, 0, 0, 0));
 		Issue issue2 = issueRepository.findByTitle("Issue2");
 		System.out.println("title: " + issue2.getTitle() + ", description: " + issue2.getDescription());
 		

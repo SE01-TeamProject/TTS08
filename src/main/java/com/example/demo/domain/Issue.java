@@ -59,14 +59,16 @@ public class Issue {
 	@Column(name = "DATE")
     private LocalDateTime date; // 이슈 작성 날짜
 	
+	@Column(name = "PROJECT")
 	private Integer project;
 
 	@OneToMany(mappedBy = "issue", cascade = CascadeType.ALL)
 	private List<Comment> comments = new ArrayList<>();
 	
 	@Builder
-    public Issue(String title, String description, Integer reporter, Integer assignee, int priority, int status, int type) {
-        this.title = title;
+    public Issue(Integer project, String title, String description, Integer reporter, Integer assignee, int priority, int status, int type) {
+        this.project = project;
+		this.title = title;
         this.description = description;
         this.reporter = reporter;
         this.assignee = assignee;
@@ -76,8 +78,8 @@ public class Issue {
         this.date = LocalDateTime.now();
     }
     
-	public static Issue createIssue(String title, String description, Integer reporter, Integer assignee, int priority, int status, int type) {
-		Issue issue = new Issue(title, description, reporter, assignee, priority, status, type);
+	public static Issue createIssue(Integer project, String title, String description, Integer reporter, Integer assignee, int priority, int status, int type) {
+		Issue issue = new Issue(project, title, description, reporter, assignee, priority, status, type);
     	return issue;
     }
 	

@@ -32,8 +32,12 @@ public class IssueController {
 	}
 	
 	@GetMapping("/listIssue")	// 그냥 이슈의 리스트 나열
-	public List<Issue> getIssueList() {
+	public String getIssueList() {
 		return is.getIssueList();
 	}
 	
+	@GetMapping("/listIssue/{id}")	// 프로젝트 Id로 이슈 나열
+	public String getIssueList(@PathVariable("id") Integer id) {
+		return is.getIssueList(id);
+	}
 }
