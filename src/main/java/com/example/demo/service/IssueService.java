@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.domain.Comment;
 import com.example.demo.domain.Issue;
 import com.example.demo.dto.IssueAddDto;
+import com.example.demo.dto.IssueSetDto;
 import com.example.demo.repository.CommentRepository;
 import com.example.demo.repository.IssueRepository;
 
@@ -26,8 +27,9 @@ public class IssueService {
 		return issueRepository.findById(id).get();
 	}
 	
-	public void changeIssueStatus(Issue issue, int status) {
-		issue.changeStatus(status);
+	public void setState(IssueSetDto issueSetDto) {
+		Issue issue = issueRepository.findById(issueSetDto.getId()).get();
+		issue.setState(issueSetDto.getPriority(), issueSetDto.getStatus());
 		issueRepository.save(issue);
 	}
 	

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.domain.Issue;
 import com.example.demo.domain.Member;
 import com.example.demo.dto.IssueAddDto;
+import com.example.demo.dto.IssueSetDto;
 import com.example.demo.dto.ProjectAddDto;
 import com.example.demo.service.IssueService;
 import com.example.demo.service.ProjectService;
@@ -39,5 +40,10 @@ public class IssueController {
 	@GetMapping("/listIssue/{id}")	// 프로젝트 Id로 이슈 나열
 	public String getIssueList(@PathVariable("id") Integer id) {
 		return is.getIssueList(id);
+	}
+	
+	@PostMapping("/setIssue")
+	public void setState(@RequestBody IssueSetDto issueSetDto) {
+		is.setState(issueSetDto);
 	}
 }
