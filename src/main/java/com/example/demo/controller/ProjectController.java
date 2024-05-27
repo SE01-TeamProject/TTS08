@@ -32,12 +32,12 @@ public class ProjectController {
 	public String addProject(@RequestBody ProjectAddDto projectAddDto) {
 		return ps.addProject(projectAddDto);
 	}
-	
+
 //	@GetMapping("/project/{id}")
 //	public Project getProject(@PathVariable("id") int id) {
 //	    return ps.getProjectById(id);
 //	}
-	
+
 	@GetMapping("/listProject")
 	public List<Project> getProjectList() {
 		return ps.getProjectList();
