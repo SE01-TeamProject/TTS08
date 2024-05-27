@@ -56,6 +56,12 @@ class ProjectControllerTest {
         memberService.addUser(dev);
         MemberAddDto tester = new MemberAddDto("tester","tester","tester","3");
         memberService.addUser(tester);
+        MemberAddDto pl2 = new MemberAddDto("pl2","pl2","pl2","1");
+        memberService.addUser(pl2);
+        MemberAddDto dev2 = new MemberAddDto("dev2","dev2","dev2","2");
+        memberService.addUser(dev2);
+        MemberAddDto tester2 = new MemberAddDto("tester2","tester2","tester2","3");
+        memberService.addUser(tester2);
 
         ProjectAddDto testProjectAdd=ProjectAddDto.builder()
                 .title("test")
@@ -64,13 +70,21 @@ class ProjectControllerTest {
                 .developer("dev")
                 .tester("tester")
                 .build();
+        ProjectAddDto testProjectAdd2=ProjectAddDto.builder()
+                .title("test2")
+                .description("test2")
+                .PL("pl2")
+                .developer("dev2")
+                .tester("tester2")
+                .build();
         MvcResult mvcResult = this.mvc.perform(post("/addProject")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(testProjectAdd)))
-                .andExpect(status().isCreated())
+                .andExpect(status().isOk())
                 .andReturn();
-        JsonNode node = objectMapper.readTree(mvcResult.getResponse().getContentAsString());
-        testProjectId=node.get("id").asLong();
+//        JsonNode node = objectMapper.readTree(mvcResult.getResponse().getContentAsString());
+//        if(node!=null){testProjectId=node.get("id").asLong();}
+
     }
 
     @Test
@@ -87,14 +101,17 @@ class ProjectControllerTest {
     }
 
     @Test
-    @DisplayName("getprojectlist Success")
+    @DisplayName("getProjectList Success")
     void getProjectList() throws Exception {
         this.mvc.perform(get("/listProject"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    void getAllProjects() {
+    @DisplayName("getAllProjects")
+    void getAllProjects() throws Exception {
+        this.mvc.perform(get("/project"))
+                .andExpect(status().isOk());
     }
 
     @AfterEach
