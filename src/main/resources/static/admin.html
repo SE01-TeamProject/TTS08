@@ -157,7 +157,7 @@
 		  function addProject() {
   			  const title = document.getElementById('title-input').value;
   	          const description = document.getElementById('description-input').value;
-              const PL = document.getElementById('PL-select').value;
+              const pl = document.getElementById('PL-select').value;
               const developer = document.getElementById('developer-select').value;
               const tester = document.getElementById('tester-select').value;
               if(title === "" || description === "내용을 입력하세요.") {
@@ -170,7 +170,7 @@
   	              headers: {
   	                  'Content-Type': 'application/json'
   	              },
-  	              body: JSON.stringify({title, description, PL, developer, tester})
+  	              body: JSON.stringify({title, description, pl, developer, tester})
   	          })
   	              .then(response => response.text())
   	              .then(data => {

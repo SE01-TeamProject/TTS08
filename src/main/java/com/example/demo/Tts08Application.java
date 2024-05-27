@@ -27,8 +27,18 @@ public class Tts08Application {
 		MemberRepository memberRepository = context.getBean(MemberRepository.class);
 		
 		memberRepository.save(new Member("admin", "Administator", "admin", 0));
-		Member member = memberRepository.findByName("admin");
-		System.out.println("name: " + member.getName() + ", fullname: " + member.getFullName() + ", level: " + member.getLevel());
+		
+		memberRepository.save(new Member("PL1", "PL1user", "pl1", 1));
+		memberRepository.save(new Member("PL2", "PL2user", "pl2", 1));
+		memberRepository.save(new Member("PL3", "PL3user", "pl3", 1));
+		
+		memberRepository.save(new Member("Dev1", "Dev1user", "dev1", 2));
+		memberRepository.save(new Member("Dev2", "Dev2user", "dev2", 2));
+		memberRepository.save(new Member("Dev3", "Dev3user", "dev3", 2));
+		
+		memberRepository.save(new Member("QA1", "QA1user", "qa1", 3));
+		memberRepository.save(new Member("QA2", "QA2user", "qa2", 3));
+		memberRepository.save(new Member("QA3", "QA3user", "qa3", 3));
 		
 		ProjectRepository projectRepository = context.getBean(ProjectRepository.class);
 		

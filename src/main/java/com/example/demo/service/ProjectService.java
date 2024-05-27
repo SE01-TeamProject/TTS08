@@ -63,6 +63,7 @@ public class ProjectService {
 		projectRepository.findAll().forEach(item -> {
 			JSONObject obj = new JSONObject();
 			Optional<Member> user;
+			obj.put("id", item.getId());
 			obj.put("title", item.getTitle());
 			obj.put("description", item.getDescription());
 			System.out.println(">>> " + obj.toString());

@@ -64,6 +64,7 @@ public class IssueService {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 		issueRepository.findAll().forEach(item -> {
 			JSONObject obj = new JSONObject();
+			obj.put("id", item.getId());
 			obj.put("title", item.getTitle());
 			obj.put("description", item.getDescription());
 			obj.put("date", item.getDate().format(formatter));
