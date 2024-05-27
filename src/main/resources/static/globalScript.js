@@ -27,3 +27,22 @@
             document.getElementById('title-input').value = '';
             document.getElementById('description-input').value = '내용을 입력하세요.';
         }
+
+        function closePopUp(pageId) {
+              document.getElementById(pageId).classList.add('hide');
+              document.getElementById('bg-page').classList.add('hide');
+        }
+
+        function openPopUp(pageId) {
+              document.getElementById(pageId).classList.remove('hide');
+              document.getElementById('bg-page').classList.remove('hide');
+        }
+
+        function openSecondPopUp(pageId) {
+             document.getElementById(pageId).classList.remove('hide');
+             document.getElementById('bg-secondpage').classList.remove('hide');
+        }
+        function closeSecondPopUp(pageId) {
+             document.getElementById(pageId).classList.add('hide');
+             document.getElementById('bg-secondpage').classList.add('hide');
+        }

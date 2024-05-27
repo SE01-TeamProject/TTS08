@@ -38,60 +38,118 @@
 
     <span><input type="text" class="searchinput" placeholder="search by title..."></span>
     <button class="searchbutton">Search</button>
-    <button class="addbutton" onclick="showElements()">Issue Add</button>
+    <button class="addbutton" onclick="openPopUp('issue-popup')">Issue Add</button>
 
-    <div class="popup-page hideable">
-         <button class="xbutton" onclick="hideElements()">X</button>
+
+    <div class="popup-page hide" id="issue-popup">
+         <button class="xbutton" onclick="closePopUp('issue-popup')">X</button>
     <h1 class="tc">Issue Add</h1>
-    <div class="input-box">
-        제목<input type="text" id="title-input" placeholder="제목을 입력하세요." style="width: 50%">
-        <br>
-        내용<textarea id="description-input" rows="10" cols="40" style="resize: none"></textarea>
-    </div>
-          <div class="input-box">
+          <div class="input-box scroll">
             <p>
             Issue Num : <span id="issue-num">2<!---fill this with GETapi ---></span>
-            &nbsp;&nbsp;&nbsp;Reporter : <span id="reporter-name">양시훈<!---fill this with GETapi---></span>
+            &nbsp;&nbsp;&nbsp;Reporter : <span id="reporter-name">홍길동<!---fill this with GETapi---></span>
+            <!---&nbsp;&nbsp;&nbsp;Assignee : <span id="assignee-name">양시훈</span> --->
             </p>
             제목 <input type ="text" id="title" placeholder="Title">
+               <p>
+                  <span class="select-head priority-head">priority</span>
+                  <span class="select-head status-head">status</span>
+                  <span class="select-head type-head">type</span>
+              </p>
+            <select id="priority-input">
+                <option value="Major">Major</option>
+                <option value="Minor">Minor</option>
+                <option value="Blocker">Blocker</option>
+                <option value="Critical">Critical</option>
+                <option value="Trivial">Trivial</option>
+            </select>
+            <select id="status-input">
+                <option value="New">New</option>
+                <option value="Assigned">Assigned</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Closed">Closed</option>
+                <option value="Reopened">Reopened</option>
+            </select>
+            <select id="type-input">
+                <option value="Bug">Bug</option>
+                <option value="Task">Task</option>
+            </select>
+            <br><br><br>
+            <div class="area-box">
+                 Description<textarea id="description-input" rows="13" cols="100" style="resize: none"></textarea>
+                 <br><br>
+                 <div id="comments-container">
+                     <div class="">
+                          <span class="comment-head">
+                              Comment&nbsp;&nbsp;&nbsp;Writer: <span>tjrzoswkddls5106</span>&nbsp;&nbsp;&nbsp;Date: <span>2024/05/23</span>
+                          </span>
+                          <textarea class="comment-history" rows="7" cols="40" readonly="true" style="resize: none"></textarea>
+                     </div>
+                 </div>
+            </div>
         </div>
+        <button class="newcommentbutton" onclick="openSecondPopUp('comment-popup')">New comment</button>
         <button class="popup-addbutton" onclick="addIssue()">Add</button>
     </div>
-    <div class="bg-page hideable"></div>
+
+
+     <div class="popup-secondpage hide" id="comment-popup">
+         <button class="xbuttonsecond" onclick="closeSecondPopUp('comment-popup')">X</button>
+         <h1 class="tc">Comment Add</h1>
+         <div class="center">
+             <p>Writer : 양시훈</p> <!---localstorage에서 꺼내서 쓰기--->
+             Comment<textarea id="comment-input" rows="10" cols="50" style="resize: none"></textarea>
+         </div>
+         <button class="popup-commentaddbutton" onclick="addComment()">Add</button> <!---아직 함수 body 비었음--->
+    </div>
+
+
+    <div class="hide" id="bg-page"></div>
+    <div class="hide" id="bg-secondpage"></div>
+
 
     <script>
         //html이 load되는 즉시 실행되는 함수
          document.addEventListener('DOMContentLoaded', function() {
              disableInput();
         });
-         //get 받아서 처리하기 예시
-           async function loadUser() {
-            try {
-                const response = await fetch('http://localhost:8080/user');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const user = await response.json();
 
-                const tableBody = document.getElementById('user-table-body');
-                const newRow = document.createElement('tr');
+         //나중에 getapi로 받게되면 getAllComment를 통해 해당 issue의 모든 comment를 받아온 다음, forEach로 아래의 내용들을 다 실행시키면 될듯
+        function addComment() {
 
-                const nameCell = document.createElement('td');
-                nameCell.textContent = user.name;
-                newRow.appendChild(nameCell);
+            const text = document.getElementById('comment-input').value;
+            const writer = '냥녕뇽'; //나중에 local storage로 받아야함
+            const date = '2025/04/23';
 
-                const idCell = document.createElement('td');
-                idCell.textContent = user.id;
-                newRow.appendChild(idCell);
+            // 댓글을 추가할 컨테이너 요소 선택
+            const commentsContainer = document.getElementById('comments-container');
 
-                const ageCell = document.createElement('td');
-                ageCell.textContent = user.age;
-                newRow.appendChild(ageCell);
+            // 새로운 댓글 요소 생성
+            const commentContainer = document.createElement('div');
+            commentContainer.className = 'comment-container';
 
-                tableBody.appendChild(newRow);
-            } catch (error) {
-                console.error('Fetch error:', error);
-            }
+            // 댓글 헤더 생성
+            const commentHead = document.createElement('span');
+            commentHead.className = 'comment-head';
+            commentHead.innerHTML = `Comment&nbsp;&nbsp;&nbsp;Writer: <span>${writer}</span>&nbsp;&nbsp;&nbsp;Date: <span>${date}</span>`;
+
+            // 댓글 내용 생성
+            const commentTextarea = document.createElement('textarea');
+            commentTextarea.className = 'comment-history';
+            commentTextarea.rows = 7;
+            commentTextarea.cols = 40;
+            commentTextarea.readOnly = true;
+            commentTextarea.style.resize = 'none';
+            commentTextarea.textContent = text;
+
+            // 요소들을 컨테이너에 추가
+            commentContainer.appendChild(commentHead);
+            commentContainer.appendChild(commentTextarea);
+
+            // 댓글 컨테이너를 댓글 목록에 추가
+            commentsContainer.appendChild(commentContainer);
+
+            closeSecondPopUp('comment-popup');
         }
 		
 		function addIssue() {
@@ -99,9 +157,9 @@
           const description = document.getElementById('description-input').value;
 		  //const reporter = document.getElementById('reporter-input').value;
 		  //const assignee = document.getElementById('assignee-input').value;
-		  //const priority = document.getElementById('priority-input').value;
-		  //const status = document.getElementById('status-input').value;
-		  //const type = document.getElementById('type-input').value;
+		  const priority = document.getElementById('priority-input').value;
+		  const status = document.getElementById('status-input').value;
+		  const type = document.getElementById('type-input').value;
           fetch('http://localhost:8080/addIssue', {
               method: 'POST',
               headers: {
@@ -119,10 +177,13 @@
                   }
               });
       }
+
        function disableInput() {
             //get처리로 권한 받아서 해줘야함.
              const level = 2; //get처리로 받은 권한레벨 순서대로 admin, PL, developer, tester
-             document.getElementById('title').disabled = true;
+             //document.getElementById('type').value = 'Task';
+             //document.getElementById('type').disabled = true;
+             //document.getElementById('description-input').setAttribute('readonly', 'true');
        }
     </script>
 </body>
