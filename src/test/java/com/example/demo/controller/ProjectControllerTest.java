@@ -50,13 +50,19 @@ class ProjectControllerTest {
     void setUp() throws Exception {
         MemberAddDto admin = new MemberAddDto("admin","admin","admin","0");
         memberService.addUser(admin);
+        MemberAddDto pl = new MemberAddDto("pl","pl","pl","1");
+        memberService.addUser(pl);
+        MemberAddDto dev = new MemberAddDto("dev","dev","dev","2");
+        memberService.addUser(dev);
+        MemberAddDto tester = new MemberAddDto("tester","tester","tester","3");
+        memberService.addUser(tester);
 
         ProjectAddDto testProjectAdd=ProjectAddDto.builder()
                 .title("test")
                 .description("test")
-                .PL("1")
-                .developer("2")
-                .tester("3")
+                .PL("pl")
+                .developer("dev")
+                .tester("tester")
                 .build();
         MvcResult mvcResult = this.mvc.perform(post("/addProject")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -66,26 +72,24 @@ class ProjectControllerTest {
         JsonNode node = objectMapper.readTree(mvcResult.getResponse().getContentAsString());
         testProjectId=node.get("id").asLong();
     }
-/*
+
     @Test
     @DisplayName("Add Success")
-    void addProject() {
+    void addProject() throws Exception {
         ProjectAddDto projectAddDto = ProjectAddDto.builder()
                 .title("test")
                 .description("test")
                 .build();
-        this.mvc.perform(post("/projects")
+        this.mvc.perform(post("/addProject")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(projectAddDto)))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
     }
-*/
+
     @Test
-    @DisplayName("get project Success")
+    @DisplayName("getprojectlist Success")
     void getProjectList() throws Exception {
-        this.mvc.perform(get("/projects/"+testProjectId)
-                .param("name","admin")
-                .param("password","admin"))
+        this.mvc.perform(get("/listProject"))
                 .andExpect(status().isOk());
     }
 
