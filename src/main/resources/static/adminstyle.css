@@ -33,9 +33,6 @@
         #projectadd-pop {
             height : 600px;
         }
-        .hide{
-            display : none;
-        }
         .input-box {
             display : flex;
             flex-direction : column;

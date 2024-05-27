@@ -52,17 +52,17 @@
                   <span class="select-head Tester-head">Tester</span>
               </p>
                 <select id="PL-select">
-                    <option>PL1</option>
+                    <option>PLPL111</option>
                     <option>PL2</option>
                     <option>PL3</option>
                 </select>
                 <select id="developer-select">
-                    <option>Dev1</option>
+                    <option>yangsh1004</option>
                     <option>Dev2</option>
                     <option>Dev3</option>
                 </select>
                 <select id="tester-select">
-                    <option>QA1</option>
+                    <option>1111</option>
                     <option>QA2</option>
                     <option>QA3</option>
                 </select>
@@ -111,20 +111,6 @@
     <div id="bg-page" class="hide"></div>
 
     <script>
-          function closePopUp(pageId) {
-              document.getElementById(pageId).classList.add('hide');
-              document.getElementById('bg-page').classList.add('hide');
-          }
-
-          function openPopUp(pageId) {
-              document.getElementById(pageId).classList.remove('hide');
-              document.getElementById('bg-page').classList.remove('hide');
-              document.querySelectorAll('.input-text').forEach(function(element) {
-                 element.value = '';
-              });
-              document.getElementById('description-input').value = '내용을 입력하세요.';
-          }
-		  
 		  function addUser() {
 			  const fullName = document.getElementById('name-input').value;
 	          const name = document.getElementById('id-input').value;
