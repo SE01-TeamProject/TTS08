@@ -11,8 +11,9 @@ public class IssueAddDto {
     private String description;
 //    private String reporter;
 //    private String assignee;
-//    private String priority;
-//    private String status;
-//    private String type;
+//    private int priority;
+//    private int status;
+//    private int type;
+//	  private String project;
 
 }
