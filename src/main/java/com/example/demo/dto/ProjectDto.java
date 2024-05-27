@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -16,13 +17,13 @@ public class ProjectDto {
 
 	private String title;
 	private String description;
-	private Date date;
+	private LocalDateTime date;
 
 	public static ProjectDto from(Project project) {
 		return new ProjectDto(project.getTitle(), project.getDescription(), project.getDate());
 	}
 
-	public static ProjectDto of(String title, String description, Date date) {
+	public static ProjectDto of(String title, String description, LocalDateTime date) {
 		return new ProjectDto(title, description, date);
 	}
 }
