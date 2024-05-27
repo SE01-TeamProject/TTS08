@@ -38,8 +38,13 @@ public class ProjectController {
 //	    return ps.getProjectById(id);
 //	}
 
+//	@GetMapping("/listProject")
+//	public List<Project> getProjectList() {
+//		return ps.getProjectList();
+//	}
+	
 	@GetMapping("/listProject")
-	public List<Project> getProjectList() {
+	public String getProjectList() {
 		return ps.getProjectList();
 	}
 

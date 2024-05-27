@@ -32,7 +32,7 @@ public class Tts08Application {
 		
 		ProjectRepository projectRepository = context.getBean(ProjectRepository.class);
 		
-		projectRepository.save(new Project("Project1", "This is Project1"));
+		projectRepository.save(new Project("Project1", "This is Project1", 0, 0, 0));
 		Project project = projectRepository.findByTitle("Project1");
 		System.out.println("title: " + project.getTitle() + ", description: " + project.getDescription());
 		
