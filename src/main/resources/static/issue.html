@@ -88,16 +88,16 @@
                  </div>
             </div>
         </div>
-        <button class="newcommentbutton" onclick="openSecondPopUp('comment-popup')">New comment</button>
+        <button class="newcommentbutton" onclick="openCommentModal()">New comment</button>
         <button class="popup-addbutton" onclick="addIssue()">Add</button>
     </div>
 
 
      <div class="popup-secondpage hide" id="comment-popup">
-         <button class="xbuttonsecond" onclick="closeSecondPopUp('comment-popup')">X</button>
+         <button class="xbuttonsecond" onclick="closeCommentModal()">X</button>
          <h1 class="tc">Comment Add</h1>
-         <div class="center">
-             <p>Writer : 양시훈</p> <!---localstorage에서 꺼내서 쓰기--->
+         <div class="center" id="comment-popup-head">
+             <!---이 자리에 Writer: @@@ 가 함수로 자동으로 들어갈 것임--->
              Comment<textarea id="comment-input" rows="10" cols="50" style="resize: none"></textarea>
          </div>
          <button class="popup-commentaddbutton" onclick="addComment()">Add</button> <!---아직 함수 body 비었음--->
@@ -114,11 +114,32 @@
              disableInput();
         });
 
+         function putWriterOnHead() {
+             const writerId = localStorage.getItem('loginId');
+             const head = document.getElementById('comment-popup-head');
+             const headInfo = document.createElement('p');
+             headInfo.textContent = 'Writer : ' + writerId;
+             const firstChild = head.firstChild;
+             head.insertBefore(headInfo, firstChild);
+         }
+         function deleteWriterOnHead() {
+             const head = document.getElementById('comment-popup-head');
+             const headInfo = head.firstChild;
+             head.removeChild(headInfo);
+         }
+         function openCommentModal() {
+             openSecondPopUp('comment-popup');
+             putWriterOnHead();
+         }
+         function closeCommentModal() {
+             closeSecondPopUp('comment-popup');
+             deleteWriterOnHead();
+         }
          //나중에 getapi로 받게되면 getAllComment를 통해 해당 issue의 모든 comment를 받아온 다음, forEach로 아래의 내용들을 다 실행시키면 될듯
         function addComment() {
 
             const text = document.getElementById('comment-input').value;
-            const writer = '냥녕뇽'; //나중에 local storage로 받아야함
+            const writer = localStorage.getItem('loginId');
             const date = '2025/04/23';
 
             // 댓글을 추가할 컨테이너 요소 선택
