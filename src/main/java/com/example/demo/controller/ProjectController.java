@@ -1,13 +1,23 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.domain.Project;
 import com.example.demo.dto.ProjectAddDto;
+import com.example.demo.dto.ProjectDto;
+import com.example.demo.repository.ProjectRepository;
 import com.example.demo.service.ProjectService;
+
+import org.springframework.ui.Model;
 
 @RestController
 public class ProjectController {
@@ -24,9 +34,13 @@ public class ProjectController {
 		return ps.addProject(projectAddDto);
 	}
 	
-//	@GetMapping("/listProject")
-//	public String listProject() {
-//		return null;
+//	@GetMapping("/project/{id}")
+//	public Project getProject(@PathVariable("id") int id) {
+//	    return ps.getProjectById(id);
 //	}
 	
+	@GetMapping("/listProject")
+	public List<Project> getProjectList() {
+		return ps.getProjectList();
+	}
 }
