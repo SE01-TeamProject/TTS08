@@ -136,6 +136,7 @@ public class Issue {
         this.reporter = reporter;
         this.priority = priority;
         this.type = type;
+		this.date = LocalDateTime.now();
     }
 	
 	public static Issue createIssue(String title, String description, Integer reporter, int priority, int type) {

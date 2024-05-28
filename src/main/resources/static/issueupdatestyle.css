@@ -1,0 +1,200 @@
+@charset "utf-8";
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px;
+            text-align: center;
+            width: 50px;
+        }
+        thead {
+            position : sticky;
+            top : 0;
+            background-color : lightskyblue;
+        }
+        tbody {
+            border : 1px solid black;
+        }
+        button {
+            border-radius : 10px;
+            font-size : 15px;
+            padding : 10px;
+        }
+        .buttonSet {
+            position : relative;
+            left : 69%;
+            top : -10px;
+        }
+        .homebutton {
+            position : absolute;
+            left : 4%;
+            top : 5%;
+            padding : 15px;
+            width : 120px;
+            background-color : lightgoldenrodyellow;
+        }
+        .addbutton {
+            position : absolute;
+            right : 490px;
+            bottom : 180px;
+            padding : 10px;
+            width : 130px;
+        }
+        .resetbutton {
+            position : absolute;
+            left : 940px;
+            bottom : 180px;
+            padding : 10px;
+            width : 70px;
+            background-color : burlywood;
+        }
+        .searchbutton {
+            position : absolute;
+            left : 830px;
+            bottom : 180px;
+            padding : 10px;
+            width : 100px;
+        }
+        .searchinput {
+            position : absolute;
+            left : 600px;
+            bottom : 180px;
+            padding : 10px;
+            width : 200px;
+        }
+        #search-select {
+            position : absolute;
+            left : 467px;
+            bottom : 160px;
+            padding : 10px;
+        }
+        .popup-addbutton {
+            position : absolute;
+            right : 5%;
+            bottom : 3%;
+            padding : 8px;
+            width : 80px;
+        }
+        .popup-commentaddbutton {
+            position : absolute;
+            right : 2%;
+            bottom : 3%;
+            padding : 8px;
+            width : 80px;
+        }
+        .newcommentbutton {
+            position: absolute;
+            right: 15%;
+            bottom: 3%;
+            background-color: azure;
+            padding: 8px;
+        }
+        .xbutton {
+            position : absolute;
+            left : 95%;
+            top : 1%;
+            float: right;
+            background-color: pink;
+            padding : 12px;
+        }
+        .xbuttonsecond {
+            position : absolute;
+            left : 94%;
+            top : 1%;
+            float: right;
+            background-color: pink;
+            padding : 12px;
+        }
+        th > button {
+            padding : 8px;
+            margin : -5px;
+            background-color : lightskyblue;
+            border : none;
+            width : 120px;
+        }
+        .popup-page {
+            z-index : 2;
+            position : absolute;
+            top : 50%;
+            left : 50%;
+            transform : translate(-50%, -50%);
+            background-color : white;
+            width : 1000px;
+            height : 600px;
+            border : 1px solid black;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        }
+         .popup-secondpage {
+            z-index : 4;
+            position : absolute;
+            top : 50%;
+            left : 50%;
+            transform : translate(-50%, -50%);
+            background-color : white;
+            width : 1000px;
+            height : 600px;
+            border : 1px solid black;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        }
+         #comment-popup {
+            width : 700px;
+            height : 400px;
+        }
+        .input-box {
+            margin : 20px;
+            height : 450px;
+        }
+        .area-box {
+            display : flex;
+            flex-direction : column;
+        }
+        .issue-table {
+            height : 550px;
+            border : 1px solid black;
+            overflow-y : scroll;
+        }
+        input {
+            padding : 5px;
+            font-size : 15px;
+            width : 500px;
+        }
+        select {
+            margin : 20px;
+            padding : 10px;
+            font-size : 15px;
+        }
+         .select-head {
+            position : relative;
+            top : 26px;
+        }
+        .priority-head {
+            left : 42px;
+        }
+        /*이거 계속 사이즈 기기마다 달라지면 묶어서 조정하기 */
+        .status-head {
+            left : 120px;
+        }
+        .type-head {
+            left : 198px;
+        }
+        textarea {
+            width : 800px;
+            font-size : 16px;
+        }
+        #comment-input {
+            width : 400px;
+            background-color : azure;
+        }
+
+        .comment-history {
+            background-color : floralwhite;
+            border : 3px solid beige;
+            border-collapse : collapse;
+            margin-bottom : 20px;
+        }
+        .comment-head {
+            width : 600px;
+            border : 3px solid beige;
+            border-collapse : collapse;
+        }

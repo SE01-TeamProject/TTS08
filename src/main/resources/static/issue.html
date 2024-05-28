@@ -13,8 +13,7 @@
     <button class="homebutton" onclick="gotoHomePage()">Home</button>
 
     <span class="buttonSet">
-        <button>Timeline</button>
-        <button onclick="gotoIssuePage()">Issues</button>
+        <button>Statistics</button>
         <button onclick="gotoAdminPage()">Admin</button>
     </span>
 
@@ -24,10 +23,9 @@
             <tr>
                 <th><button>Issue#</button></th>
                 <th><button class="w200">Title</button></th>
-                <th><button>Milestone</button></th>
-                <th><button>Sort</button></th>
-                <th><button>Importance</button></th>
+                <th><button>Priority</button></th>
                 <th><button>State</button></th>
+                <th><button>Type</button></th>
                 <th><button>Date</button></th>
             </tr>
             </thead>
@@ -36,16 +34,26 @@
             </tbody>
         </table>
     </div>
-
-    <span><input type="text" class="searchinput" placeholder="search by title..."></span>
-    <button class="searchbutton">Search</button>
+    <div class="search-set">
+         <select id="search-select">
+            <option value="title">title</option>
+            <option value="priority">priority</option>
+            <option value="state">state</option>
+            <option value="type">type</option>
+            <option value="reporter">reporter</option>
+            <option value="assignee">assignee</option>
+        </select>
+        <span><input type="text" class="searchinput" placeholder="search..."></span>
+        <button class="searchbutton">Search</button>
+        <button class="resetbutton">Reset</button>
+    </div>
     <button class="addbutton" onclick="openPopUp('issue-popup')">Issue Add</button>
 
 
     <div class="popup-page hide" id="issue-popup">
          <button class="xbutton" onclick="closePopUp('issue-popup')">X</button>
     <h1 class="tc">Issue Add</h1>
-          <div class="input-box scroll">
+          <div class="input-box">
             <p>
             Issue Num : <span id="issue-num">2<!---fill this with GETapi ---></span>
             &nbsp;&nbsp;&nbsp;Reporter : <span id="reporter-name">홍길동<!---fill this with GETapi---></span>
@@ -82,23 +90,9 @@
                  </div>
             </div>
         </div>
-        <button class="newcommentbutton" onclick="openCommentModal()">New comment</button>
         <button class="popup-addbutton" onclick="addIssue()">Add</button>
     </div>
 
-
-     <div class="popup-secondpage hide" id="comment-popup">
-         <button class="xbuttonsecond" onclick="closeCommentModal()">X</button>
-         <h1 class="tc">Comment Add</h1>
-         <div class="center" id="comment-popup-head">
-             <!---이 자리에 Writer: @@@ 가 함수로 자동으로 들어갈 것임--->
-             Comment<textarea id="comment-input" rows="10" cols="50" style="resize: none"></textarea>
-         </div>
-         <button class="popup-commentaddbutton" onclick="addComment()">Add</button> <!---아직 함수 body 비었음--->
-    </div>
-
-
     <div class="hide" id="bg-page"></div>
-    <div class="hide" id="bg-secondpage"></div>
 </body>
 </html>
