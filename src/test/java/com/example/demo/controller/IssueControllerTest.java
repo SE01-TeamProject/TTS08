@@ -6,7 +6,9 @@ import com.example.demo.dto.IssueAddDto;
 import com.example.demo.dto.IssueSetDto;
 import com.example.demo.dto.MemberAddDto;
 import com.example.demo.dto.ProjectAddDto;
+import com.example.demo.repository.IssueRepository;
 import com.example.demo.repository.MemberRepository;
+import com.example.demo.repository.ProjectRepository;
 import com.example.demo.service.IssueService;
 import com.example.demo.service.MemberService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -54,6 +56,10 @@ class IssueControllerTest {
     private Integer testIssueId;
     private String testMemberName;
     private Integer testProjectId;
+    @Autowired
+    private IssueRepository issueRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
 
     @BeforeEach
     void setUp() throws Exception{
@@ -87,25 +93,7 @@ class IssueControllerTest {
                 .andReturn();
         JsonNode node = objectMapper.readTree(mvcResult.getResponse().getContentAsString());
         JsonNode chkNode = node.get("id");
-        if(chkNode!=null)testProjectId=(Integer) chkNode.asInt();
-        else testProjectId=null;
-
-        ProjectAddDto testProjectAdd2=ProjectAddDto.builder()
-                .title("test2")
-                .description("test2")
-                .PL("pl2")
-                .developer("dev2")
-                .tester("tester2")
-                .build();
-        mvcResult = this.mvc.perform(post("/addProject")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(testProjectAdd)))
-                .andExpect(status().isOk())
-                .andReturn();
-        JsonNode node2 = objectMapper.readTree(mvcResult.getResponse().getContentAsString());
-        JsonNode chkNode2 = node2.get("id");
-        if(chkNode2!=null)testIssueId=(Integer)chkNode2.asInt();
-        else testIssueId=0;
+        testProjectId=projectRepository.findByTitle(testProjectAdd.getTitle()).getId();
 
 //        IssueAddDto issueAddDto = IssueAddDto.builder()
 //                .title("test")
@@ -126,7 +114,7 @@ class IssueControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(issueAddDto)))
                 .andExpect(status().isOk());
-
+        testIssueId=issueRepository.findByTitle(issueAddDto.getTitle()).getId();
 //        IssueSetDto issueSetDto = IssueSetDto.builder()
 //                .id(0)
 //                .priority(0)
@@ -155,19 +143,19 @@ class IssueControllerTest {
 
     }
 
-//    @Test
-//    @DisplayName("getIssueList Success")
-//    void getIssueList()throws Exception {
-//        this.mvc.perform(get("/listIssue"))
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    @DisplayName("getIssueList by project id Success")
-//    void getIssueListByProjectId()throws Exception {
-//        this.mvc.perform(get("/listIssue/"+testProjectId))
-//                .andExpect(status().isUnauthorized());
-//    }
+    @Test
+    @DisplayName("getIssueList Success")
+    void getIssueList()throws Exception {
+        this.mvc.perform(get("/listIssue"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("getIssueList by project id Success")
+    void getIssueListByProjectId()throws Exception {
+        this.mvc.perform(get("/listIssue/"+testProjectId))
+                .andExpect(status().isOk());
+    }
 
     @Test
     @DisplayName("setstate Success")
@@ -176,7 +164,7 @@ class IssueControllerTest {
                 .id(testIssueId)
                 .priority(Issue.getPriorityFromString("Major"))
                 .status(Issue.getStatusFromString("Assigned"))
-                .assignee(testMemberName)
+                //.assignee(testMemberName)
                 .build();
         this.mvc.perform(post("/setIssue")
                     .contentType(MediaType.APPLICATION_JSON)

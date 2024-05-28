@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.MemberAddDto;
 import com.example.demo.dto.ProjectAddDto;
+import com.example.demo.repository.ProjectRepository;
 import com.example.demo.service.MemberService;
 import com.example.demo.service.ProjectService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,7 +42,10 @@ class ProjectControllerTest {
     @Autowired
     private MemberService memberService;
 
-    private Long testProjectId;
+    @Autowired
+    private ProjectRepository projectRepository;
+
+    private Integer testProjectId;
 
     @BeforeEach
     void setUp() throws Exception {
@@ -71,6 +75,7 @@ class ProjectControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(testProjectAdd)))
                 .andExpect(status().isOk());
+
         ProjectAddDto testProjectAdd2=ProjectAddDto.builder()
                 .title("test2")
                 .description("test2")
