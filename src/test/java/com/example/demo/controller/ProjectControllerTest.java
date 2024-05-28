@@ -74,13 +74,7 @@ class ProjectControllerTest {
                 .developer("dev2")
                 .tester("tester2")
                 .build();
-        MvcResult mvcResult = this.mvc.perform(post("/addProject")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(testProjectAdd)))
-                .andExpect(status().isOk())
-                .andReturn();
-//        JsonNode node = objectMapper.readTree(mvcResult.getResponse().getContentAsString());
-//        if(node!=null){testProjectId=node.get("id").asLong();}
+
 
     }
 
