@@ -32,10 +32,6 @@ public class ProjectService {
 	public Project findById(Integer id) {
 		return projectRepository.findById(id).get();
 	}
-	
-//	public Project getProjectById(Integer id) {
-//		return projectRepository.findById(id).get();
-//	}
 
 	// 프로젝트를 추가하는 메소드
 	public String addProject(ProjectAddDto projectAddDto) {
