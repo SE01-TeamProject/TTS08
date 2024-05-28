@@ -49,7 +49,14 @@ public class MainWindow extends JFrame {
 		setBounds(100, 0, 1280, 850);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
+		
+		setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				setVisible(false);
+			}
+		});
+		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 			
