@@ -11,5 +11,8 @@ import com.example.demo.domain.Issue;
 public interface IssueRepository extends JpaRepository<Issue, Integer> {
 	Optional<Issue> findById(@Param("id") Integer id);
 	Issue findByTitle(@Param("title") String title);
+	long countByPriority(int priority);
+	long countByStatus(int status);
+	long countByType(int type);
 	//List<Comment> findAllByProjectId(Iterable<Integer> id);
 }

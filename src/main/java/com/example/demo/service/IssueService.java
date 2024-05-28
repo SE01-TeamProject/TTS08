@@ -125,4 +125,39 @@ public class IssueService {
 		});
 		return issues.toString();
 	}
+	
+	// 이슈 트렌드 분석: 이슈의 Priority, Status, Type가 몇 개인지 JSONString으로 보내는 메소드
+	/*
+	 TODO: 월별 통계를 하나의 함수로 한번에 가져갈지
+	 		별개의 함수로 만들어 따로 가져갈지 선택
+	 */
+	public String getIssueTrend() {
+		JSONObject trend = new JSONObject();
+		{
+			JSONObject obj = new JSONObject();
+			obj.put("Major", issueRepository.countByPriority(Issue.Priority.MAJOR.ordinal()));
+			obj.put("Minor", issueRepository.countByPriority(Issue.Priority.MINOR.ordinal()));
+			obj.put("Blocker", issueRepository.countByPriority(Issue.Priority.BLOCKER.ordinal()));
+			obj.put("Critical", issueRepository.countByPriority(Issue.Priority.CRITICAL.ordinal()));
+			obj.put("Trivial", issueRepository.countByPriority(Issue.Priority.TRIVIAL.ordinal()));
+			trend.put("Priority", obj);	
+		}
+		{
+			JSONObject obj = new JSONObject();
+			obj.put("New", issueRepository.countByStatus(Issue.Status.NEW.ordinal()));
+			obj.put("Assigned", issueRepository.countByStatus(Issue.Status.ASSIGNED.ordinal()));
+			obj.put("Resolved", issueRepository.countByStatus(Issue.Status.RESOLVED.ordinal()));
+			obj.put("Closed", issueRepository.countByStatus(Issue.Status.CLOSED.ordinal()));
+			obj.put("Reopened", issueRepository.countByStatus(Issue.Status.REOPENED.ordinal()));
+			trend.put("Status", obj);	
+		}
+		{
+			JSONObject obj = new JSONObject();
+			obj.put("Bug", issueRepository.countByType(Issue.Type.BUG.ordinal()));
+			obj.put("Task", issueRepository.countByType(Issue.Type.TASK.ordinal()));
+			trend.put("Type", obj);	
+		}
+		return trend.toString();	
+	}
+	
 }

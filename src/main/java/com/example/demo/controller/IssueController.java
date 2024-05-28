@@ -54,4 +54,9 @@ public class IssueController {
 	public void setAssignee(@RequestBody IssueSetDto issueSetDto) {
 		is.setAssignee(issueSetDto);
 	}
+	
+	@GetMapping("/issueTrend")
+	public String getIssueTrend() {
+		return is.getIssueTrend();
+	}
 }
