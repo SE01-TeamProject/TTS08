@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IssueUpdatePage</title>
+</head>
+<body>
+    <h1 class="tc">Issue Add</h1>
+    <div class="input-box scroll">
+        <p>
+            Issue Num : <span id="issue-num">2<!---fill this with GETapi ---></span>
+            &nbsp;&nbsp;&nbsp;Reporter : <span id="reporter-name">홍길동<!---fill this with GETapi---></span>
+            <!---&nbsp;&nbsp;&nbsp;Assignee : <span id="assignee-name">양시훈</span> --->
+        </p>
+        제목 <input type ="text" id="title" placeholder="Title">
+        <p>
+            <span class="select-head priority-head">priority</span>
+            <span class="select-head status-head">status</span>
+            <span class="select-head type-head">type</span>
+        </p>
+        <select id="priority-input">
+            <option value="Major">Major</option>
+            <option value="Minor">Minor</option>
+            <option value="Blocker">Blocker</option>
+            <option value="Critical">Critical</option>
+            <option value="Trivial">Trivial</option>
+        </select>
+        <select id="status-input">
+            <option value="New">New</option>
+            <option value="Assigned">Assigned</option>
+            <option value="Resolved">Resolved</option>
+            <option value="Closed">Closed</option>
+            <option value="Reopened">Reopened</option>
+        </select>
+        <select id="type-input">
+            <option value="Bug">Bug</option>
+            <option value="Task">Task</option>
+        </select>
+        <br><br><br>
+        <div class="area-box">
+            Description<textarea id="description-input" rows="13" cols="100" style="resize: none"></textarea>
+            <br><br>
+            <div id="comments-container">
+                <div class="">
+                    <span class="comment-head">
+                        Comment&nbsp;&nbsp;&nbsp;Writer: <span>tjrzoswkddls5106</span>&nbsp;&nbsp;&nbsp;Date: <span>2024/05/23</span>
+                    </span>
+                    <textarea class="comment-history" rows="7" cols="40" readonly="true" style="resize: none"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+        <button class="newcommentbutton" onclick="openCommentModal()">New comment</button>
+        <button class="popup-addbutton" onclick="addIssue()">Add</button>
+</body>
+</html>
