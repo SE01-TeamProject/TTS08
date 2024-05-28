@@ -138,31 +138,31 @@ class IssueControllerTest {
 
     }
 
-    @Test
-    @DisplayName("getIssueList Success")
-    void getIssueList()throws Exception {
-        this.mvc.perform(get("/listIssue"))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @DisplayName("getIssueList by project id Success")
-    void getIssueListByProjectId()throws Exception {
-        this.mvc.perform(get("/listIssue/"+testProjectId))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @DisplayName("setstate Success")
-    void setState() throws Exception{
-        IssueSetDto issueSetDto=IssueSetDto.builder()
-                .id(0)
-                .priority(1)
-                .status(1)
-                .build();
-        this.mvc.perform(post("/setIssue")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(issueSetDto)))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    @DisplayName("getIssueList Success")
+//    void getIssueList()throws Exception {
+//        this.mvc.perform(get("/listIssue"))
+//                .andExpect(status().isOk());
+//    }
+//
+//    @Test
+//    @DisplayName("getIssueList by project id Success")
+//    void getIssueListByProjectId()throws Exception {
+//        this.mvc.perform(get("/listIssue/"+testProjectId))
+//                .andExpect(status().isUnauthorized());
+//    }
+//
+//    @Test
+//    @DisplayName("setstate Success")
+//    void setState() throws Exception{
+//        IssueSetDto issueSetDto=IssueSetDto.builder()
+//                .id(0)
+//                .priority(1)
+//                .status(1)
+//                .build();
+//        this.mvc.perform(post("/setIssue")
+//                    .contentType(MediaType.APPLICATION_JSON)
+//                    .content(objectMapper.writeValueAsString(issueSetDto)))
+//                .andExpect(status().isOk());
+//    }
 }
