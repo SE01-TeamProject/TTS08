@@ -52,11 +52,12 @@ public class IssueService {
 		if (issue != null) {
 			return "false";
 		} else {
-			issueRepository.save(new Issue(issueAddDto.getTitle(), issueAddDto.getDescription()));
-			//int priority = Issue.getPriorityFromString(issueAddDto.getPriority());
-			//int status = Issue.getStatusFromString(issueAddDto.getStatus());
-			//int type = Issue.getTypeFromString(issueAddDto.getType());
-			//issueRepository.save(new Issue(issueAddDto.getTitle(), issueAddDto.getDescription(), issueAddDto.getReporter(), issueAddDto.getAssignee(), priority, status, type));
+			int priority = Issue.getPriorityFromString(issueAddDto.getPriority());
+			int type = Issue.getTypeFromString(issueAddDto.getType());
+			issueRepository.save(new Issue(issueAddDto.getTitle(), 
+					issueAddDto.getDescription(), 
+					memberRepository.findByName(issueAddDto.getReporter()).getId(),
+					priority, type));
 		}
 		return "true";
 	}
