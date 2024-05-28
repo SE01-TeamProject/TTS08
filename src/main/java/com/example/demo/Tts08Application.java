@@ -25,34 +25,38 @@ public class Tts08Application {
 		
 		ConfigurableApplicationContext context = SpringApplication.run(Tts08Application.class, args);
 		MemberRepository memberRepository = context.getBean(MemberRepository.class);
-		
-		memberRepository.save(new Member("admin", "Administator", "admin", 0));
-		
-		memberRepository.save(new Member("PL1", "PL1user", "pl1", 1));
-		memberRepository.save(new Member("PL2", "PL2user", "pl2", 1));
-		memberRepository.save(new Member("PL3", "PL3user", "pl3", 1));
-		
-		memberRepository.save(new Member("Dev1", "Dev1user", "dev1", 2));
-		memberRepository.save(new Member("Dev2", "Dev2user", "dev2", 2));
-		memberRepository.save(new Member("Dev3", "Dev3user", "dev3", 2));
-		
-		memberRepository.save(new Member("QA1", "QA1user", "qa1", 3));
-		memberRepository.save(new Member("QA2", "QA2user", "qa2", 3));
-		memberRepository.save(new Member("QA3", "QA3user", "qa3", 3));
+		if (memberRepository.count() == 0) {
+			memberRepository.save(new Member("admin", "Administator", "admin", 0));
+
+			memberRepository.save(new Member("PL1", "PL1user", "pl1", 1));
+			memberRepository.save(new Member("PL2", "PL2user", "pl2", 1));
+			memberRepository.save(new Member("PL3", "PL3user", "pl3", 1));
+
+			memberRepository.save(new Member("Dev1", "Dev1user", "dev1", 2));
+			memberRepository.save(new Member("Dev2", "Dev2user", "dev2", 2));
+			memberRepository.save(new Member("Dev3", "Dev3user", "dev3", 2));
+
+			memberRepository.save(new Member("QA1", "QA1user", "qa1", 3));
+			memberRepository.save(new Member("QA2", "QA2user", "qa2", 3));
+			memberRepository.save(new Member("QA3", "QA3user", "qa3", 3));
+		}
+
 		
 		ProjectRepository projectRepository = context.getBean(ProjectRepository.class);
-		
-		projectRepository.save(new Project("Project1", "This is Project1", 0, 0, 0));
+		if (projectRepository.count() == 0) {
+			projectRepository.save(new Project("Project1", "This is Project1", 0, 0, 0));
+		}
 		Project project = projectRepository.findByTitle("Project1");
 		System.out.println("title: " + project.getTitle() + ", description: " + project.getDescription());
 		
 		IssueRepository issueRepository = context.getBean(IssueRepository.class);
-		
-		issueRepository.save(new Issue(1, "Issue1", "This is Issue1", 0, 0, 0, 0, 0));
+		if (issueRepository.count() == 0) {
+			issueRepository.save(new Issue(1, "Issue1", "This is Issue1", 0, 0, 0, 0, 0));
+			issueRepository.save(new Issue(1, "Issue2", "This is Issue2", 0, 0, 0, 0, 0));
+		}
 		Issue issue1 = issueRepository.findByTitle("Issue1");
 		System.out.println("title: " + issue1.getTitle() + ", description: " + issue1.getDescription());
-		
-		issueRepository.save(new Issue(1, "Issue2", "This is Issue2", 0, 0, 0, 0, 0));
+
 		Issue issue2 = issueRepository.findByTitle("Issue2");
 		System.out.println("title: " + issue2.getTitle() + ", description: " + issue2.getDescription());
 		
