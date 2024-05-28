@@ -37,37 +37,36 @@
         .addbutton {
             position : absolute;
             right : 490px;
-            top : 684px;
+            bottom : 180px;
             padding : 10px;
             width : 130px;
         }
-         .search-set {
-            position : absolute;
-            left : 466px;
-            top : 684px;
-            display : flex;
-            flex-direction : row;
-        }
         .resetbutton {
+            position : absolute;
+            left : 940px;
+            bottom : 180px;
             padding : 10px;
-            margin-left : 10px;
             width : 70px;
-            height : 40px;
             background-color : burlywood;
         }
         .searchbutton {
+            position : absolute;
+            left : 830px;
+            bottom : 180px;
             padding : 10px;
-            margin-left : 10px;
             width : 100px;
-            height : 40px;
         }
         .searchinput {
+            position : absolute;
+            left : 600px;
+            bottom : 180px;
             padding : 10px;
             width : 200px;
         }
         #search-select {
-            position : relative;
-            bottom : 20px;
+            position : absolute;
+            left : 467px;
+            bottom : 160px;
             padding : 10px;
         }
         .popup-addbutton {
@@ -77,9 +76,31 @@
             padding : 8px;
             width : 80px;
         }
+        .popup-commentaddbutton {
+            position : absolute;
+            right : 2%;
+            bottom : 3%;
+            padding : 8px;
+            width : 80px;
+        }
+        .newcommentbutton {
+            position: absolute;
+            right: 15%;
+            bottom: 3%;
+            background-color: azure;
+            padding: 8px;
+        }
         .xbutton {
             position : absolute;
             left : 95%;
+            top : 1%;
+            float: right;
+            background-color: pink;
+            padding : 12px;
+        }
+        .xbuttonsecond {
+            position : absolute;
+            left : 94%;
             top : 1%;
             float: right;
             background-color: pink;
@@ -100,9 +121,25 @@
             transform : translate(-50%, -50%);
             background-color : white;
             width : 1000px;
-            height : 700px;
+            height : 600px;
             border : 1px solid black;
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        }
+         .popup-secondpage {
+            z-index : 4;
+            position : absolute;
+            top : 50%;
+            left : 50%;
+            transform : translate(-50%, -50%);
+            background-color : white;
+            width : 1000px;
+            height : 600px;
+            border : 1px solid black;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+        }
+         #comment-popup {
+            width : 700px;
+            height : 400px;
         }
         .input-box {
             margin : 20px;
@@ -144,4 +181,20 @@
         textarea {
             width : 800px;
             font-size : 16px;
+        }
+        #comment-input {
+            width : 400px;
+            background-color : azure;
+        }
+
+        .comment-history {
+            background-color : floralwhite;
+            border : 3px solid beige;
+            border-collapse : collapse;
+            margin-bottom : 20px;
+        }
+        .comment-head {
+            width : 600px;
+            border : 3px solid beige;
+            border-collapse : collapse;
         }

@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="globalstyle.css">
     <link rel="stylesheet" href="login.css">
     <script src="globalScript.js"></script>
+    <script src="loginScript.js"></script>
 </head>
 <body>
 <h1 class="tc">Issue Ticketing System</h1>
@@ -16,28 +17,4 @@
      <button class="loginbutton" onclick="login()">Login</button>
     <!---나중에 ID 비번 get요청으로 받을 수 있게 되면 더 상세한 기능으로 수정해야됨! --->
 </body>
-
-<script>
-    function login() {
-        const id = document.getElementById('id').value;
-        const password = document.getElementById('password').value;
-        fetch('http://localhost:8080/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({id, password})
-        })
-            .then(response => response.text())
-            .then(data => {
-                if (data === 'true') {
-                    localStorage.setItem('loginId', id);
-                    gotoHomePage();
-                } else if (data === 'false') {
-                    alert("잘못된 아이디 또는 비밀번호입니다.");
-                    gotoLoginPage();
-                }
-            });
-    }
-</script>
 </html>

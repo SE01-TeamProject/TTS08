@@ -110,6 +110,7 @@ public class IssueService {
 			if (item.getProject() == pid) {
 				JSONObject obj = new JSONObject();
 				Optional<Member> user;
+				obj.put("issuenum", item.getId());
 				obj.put("title", item.getTitle());
 				obj.put("description", item.getDescription());
 				user = memberRepository.findById(item.getReporter());

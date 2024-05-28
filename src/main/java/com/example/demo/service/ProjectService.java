@@ -33,6 +33,12 @@ public class ProjectService {
 		return projectRepository.findById(id).get();
 	}
 
+	//특정 프로젝트의 Id를 받는 메소드
+	public String getProjectId(String title) {
+		int testProjectId= projectRepository.findByTitle(title).getId();
+		return String.valueOf(testProjectId);
+	}
+
 	// 프로젝트를 추가하는 메소드
 	public String addProject(ProjectAddDto projectAddDto) {
 		Project project = projectRepository.findByTitle(projectAddDto.getTitle());

@@ -3,10 +3,13 @@
             }
             function gotoAdminPage() {
                 //이거 admin인지 권한 확인하는것 필요함
-                location.href = "http://localhost:8080/admin.html";
-            }
-            function gotoIssuePage() {
-                location.href = "http://localhost:8080/issue.html";
+                const currentUserId = localStorage.getItem('loginId');
+                if (currentUserId === 'admin') {
+                    location.href = "http://localhost:8080/admin.html";
+                }
+                else {
+                    alert("Only admin can access admin page!");
+                }
             }
             function gotoLoginPage() {
                 location.href = "http://localhost:8080/login.html";
