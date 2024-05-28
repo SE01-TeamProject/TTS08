@@ -86,13 +86,10 @@ class IssueControllerTest {
                 .developer("dev")
                 .tester("tester")
                 .build();
-        MvcResult mvcResult = this.mvc.perform(post("/addProject")
+        this.mvc.perform(post("/addProject")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testProjectAdd)))
-                .andExpect(status().isOk())
-                .andReturn();
-        JsonNode node = objectMapper.readTree(mvcResult.getResponse().getContentAsString());
-        JsonNode chkNode = node.get("id");
+                .andExpect(status().isOk());
         testProjectId=projectRepository.findByTitle(testProjectAdd.getTitle()).getId();
 
 //        IssueAddDto issueAddDto = IssueAddDto.builder()
