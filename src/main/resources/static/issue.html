@@ -79,7 +79,7 @@
                  Description<textarea id="description-input" rows="13" cols="100" style="resize: none"></textarea>
                  <br><br>
                  <div id="comments-container">
-                     <div class="">
+                     <div class="comment-container">
                           <span class="comment-head">
                               Comment&nbsp;&nbsp;&nbsp;Writer: <span>tjrzoswkddls5106</span>&nbsp;&nbsp;&nbsp;Date: <span>2024/05/23</span>
                           </span>
@@ -123,9 +123,20 @@
              head.insertBefore(headInfo, firstChild);
          }
          function deleteWriterOnHead() {
+             console.log("deleteWriterAccess");
              const head = document.getElementById('comment-popup-head');
-             const headInfo = head.firstChild;
-             head.removeChild(headInfo);
+             if (head) {
+                const headInfo = head.firstElementChild;
+                if (headInfo) {
+                head.removeChild(headInfo);
+                console.log('Element removed:', headInfo);
+                }
+                else {
+                console.error('No child element found in #comment-popup-head');
+                }
+             } else {
+                console.error('#comment-popup-head element not found');
+             }
          }
          function openCommentModal() {
              openSecondPopUp('comment-popup');
@@ -134,6 +145,7 @@
          function closeCommentModal() {
              closeSecondPopUp('comment-popup');
              deleteWriterOnHead();
+             document.getElementById('comment-input').value = '';
          }
          //나중에 getapi로 받게되면 getAllComment를 통해 해당 issue의 모든 comment를 받아온 다음, forEach로 아래의 내용들을 다 실행시키면 될듯
         function addComment() {
@@ -170,7 +182,7 @@
             // 댓글 컨테이너를 댓글 목록에 추가
             commentsContainer.appendChild(commentContainer);
 
-            closeSecondPopUp('comment-popup');
+            closeCommentModal();
         }
 		
 		function addIssue() {

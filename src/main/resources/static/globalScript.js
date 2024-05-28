@@ -46,3 +46,9 @@
              document.getElementById(pageId).classList.add('hide');
              document.getElementById('bg-secondpage').classList.add('hide');
         }
+        function addOption(parentId, value) {
+            const parent = document.getElementById(parentId);
+            const newOption = document.createElement('option');
+            newOption.text = value;
+            parent.appendChild(newOption);
+        }
