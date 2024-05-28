@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.demo.domain.Member.Level;
-
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,7 +31,7 @@ public class Issue {
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
-    private Integer id;
+    private Integer id;			// 이슈 고유 id값
 	
 	@Column(name = "TITLE")
 	private String title;		// 이슈 제목
@@ -42,10 +40,10 @@ public class Issue {
 	private String description;	// 이슈 내용
 	
 	@Column(name = "REPORTER")
-    private Integer reporter; // 이슈 발견자
+    private Integer reporter; 	// 이슈 발견자
 	
 	@Column(name = "ASSIGNEE")
-    private Integer assignee; // 이슈 해결자
+    private Integer assignee; 	// 이슈 해결자
 	
 	@Column(name = "PRIORITY")
 	private int priority;		// 이슈 우선순위
@@ -60,7 +58,7 @@ public class Issue {
     private LocalDateTime date; // 이슈 작성 날짜
 	
 	@Column(name = "PROJECT")
-	private Integer project;
+	private Integer project;	// 이슈가 소속된 프로젝트
 
 	@OneToMany(mappedBy = "issue", cascade = CascadeType.ALL)
 	private List<Comment> comments = new ArrayList<>();

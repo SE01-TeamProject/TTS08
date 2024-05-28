@@ -15,18 +15,18 @@ public class Comment {
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
-    private Integer id;
+    private Integer id;		// 코멘트 고유 id
     
     @Column(name = "WRITER")
-	private Integer writer;
+	private Integer writer;	// 코멘트 작성자 - 사용자 id(Member 도메인의 name)으로 받음
     
     @Column(name = "NOTE")
-    private String note;
+    private String note;	// 코멘트 내용
     
-    @Column(name = "DATE")
+    @Column(name = "DATE")	// 코멘트 작성 날짜
     private LocalDateTime date;
     
-    private Integer issue;
+    private Integer issue;	// 코멘트가 소속된 이슈의 id
 
     /*@ManyToOne
     @JoinColumn(name = "issue_id", nullable = false)

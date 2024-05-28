@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.domain.Member;
 import com.example.demo.dto.MemberAddDto;
+import com.example.demo.dto.MemberDto;
 import com.example.demo.dto.MemberLoginDto;
 import com.example.demo.service.MemberService;
 
@@ -36,4 +37,13 @@ public class MemberController {
 		return ms.getMemberList();
 	}
 	
+	@GetMapping("/user/{id}")	// 고유 id를 받아 유저 정보 불러옴
+	public String getMember(@PathVariable("id") Integer id) {
+		return ms.getMember(id);
+	}
+	
+//	@GetMapping("/getLevel/{id}")	// 사용자의 레벨만 가져오기
+//	public String getMemberLevel(@PathVariable("id") Integer id) {
+//		return ms.getMemberLevel(id);
+//	}
 }

@@ -19,26 +19,26 @@ public class Project {
 	
 	@Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
-	private Integer id;
+	private Integer id;			// 프로젝트 고유 id값
 	
 	@Column(name = "TITLE")
-	private String title;
+	private String title;		// 프로젝트 제목
 	
 	@Column(name = "DESCRIPTION")
-	private String description;
+	private String description;	// 프로젝트 내용
 	
 	@Column(name = "PL")
-	private Integer PL;
+	private Integer PL;			// 프로젝트에 할당된 PL - 1명만
 	
 	@Column(name = "DEVELOPER")
-	private Integer developer;
+	private Integer developer;	// 프로젝트에 할당된 개발자 - 1명만
 	
 	@Column(name = "TESTER")
-	private Integer tester;
+	private Integer tester;		// 프로젝트에 할당된 테스터 - 1명만
 
 	@Column(name = "CREATED_DATE")
 	@Temporal(TemporalType.TIMESTAMP)
-	private LocalDateTime date;
+	private LocalDateTime date;	// 프로젝트 생성 날짜
 
 	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
 	private List<Issue> issues = new ArrayList<>();

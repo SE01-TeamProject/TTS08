@@ -3,8 +3,6 @@ package com.example.demo.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import com.example.demo.domain.Project;
-
 import java.time.LocalDate;
 
 @Entity
