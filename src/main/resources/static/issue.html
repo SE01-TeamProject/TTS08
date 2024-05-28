@@ -123,9 +123,20 @@
              head.insertBefore(headInfo, firstChild);
          }
          function deleteWriterOnHead() {
+             console.log("deleteWriterAccess");
              const head = document.getElementById('comment-popup-head');
-             const headInfo = head.firstChild;
-             head.removeChild(headInfo);
+             if (head) {
+                const headInfo = head.firstElementChild;
+                if (headInfo) {
+                head.removeChild(headInfo);
+                console.log('Element removed:', headInfo);
+                }
+                else {
+                console.error('No child element found in #comment-popup-head');
+                }
+             } else {
+                console.error('#comment-popup-head element not found');
+             }
          }
          function openCommentModal() {
              openSecondPopUp('comment-popup');
@@ -171,7 +182,7 @@
             // 댓글 컨테이너를 댓글 목록에 추가
             commentsContainer.appendChild(commentContainer);
 
-            closeSecondPopUp('comment-popup');
+            closeCommentModal();
         }
 		
 		function addIssue() {

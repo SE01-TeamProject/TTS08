@@ -14,7 +14,7 @@
     <h1 class="tc">Admin Page</h1>
     <div class="button-set center">
         <button onclick="openPopUp('useradd-pop')">Add User</button>
-        <button onclick="openPopUp('projectadd-pop')">Add Project</button>
+        <button onclick="openPopUp('projectadd-pop');displayUsersInProjectAdd()">Add Project</button>
         <button onclick="openPopUp('usermanage-pop')">User Management</button>
     </div>
     <div id="useradd-pop" class="popup-page hide">
@@ -36,6 +36,7 @@
          <button class="popup-addbutton" onclick="addUser()">Add</button>
     </div>
 
+
     <div id="projectadd-pop" class="popup-page hide">
          <button class="xbutton" onclick="closePopUp('projectadd-pop')">X</button>
          <h1 class="tc">Project Add</h1>
@@ -52,31 +53,18 @@
                   <span class="select-head Tester-head">Tester</span>
               </p>
                 <select id="PL-select">
-                    <option>PL1</option>
-                    <option>PL2</option>
-                    <option>PL3</option>
+                    <!---PL들 들어갈 자리--->
                 </select>
                 <select id="developer-select">
-                    <option>Dev1</option>
-                    <option>Dev2</option>
-                    <option>Dev3</option>
+                    <!---Developer들 들어갈 자리--->
                 </select>
                 <select id="tester-select">
-                    <option>QA1</option>
-                    <option>QA2</option>
-                    <option>QA3</option>
+                    <!---Tester들 들어갈 자리--->
                 </select>
-
-
-            <div class="grid-item">
-
-            </div>
-            <div class="grid-item">
-
-            </div>
         </div>
          <button class="popup-addbutton" onclick="addProject()">Add</button>
     </div>
+
 
     <div id="usermanage-pop" class="popup-page hide">
          <button class="xbutton" onclick="closePopUp('usermanage-pop')">X</button>
@@ -112,34 +100,104 @@
 
     <script>
 		  function addUser() {
-			  const fullName = document.getElementById('name-input').value;
-	          const name = document.getElementById('id-input').value;
-	          const password = document.getElementById('password-input').value;
-			  const level = document.getElementById('level-input').value;
+              const fullName = document.getElementById('name-input').value;
+              const name = document.getElementById('id-input').value;
+              const password = document.getElementById('password-input').value;
+              const level = document.getElementById('level-input').value;
 
-               if(fullName === "" || name === "" || password === "") {
-                    alert("내용을 모두 기입 후 다시 시도해주세요.");
-                    return;
+              if (fullName === "" || name === "" || password === "") {
+                  alert("내용을 모두 기입 후 다시 시도해주세요.");
+                  return;
               }
 
-	          fetch('http://localhost:8080/addUser', {
-	              method: 'POST',
-	              headers: {
-	                  'Content-Type': 'application/json'
-	              },
-	              body: JSON.stringify({fullName, name, password, level})
-	          })
-	              .then(response => response.text())
-	              .then(data => {
-	                  if (data === 'true') {
+              fetch('http://localhost:8080/addUser', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({fullName, name, password, level})
+              })
+                  .then(response => response.text())
+                  .then(data => {
+                      if (data === 'true') {
                           alert("유저 추가 완료");
                           gotoAdminPage();
-	                  } else if (data === 'false') {
-	                      alert("중복된 아이디입니다.");
-	                  }
-	              });
-	      }
-		  
+                      } else if (data === 'false') {
+                          alert("중복된 아이디입니다.");
+                      }
+                  });
+          }
+
+          function displayUsersInProjectAdd() {
+              fetch('http://localhost:8080/listUser')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                  .then(data => {
+                      if (Array.isArray(data)) {
+                          data.forEach(user => {// id name fullName password level
+                              switch(user.level) {
+                                  case 1://PL
+                                      addOption('PL-select', user.name);
+                                      break;
+                                  case 2://Developer
+                                      addOption('developer-select', user.name);
+                                      break;
+                                  case 3://Tester
+                                      addOption('tester-select', user.name);
+                                      break;
+                                  default:
+                                      console.log("undefined level detected");
+                              }
+                          });
+                      } else {
+                          console.error('Expected an array but received:', data);
+                      }
+                  })
+                  .catch(error => {
+                      console.error('There was a problem with the fetch operation:', error);
+                  });
+          }
+          function displayUsersInUserManage() {
+              fetch('http://localhost:8080/listUser')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                  .then(data => {
+                      if (Array.isArray(data)) {
+                          data.forEach(user => {// id name fullName password level
+                              switch(user.level) {
+                                  case 1://PL
+                                      break;
+                                  case 2://Developer
+
+                                      break;
+                                  case 3://Tester
+
+                                      break;
+                                  default:
+                                      console.log("undefined level detected");
+                              }
+                          });
+                      } else {
+                          console.error('Expected an array but received:', data);
+                      }
+                  })
+                  .catch(error => {
+                      console.error('There was a problem with the fetch operation:', error);
+                  });
+          }
+
+          function addTable(parentId, userId, userLevel) {
+
+          }
+
 		  function addProject() {
   			  const title = document.getElementById('title-input').value;
   	          const description = document.getElementById('description-input').value;

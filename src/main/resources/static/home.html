@@ -40,7 +40,7 @@
 
     async function loadAllProjects() {
             try {
-                const response = await fetch('http://localhost:8080/project');
+                const response = await fetch('http://localhost:8080/listProject');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
