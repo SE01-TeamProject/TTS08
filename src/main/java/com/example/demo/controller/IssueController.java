@@ -49,9 +49,9 @@ public class IssueController {
 		return is.getIssue(id);
 	}
 	
-//	// Assignee를 변경하는 메소드
-//	@PostMapping("/setAssignee")
-//	public void setAssignee(@RequestBody IssueSetDto issueSetDto) {
-//		is.setAssignee(issueSetDto);
-//	}
+	// Assignee를 변경하는 메소드
+	@PostMapping("/setAssignee")
+	public void setAssignee(@RequestBody IssueSetDto issueSetDto) {
+		is.setAssignee(issueSetDto);
+	}
 }
