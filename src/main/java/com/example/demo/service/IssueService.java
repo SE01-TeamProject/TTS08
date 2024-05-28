@@ -40,11 +40,11 @@ public class IssueService {
 	}
 	
 	// Assignee를 변경하는 메소드
-//	public void setAssignee(IssueSetDto issueSetDto) {
-//		Issue issue = issueRepository.findById(issueSetDto.getId()).get();
-//		issue.setAssignee(issueSetDto.getAssignee());
-//		issueRepository.save(issue);
-//	}
+	public void setAssignee(IssueSetDto issueSetDto) {
+		Issue issue = issueRepository.findById(issueSetDto.getId()).get();
+		issue.setAssignee(memberRepository.findByName(issueSetDto.getAssignee()).getId());
+		issueRepository.save(issue);
+	}
 	
 	// 이슈를 추가하는 메소드
 	public String addIssue(IssueAddDto issueAddDto) {
