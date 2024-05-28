@@ -10,10 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.domain.Project;
 import com.example.demo.dto.ProjectAddDto;
 import com.example.demo.dto.ProjectDto;
-import com.example.demo.repository.ProjectRepository;
 import com.example.demo.service.ProjectService;
 import org.springframework.ui.Model;
 import java.util.List;
@@ -28,6 +26,7 @@ public class ProjectController {
 		this.ps = ps;
 	}
 
+	// 프로젝트를 추가하는 메소드
 	@PostMapping("/addProject")
 	public String addProject(@RequestBody ProjectAddDto projectAddDto) {
 		return ps.addProject(projectAddDto);
@@ -43,6 +42,7 @@ public class ProjectController {
 //		return ps.getProjectList();
 //	}
 	
+	// 프로젝트를 나열하는 메소드
 	@GetMapping("/listProject")
 	public String getProjectList() {
 		return ps.getProjectList();
@@ -52,5 +52,10 @@ public class ProjectController {
 	public ResponseEntity<List<ProjectDto>> getAllProjects() {
 		List<ProjectDto> projects = ps.getAllProjects();
 		return ResponseEntity.ok(projects);
+	}
+	
+	@GetMapping("/project/{id}")	// 고유 id를 받아 프로젝트 정보 불러옴
+	public String getProject(@PathVariable("id") Integer id) {
+		return ps.getProject(id);
 	}
 }

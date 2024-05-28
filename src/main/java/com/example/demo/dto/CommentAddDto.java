@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class IssueSetDto {
-
-	private Integer id;
-	private int priority;
-	private int status;
-	private Integer assignee;
-
+public class CommentAddDto {
+	
+	private String writer;
+    private String note;
+    
 }
