@@ -107,7 +107,7 @@ public class AddUserWindow extends JFrame {
 					String id = idTextField.getText();
 					String pw = pwTextField.getText();
 					String name = nameTextField.getText();
-					String level = levelComboBox.getSelectedItem().toString();
+					int level = levelComboBox.getSelectedIndex();
 					
 					System.out.println(id.isEmpty());
 					

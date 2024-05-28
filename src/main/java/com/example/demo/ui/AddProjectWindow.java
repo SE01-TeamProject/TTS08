@@ -14,6 +14,9 @@ public class AddProjectWindow extends JFrame {
 	private JTextField titleTextField;
 	private JTextArea descriptionTextArea = new JTextArea();
 	private JButton addBtn;
+	private JComboBox<String> plComboBox = new JComboBox<String>();
+	private JComboBox<String> devComboBox = new JComboBox<String>();
+	private JComboBox<String> testerComboBox = new JComboBox<String>();
 	
 	
 	public AddProjectWindow(SwingController sc) {
@@ -52,7 +55,7 @@ public class AddProjectWindow extends JFrame {
 		
 		descriptionTextArea = new JTextArea();
 		descriptionTextArea.setToolTipText("Write short description of project");
-		descriptionTextArea.setBounds(12, 82, 430, 129);
+		descriptionTextArea.setBounds(12, 82, 430, 70);
 		contentPane.add(descriptionTextArea);
 		
 		// add btn
@@ -63,15 +66,44 @@ public class AddProjectWindow extends JFrame {
 				
 				String title = titleTextField.getText();
 				String description = descriptionTextArea.getText().replace('\n', ' ');
+				String pl = plComboBox.getSelectedItem().toString();
+				String dev = devComboBox.getSelectedItem().toString();
+				String tester = testerComboBox.getSelectedItem().toString();
 				
 				if(!title.isEmpty() && !description.isEmpty()) {
-					controller.addProject(title, description);
+					controller.addProject(title, description, pl, dev, tester);
 					setVisible(false);
-				}
-				
+				}			
 			}
 		});
 		addBtn.setBounds(180, 228, 100, 23);
 		contentPane.add(addBtn);
+		
+		// Combo Boxes
+		plComboBox.setBounds(12, 189, 100, 23);
+		contentPane.add(plComboBox);
+
+		devComboBox.setBounds(180, 189, 100, 23);
+		contentPane.add(devComboBox);
+
+		testerComboBox.setBounds(342, 189, 100, 23);
+		contentPane.add(testerComboBox);
+		
+		setComboBox();
 	}
+	
+	private void setComboBox() {
+		JComboBox[] arr = {plComboBox, devComboBox, testerComboBox};
+		
+		for(int i = 0; i < arr.length; i++) {
+			ArrayList<String> users = controller.getUserByLevel(i + 1);
+			for(String user : users) {
+				arr[i].addItem(user);
+			}
+		}
+		revalidate();
+		repaint();		
+	}
+	
+	// END----
 }

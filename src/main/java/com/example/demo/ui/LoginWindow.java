@@ -4,6 +4,8 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.awt.event.ActionEvent;
 
@@ -50,6 +52,13 @@ public class LoginWindow extends JFrame {
 		setBounds(300, 300, 300, 200);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		
+		setDefaultCloseOperation(this.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				setVisible(false);
+			}
+		});
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -80,8 +89,6 @@ public class LoginWindow extends JFrame {
 				System.out.println("LoginButton pressed");
 				System.out.println("ID : " + idTextField.getText());
 				System.out.println("Password : " + pwTextField.getText() + "\n");
-				
-				
 				
 				
 				if(controller != null) {
