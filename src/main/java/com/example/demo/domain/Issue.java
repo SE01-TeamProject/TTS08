@@ -136,7 +136,11 @@ public class Issue {
         this.reporter = reporter;
         this.priority = priority;
         this.type = type;
+<<<<<<< webUI
 		this.date = LocalDateTime.now();
+=======
+        this.date = LocalDateTime.now();
+>>>>>>> main
     }
 	
 	public static Issue createIssue(String title, String description, Integer reporter, int priority, int type) {
