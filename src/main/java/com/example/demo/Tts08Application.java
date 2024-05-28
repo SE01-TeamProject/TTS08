@@ -38,7 +38,7 @@ public class Tts08Application {
 		memberRepository.save(new Member("QA1", "QA1user", "qa1", 3));
 		memberRepository.save(new Member("QA2", "QA2user", "qa2", 3));
 		memberRepository.save(new Member("QA3", "QA3user", "qa3", 3));
-		/*
+		
 		ProjectRepository projectRepository = context.getBean(ProjectRepository.class);
 
 		projectRepository.save(new Project("Project1", "This is Project1", 0, 0, 0));
@@ -53,7 +53,6 @@ public class Tts08Application {
 		issueRepository.save(new Issue(1, "Issue2", "This is Issue2", 0, 0, 0, 0, 0));
 		Issue issue2 = issueRepository.findByTitle("Issue2");
 		System.out.println("title: " + issue2.getTitle() + ", description: " + issue2.getDescription());
-		*/
 		
 		try {
 			SwingController sc = new SwingController();
