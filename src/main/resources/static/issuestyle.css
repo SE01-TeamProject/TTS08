@@ -157,11 +157,12 @@
         .priority-head {
             left : 42px;
         }
+        /*이거 계속 사이즈 기기마다 달라지면 묶어서 조정하기 */
         .status-head {
-            left : 142px;
+            left : 120px;
         }
         .type-head {
-            left : 238px;
+            left : 198px;
         }
         textarea {
             width : 800px;
