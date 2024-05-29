@@ -72,6 +72,12 @@ public class MemberService {
 		return obj.toString();
 	}
 	
+	// 이름(id)를 받고 해당 유저 정보를 가져오는 메소드(비밀번호 제외)
+	public String getMember(String name) { 
+		Member mem = memberRepository.findByName(name);
+		return (mem == null) ? "" : getMember(mem.getId());
+	}
+	
 //	// 사용자의 레벨만 내보내는 메소드
 //	public String getMemberLevel(Integer id) {
 //		Optional<Member> member = memberRepository.findById(id);
