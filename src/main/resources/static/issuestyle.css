@@ -36,15 +36,14 @@
         }
         .addbutton {
             position : absolute;
-            right : 490px;
-            top : 684px;
+            left : 810px;
             padding : 10px;
             width : 130px;
+            background : azure;
         }
          .search-set {
-            position : absolute;
-            left : 466px;
-            top : 684px;
+            top : 700px;
+            left : 570px;
             display : flex;
             flex-direction : row;
         }

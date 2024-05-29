@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>IssueUpdatePage</title>
-    <link rel="stylesheet" href="globalstyle.css.css">
+    <link rel="stylesheet" href="globalstyle.css">
     <link rel="stylesheet" href="issueupdatestyle.css">
     <script src="globalScript.js"></script>
     <script src="issueupdateScript.js"></script>
 </head>
-<body>
-    <h1 class="tc">Issue Add</h1>
+<body class="center">
+    <h1 class="tc">Issue Update</h1>
     <div class="input-box scroll">
         <p>
             Issue Num : <span id="issue-num">2<!---fill this with GETapi ---></span>
             &nbsp;&nbsp;&nbsp;Reporter : <span id="reporter-name">홍길동<!---fill this with GETapi---></span>
             &nbsp;&nbsp;&nbsp;Assignee : <span id="assignee-name">양시훈</span>
         </p>
-        제목 <input type ="text" id="title" placeholder="Title">
+        제목 <input type ="text" id="title-input" placeholder="Title">
         <p>
             <span class="select-head priority-head">priority</span>
             <span class="select-head status-head">status</span>
@@ -39,21 +39,17 @@
         </select>
         <select id="type-input"> <!---Bug Task 중에 하나 지정 후 readonly로 --->
         </select>
-        <br><br><br>
+        <br>
         <div class="area-box">
             Description<textarea id="description-input" rows="13" cols="100" style="resize: none"></textarea> <!---get으로 채울 것--->
             <br><br>
             <div id="comments-container">
-                <div class="">
-                    <span class="comment-head">
-                        Comment&nbsp;&nbsp;&nbsp;Writer: <span>tjrzoswkddls5106</span>&nbsp;&nbsp;&nbsp;Date: <span>2024/05/23</span>
-                    </span>
-                    <textarea class="comment-history" rows="7" cols="40" readonly="true" style="resize: none"></textarea>
-                </div>
+                <!---Comment 자동으로 들어오는 곳 --->
             </div>
         </div>
     </div>
 
+    <!---add comment 모달--->
      <div class="popup-page hide" id="comment-popup">
          <button class="xbutton" onclick="closeCommentModal()">X</button>
          <h1 class="tc">Comment Add</h1>
@@ -61,12 +57,10 @@
              <!---이 자리에 Writer: @@@ 가 함수로 자동으로 들어갈 것임--->
              Comment<textarea id="comment-input" rows="10" cols="50" style="resize: none"></textarea>
          </div>
-         <button class="popup-addbutton" onclick="addComment()">Add</button> <!---아직 함수 body 비었음--->
+         <button class="popup-addbutton" onclick="addComment()">Add</button>
     </div>
 
-
-    </div>
-        <button class="newcommentbutton" onclick="openCommentModal()">New comment</button>
-        <button class="addbutton" onclick="addIssue()">Apply</button>
+    <button class="newcommentbutton" onclick="openCommentModal()">New comment</button>
+    <button class="applybutton" onclick="setIssue()">Apply</button>
 </body>
 </html>

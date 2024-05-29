@@ -1,9 +1,47 @@
  //html이 load되는 즉시 실행되는 함수
          document.addEventListener('DOMContentLoaded', function() {
               disableInputs();
+              initializeIssueData();
         });
 
+function initializeIssueData() {
+    const id = localStorage.getItem('loginId');
+    const currentIssueTItle = localStorage.getItem('currentIssueTitle');
 
+    const issuenumContatiner = document.getElementById('issue-num');
+    const reporterContainer = document.getElementById('reporter-name');
+    const titleContainer = document.getElementById('title-input');
+    const priorityContainer = document.getElementById('priority-input');
+    const statusContainer = document.getElementById('status-input');
+    const typeContainer = document.getElementById('type-input');
+    const descriptionContainer = document.getElementById('description-input');
+
+    reporterContainer.innerText = id;
+
+      fetch('http://localhost:8080/issueTitle' + currentIssueTItle)
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('Network response was not ok ' + response.statusText);
+              }
+              return response.json();
+          })
+          .then(data => {
+              issuenumContatiner.textContent = data.issuenum;
+              localStorage.setItem('issuenum', data.issuenum);
+              titleContainer.value = data.title;
+              priorityContainer.value = data.priority;
+              statusContainer.value = data.status;
+              typeContainer.value = data.type;
+              descriptionContainer.value = data.description;
+          })
+          .catch(error => {
+              console.error('There was a problem with the fetch operation:', error);
+          });
+}
+
+function setIssue() {
+
+}
 
 //여기서부터 Comment관련함수 ------------------------------------------------------------------------------------
  function addComment() {
@@ -29,7 +67,7 @@
          }
 
          function showAllComments() {
-             fetch('http://localhost:8080/listComment')
+             fetch('http://localhost:8080/listComment/' + localStorage.getItem('issuenum'))
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);

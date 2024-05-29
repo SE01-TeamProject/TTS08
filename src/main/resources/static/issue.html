@@ -34,7 +34,7 @@
             </tbody>
         </table>
     </div>
-    <div class="search-set">
+    <div class="search-set center">
          <select id="search-select">
             <option value="title">title</option>
             <option value="priority">priority</option>
@@ -46,10 +46,10 @@
         <span><input type="text" class="searchinput" placeholder="search..."></span>
         <button class="searchbutton">Search</button>
         <button class="resetbutton">Reset</button>
+        <button class="addbutton" onclick="openIssueAddModal()">Issue Add</button>
     </div>
-    <button class="addbutton" onclick="openPopUp('issue-popup')">Issue Add</button>
-                                        <!---나중에 함수 바꿔야함 --->
 
+<!----------------------------------------여기부터 팝업창----------------------------------------->
     <div class="popup-page hide" id="issue-popup">
          <button class="xbutton" onclick="closePopUp('issue-popup')">X</button>
     <h1 class="tc">Issue Add</h1>

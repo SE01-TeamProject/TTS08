@@ -22,13 +22,15 @@ public class CommentController {
 	public CommentController(CommentService cs) {
 		this.cs = cs;
 	}
-	
+
+	/*
 	// 코멘트들을 가져와 나열하는 메소드
 	@GetMapping("/listComment")
 	public List<Comment> getCommentList() {
 		return cs.getCommentList();
 	}
-	
+	*/
+
 	@GetMapping("/listComment/{id}")	// 이슈 Id로 코멘트 나열
 	public String getCommentList(@PathVariable("id") Integer id) {
 		return cs.getCommentList(id);
