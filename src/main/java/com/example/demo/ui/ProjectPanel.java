@@ -87,12 +87,8 @@ public class ProjectPanel extends JPanel {
                     }
 
                     // Print the data of the selected row
-                    System.out.println("Selected row data: ");
-                    for (Object data : rowData) {
-                        System.out.print(data + " ");
-                    }
-                    
-                    System.out.println();
+                    System.out.println("Selected Project: " + rowData[0]);
+                    controller.projectSelect(rowData[0].toString());
                 }
 			}
 			public void mousePressed(MouseEvent e) {				

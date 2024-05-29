@@ -38,16 +38,135 @@ public class SwingController {
 			e.printStackTrace();
 		}
 		
+		System.out.println("GOOD: " + requestGET("/issueTitle/Issue1"));
+		
 		//connection = (HttpURLConnection) url.openConnection();
+	}
 	
+	// Issue (Ticket) ------------------------------------------------------------------------------
+	//GET
+	public String[] getIssueHeader() {
+		String[] header = {"id", "title", "description", "date"};
+		return header;
+	}
+	
+	public String[][] getIssueContent() {
+		String[][] content;
+		
+		String response = requestGET("/listIssue");
+		
+		String[] keys = getIssueHeader();
+        content = extractValues(response, keys);
+        System.out.println(content);
+        return content;
+	}
+	
+	
+	
+	// Users ---------------------------------------------------------------------------------
+	public String getCurrUser() {
+		return userID;
 	}
 	
 	public void addUser(String id, String pw, String name, int level) {
 		System.out.println("Add User - [ID: " + id + "] [PW: " + pw + "] [Name: " + name + "] [Level: " + level + "]");
+		JSONObject obj = new JSONObject();
+		obj.put("name", id);
+		obj.put("fullName", name);
+		obj.put("password", pw);
+		obj.put("level", level);
+		String inputString = obj.toString();
+		
+		String response = requestPOST("/addUser", inputString);
+		System.out.println("Add USER: " + response);
+		
 		
 	}
 	
-	// Projects -------------------------------------------------
+	//GET
+	public String getCurrUserInfo(String key) {
+		String response = requestGET("/userName/" + getCurrUser() + "");
+		if(response != null) {
+			//System.out.println("Response: " + response);
+			JSONObject obj = new JSONObject(response);
+			
+			if(obj.has(key)) {
+				return obj.get(key).toString();
+			}
+			else {
+				System.out.println("Wrong Key [" + key + "]");
+				return null;
+			}
+		}
+		return null;
+	}
+	
+	// Projects -------------------------------------------------------------------------------
+	//GET
+	public ArrayList<String> getProjects(){
+		
+		ArrayList<String> array = new ArrayList<String>();
+		//ArrayList<String> projects = new ArrayList<String>(Arrays.asList("project1", "project2", "project3", "project4"));	// Change this -> Use model call
+		
+		
+		try {
+			JSONObject projectList = new JSONObject();
+			
+			URL url = new URL(urlString+"/listProject");
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();		
+			connection.setRequestMethod("GET");
+			connection.setDoOutput(true);
+	
+			//connection.setRequestProperty("Content-Type", "application/json; utf-8");
+            //connection.setRequestProperty("Accept", "application/json");
+            
+			 
+			int responseCode = connection.getResponseCode();
+            System.out.println("GET Response Code :: " + responseCode);
+
+			
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                System.out.println(response.toString());
+                JSONArray projects = new JSONArray(response.toString());
+                
+                // Parse ---------------------------------------------------------                
+                for(int i = 0; i < projects.length(); i++) {
+                	JSONObject obj = projects.getJSONObject(i);
+                	System.out.println(obj.toString());
+                	String projectTitle = obj.get("title").toString();
+                	array.add(projectTitle);
+                }
+                System.out.println(array);
+                return array;
+                
+            } else {
+                System.out.println("Failed to GET PROJECTLIST");
+                return null;
+            }
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		//Project add test -> use pre-defined variable
+		/*
+		for(String project : projects) {
+			array.add(project);
+		}		
+		return array;	
+		*/
+	}
+	
+	//POST
 	public void addProject(String title, String description, String pl, String dev, String tester) {
 		System.out.println("[Title: " + title + "] [Description: " + description + "]" + "["+ pl + "/" + dev + "/" + tester +"]");
 		
@@ -101,9 +220,6 @@ public class SwingController {
             } else {
                 System.out.println("Failed to POST addProject");
             }
-            
-            
-            
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -131,7 +247,7 @@ public class SwingController {
 		projectSelectFlag = flag;
 	}
 	
-	// Log in & out --------------------------------------------	
+	// Log in & out --------------------------------------------------------------------------	
 	public boolean login(String id, String password){
 		/* Ask Model to Login -> if True, on the Main, off the Login
 		 * */
@@ -206,70 +322,7 @@ public class SwingController {
 		mainWindow.setVisible(false);		
 	}
 	
-	// Getters -------------------------------------------------
-	//GET
-	public ArrayList<String> getProjects(){
-		
-		ArrayList<String> array = new ArrayList<String>();
-		//ArrayList<String> projects = new ArrayList<String>(Arrays.asList("project1", "project2", "project3", "project4"));	// Change this -> Use model call
-		
-		
-		try {
-			JSONObject projectList = new JSONObject();
-			
-			URL url = new URL(urlString+"/listProject");
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();		
-			connection.setRequestMethod("GET");
-			connection.setDoOutput(true);
-	
-			//connection.setRequestProperty("Content-Type", "application/json; utf-8");
-            //connection.setRequestProperty("Accept", "application/json");
-            
-			 
-			int responseCode = connection.getResponseCode();
-            System.out.println("GET Response Code :: " + responseCode);
-
-			
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-                System.out.println(response.toString());
-                JSONArray projects = new JSONArray(response.toString());
-                
-                // Parse ---------------------------------------------------------                
-                for(int i = 0; i < projects.length(); i++) {
-                	JSONObject obj = projects.getJSONObject(i);
-                	System.out.println(obj.toString());
-                	String projectTitle = obj.get("title").toString();
-                	array.add(projectTitle);
-                }
-                System.out.println(array);
-                return array;
-                
-            } else {
-                System.out.println("Failed to GET PROJECTLIST");
-                return null;
-            }
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		
-		//Project add test -> use pre-defined variable
-		/*
-		for(String project : projects) {
-			array.add(project);
-		}		
-		return array;	
-		*/
-	}
+	// Getters -------------------------------------------------------------------------------
 	
 	public String[][] getProjectContent(){
 		String [][] content;
@@ -322,7 +375,7 @@ public class SwingController {
 	
 	public ArrayList<String> getPriorties(){
 		ArrayList<String> array = new ArrayList<String>();		
-		ArrayList<String> priority = new ArrayList<String>(Arrays.asList("Blocker", "Critical", "Major", "Minor", "Trivial"));	// Change this -> Use model call
+		ArrayList<String> priority = new ArrayList<String>(Arrays.asList( "Major", "Minor", "Blocker", "Critical", "Trivial"));	// Change this -> Use model call
 		
 		for(String pri : priority) {
 			array.add(pri);
@@ -342,7 +395,7 @@ public class SwingController {
 	
 	public ArrayList<String> getStates(){
 		ArrayList<String> array = new ArrayList<String>();		
-		ArrayList<String> milestones = new ArrayList<String>(Arrays.asList("New", "Assigned", "Resolved", "Closed", "Reopened"));	// Change this -> Use model call
+		ArrayList<String> milestones = new ArrayList<String>(Arrays.asList("New", "Assigned", "Fixed", "Resolved", "Closed", "Reopened"));	// Change this -> Use model call
 		
 		for(String stone : milestones) {
 			array.add(stone);
@@ -364,7 +417,6 @@ public class SwingController {
 	
 	public ArrayList<String> getDummyTicket() {
 		ArrayList<String> ticket = new ArrayList<String>();
-		
 		return ticket;
 	}
 	
@@ -491,20 +543,20 @@ public class SwingController {
 	
 	// General Usage ===========================================================================================
 	 public String[][] extractValues(String jsonString, String[] keys) {
-	        // JSON 배열로 파싱
-	        JSONArray jsonArray = new JSONArray(jsonString);
-
-	        // 2차원 배열 초기화
+	        
+		 	JSONArray jsonArray = new JSONArray(jsonString);
+		 	
+	        // init array
 	        String[][] valuesArray = new String[jsonArray.length()][keys.length];
 
-	        // JSON 배열 순회
+	        // JSON parse
 	        for (int i = 0; i < jsonArray.length(); i++) {
 	            JSONObject jsonObject = jsonArray.getJSONObject(i);
 	            String[] values = new String[keys.length];
 
-	            // 특정 key의 value 추출
+	            // extract value for keys
 	            for (int j = 0; j < keys.length; j++) {
-	                values[j] = jsonObject.optString(keys[j], ""); // key가 존재하지 않을 경우 빈 문자열 반환
+	                values[j] = jsonObject.optString(keys[j], ""); // return null if value is not there
 	            }
 	            valuesArray[i] = values;
 	            System.out.print("EXTRACT["+i+"]: ");
@@ -514,6 +566,99 @@ public class SwingController {
 	        return valuesArray;
 	    }
 	
+	 public String requestGET(String postfix){
+			try {
+				URL url = new URL(urlString + postfix);
+				HttpURLConnection connection = (HttpURLConnection) url.openConnection();		
+				connection.setRequestMethod("GET");
+				connection.setDoOutput(true);
+		
+				//connection.setRequestProperty("Content-Type", "application/json; utf-8");
+	            //connection.setRequestProperty("Accept", "application/json");
+	            
+				 
+				int responseCode = connection.getResponseCode();
+	            System.out.println("GET Response Code :: " + responseCode);
+
+				
+	            if (responseCode == HttpURLConnection.HTTP_OK) {
+	                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+	                String inputLine;
+	                StringBuilder response = new StringBuilder();
+
+	                while ((inputLine = in.readLine()) != null) {
+	                    response.append(inputLine);
+	                }
+	                in.close();
+	                //System.out.println(response.toString());
+	                return response.toString();
+	            } else {
+	                System.out.println("Failed to GET REQUEST - [" + url + "]");
+	                return null;
+	            }
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+	 }
+	 
+	 public String requestPOST(String postfix, String inputString) {
+		 try {
+				URL url = new URL(urlString + postfix);
+				HttpURLConnection connection = (HttpURLConnection) url.openConnection();		
+				connection.setRequestMethod("POST");
+				connection.setDoOutput(true);
+				connection.setRequestProperty("Content-Type", "application/json;");
+	            connection.setRequestProperty("Accept", "application/json");
+
+				System.out.println(inputString);
+
+	            // Write input data
+	            try(OutputStream os = connection.getOutputStream()) {
+	                byte[] input = inputString.getBytes("utf-8");
+	                os.write(input, 0, input.length);           
+	            }
+	            // Check ACK
+	            int responseCode = connection.getResponseCode();
+	            System.out.println("GET Response Code :: " + responseCode);
+	            
+	            // Get Data
+	            if (responseCode == HttpURLConnection.HTTP_OK) {
+	                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
+	                String inputLine;
+	                StringBuilder response = new StringBuilder();
+
+	                while ((inputLine = in.readLine()) != null) {
+	                    response.append(inputLine);
+	                }
+	                in.close();
+
+	                String responseString = response.toString();
+	                System.out.println(responseString);
+	                return responseString;
+	                
+	                
+	            } else {
+	                System.out.println("Failed to POST REQUEST - [" + url + "], [" + inputString + "]");
+	            }
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		 return null;
+	 }
+	 
+	 public enum Priority {
+		 MAJOR, MINOR, BLOCKER, CRITICAL, TRIVIAL
+	 } // TODO Is Order of ENUM Ok?
+	 public enum Status {
+		 NEW, ASSIGNED, FIXED, RESOLVED, CLOSED, REOPENED
+	 }
+	 public enum Type {
+		 BUG, TASK
+	 }
+	 
 	// For testing ==============================================================================================
 	private void GETtest() {
 		
