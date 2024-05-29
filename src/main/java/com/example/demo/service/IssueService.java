@@ -59,7 +59,8 @@ public class IssueService {
 		} else {
 			int priority = Issue.getPriorityFromString(issueAddDto.getPriority());
 			int type = Issue.getTypeFromString(issueAddDto.getType());
-			issueRepository.save(new Issue(projectRepository.findByTitle(issueAddDto.getProject()).getId(),
+			System.out.println("projectId : [" + issueAddDto.getProject() + "]");
+			issueRepository.save(new Issue(Integer.valueOf(issueAddDto.getProject()),
 					issueAddDto.getTitle(), 
 					issueAddDto.getDescription(), 
 					memberRepository.findByName(issueAddDto.getReporter()).getId(),
@@ -121,8 +122,13 @@ public class IssueService {
 				obj.put("description", item.getDescription());
 				user = memberRepository.findById(item.getReporter());
 				obj.put("reporter", user.isEmpty() ? "N/A" : user.get().getName());
-				user = memberRepository.findById(item.getAssignee());
-				obj.put("assignee", user.isEmpty() ? "N/A" : user.get().getName());
+				if(item.getAssignee() != null) {
+					user = memberRepository.findById(item.getAssignee());
+					obj.put("assignee", user.isEmpty() ? "N/A" : user.get().getName());
+				}
+				else {
+					obj.put("assignee", "N/A");
+				}
 				obj.put("priority", item.getPriority());
 				obj.put("status", item.getStatus());
 				obj.put("type", item.getType());

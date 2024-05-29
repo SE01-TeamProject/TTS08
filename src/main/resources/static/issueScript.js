@@ -3,7 +3,8 @@
               showAllIssues();
         });
 
-        function addIssue() {
+        async function addIssue() {
+          const project = localStorage.getItem('projectId');
 		  const title = document.getElementById('title-input').value;
           const description = document.getElementById('description-input').value;
 		  const reporter = localStorage.getItem('loginId');
@@ -18,18 +19,19 @@
               headers: {
                   'Content-Type': 'application/json'
               },
-              body: JSON.stringify({title, description, reporter, priority, type})
+              body: JSON.stringify({project, title, description, reporter, priority, type})
           })
               .then(response => response.text())
               .then(data => {
                   if (data === 'true') {
                       alert("Issue add success.")
-                      gotoIssuePage();
+                      closePopUp('issue-popup');
                   } else if (data === 'false') {
                       alert("중복된 이슈입니다.");
                   }
               });
-            closePopUp('issue-popup');
+              await delay(200);//alert창 무시하고 페이지 리로드되는 것 방지
+              location.href = "http://localhost:8080/issue.html";
         }
 
         async function showAllIssues() {
@@ -41,7 +43,7 @@
                 }
                 const issueLists = await response.json();
                 issueLists.forEach(issue => {//issuenum title priority state type Date
-                    const tableBody = document.getElementById('user-table-body');
+                    const tableBody = document.getElementById('issue-table-body');
                     const newRow = document.createElement('tr');
                     newRow.className = 'tc';
 

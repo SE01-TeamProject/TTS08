@@ -55,3 +55,6 @@
             newOption.text = value;
             parent.appendChild(newOption);
         }
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
