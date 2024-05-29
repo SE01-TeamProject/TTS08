@@ -22,6 +22,7 @@ public class SwingController {
 	private boolean projectSelectFlag = false;
 	private String urlString = "http://localhost:8080";
 	private String userID;
+	private String currProject;
 	
 	//private URL url;
 	//private HttpURLConnection connection;
@@ -46,6 +47,7 @@ public class SwingController {
 		
 	}
 	
+	// Projects -------------------------------------------------
 	public void addProject(String title, String description, String pl, String dev, String tester) {
 		System.out.println("[Title: " + title + "] [Description: " + description + "]" + "["+ pl + "/" + dev + "/" + tester +"]");
 		
@@ -113,6 +115,14 @@ public class SwingController {
 		return projectSelectFlag;
 	}
 	
+	public String getCurrProject() {
+		return currProject;
+	}
+	
+	public void projectSelect(String title){
+		currProject = title;
+		projectSelect();
+	}	
 	public void projectSelect() {
 		setProjectFlag(true);
 	}
@@ -197,11 +207,11 @@ public class SwingController {
 	}
 	
 	// Getters -------------------------------------------------
-	
 	//GET
 	public ArrayList<String> getProjects(){
+		
 		ArrayList<String> array = new ArrayList<String>();
-		ArrayList<String> projects = new ArrayList<String>(Arrays.asList("project1", "project2", "project3", "project4"));	// Change this -> Use model call
+		//ArrayList<String> projects = new ArrayList<String>(Arrays.asList("project1", "project2", "project3", "project4"));	// Change this -> Use model call
 		
 		
 		try {
@@ -229,21 +239,85 @@ public class SwingController {
                     response.append(inputLine);
                 }
                 in.close();
-
                 System.out.println(response.toString());
+                JSONArray projects = new JSONArray(response.toString());
+                
+                // Parse ---------------------------------------------------------                
+                for(int i = 0; i < projects.length(); i++) {
+                	JSONObject obj = projects.getJSONObject(i);
+                	System.out.println(obj.toString());
+                	String projectTitle = obj.get("title").toString();
+                	array.add(projectTitle);
+                }
+                System.out.println(array);
+                return array;
+                
             } else {
                 System.out.println("Failed to GET PROJECTLIST");
+                return null;
             }
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+			return null;
 		}
 		
 		//Project add test -> use pre-defined variable
+		/*
 		for(String project : projects) {
 			array.add(project);
 		}		
 		return array;	
+		*/
+	}
+	
+	public String[][] getProjectContent(){
+		String [][] content;
+		try {
+			JSONObject projectList = new JSONObject();
+			
+			URL url = new URL(urlString+"/listProject");
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();		
+			connection.setRequestMethod("GET");
+			connection.setDoOutput(true);
+	
+			//connection.setRequestProperty("Content-Type", "application/json; utf-8");
+            //connection.setRequestProperty("Accept", "application/json");
+            
+			 
+			int responseCode = connection.getResponseCode();
+            System.out.println("GET Response Code :: " + responseCode);
+
+			
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+
+                while ((inputLine = in.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                in.close();
+                System.out.println(response.toString());
+                JSONArray projects = new JSONArray(response.toString());
+                
+                // Parse --------------------------------------------------------- 
+                
+                
+                String[] keys = {"title", "description", "date"};
+                content = extractValues(response.toString(), keys);
+                System.out.println(content);
+                return content;
+                
+            } else {
+                System.out.println("Failed to GET PROJECTLIST");
+                return null;
+            }
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public ArrayList<String> getPriorties(){
@@ -296,6 +370,12 @@ public class SwingController {
 	
 	//GET
 	public ArrayList<String> getUserByLevel(int level){
+		/* -1 -> return all users except admin
+		 *  0 -> admin
+		 *  1 -> pl
+		 *  2 -> dev
+		 *  3 -> tester			
+		*/
 		try {
 			JSONObject projectList = new JSONObject();
 			
@@ -327,7 +407,7 @@ public class SwingController {
                 // After get response ------------------------------
                 
                 JSONArray array = new JSONArray(response.toString());
-                
+                ArrayList<String> allArr = new ArrayList<String>();
                 ArrayList<String> adminArr = new ArrayList<String>();
                 ArrayList<String> plArr = new ArrayList<String>();
                 ArrayList<String> devArr = new ArrayList<String>();
@@ -344,12 +424,15 @@ public class SwingController {
                         break;
                     case 1:
                         plArr.add(obj.get("name").toString());
+                        allArr.add(obj.get("name").toString());
                         break;
                     case 2:
                         devArr.add(obj.get("name").toString());
+                        allArr.add(obj.get("name").toString());
                         break;
                     case 3:
                         testerArr.add(obj.get("name").toString());
+                        allArr.add(obj.get("name").toString());
                         break;
                 	}
                 }                
@@ -359,6 +442,8 @@ public class SwingController {
                 System.out.println(testerArr);
                 
                switch(level) {
+               case -1:
+            	   return allArr;
                case 0:
             	   return adminArr;
                case 1:
@@ -381,6 +466,7 @@ public class SwingController {
 		return null;
 	}
 	
+	/*
 	public ArrayList<String> getTestUsers(){
 		// Return user list, EVERY USER
 		ArrayList<String> array = new ArrayList<String>();
@@ -401,8 +487,32 @@ public class SwingController {
 			array.add(user);
 		}
 		return array;
-	}
+	}*/
 	
+	// General Usage ===========================================================================================
+	 public String[][] extractValues(String jsonString, String[] keys) {
+	        // JSON 배열로 파싱
+	        JSONArray jsonArray = new JSONArray(jsonString);
+
+	        // 2차원 배열 초기화
+	        String[][] valuesArray = new String[jsonArray.length()][keys.length];
+
+	        // JSON 배열 순회
+	        for (int i = 0; i < jsonArray.length(); i++) {
+	            JSONObject jsonObject = jsonArray.getJSONObject(i);
+	            String[] values = new String[keys.length];
+
+	            // 특정 key의 value 추출
+	            for (int j = 0; j < keys.length; j++) {
+	                values[j] = jsonObject.optString(keys[j], ""); // key가 존재하지 않을 경우 빈 문자열 반환
+	            }
+	            valuesArray[i] = values;
+	            System.out.print("EXTRACT["+i+"]: ");
+	            System.out.println(Arrays.toString(values));
+	        }
+
+	        return valuesArray;
+	    }
 	
 	// For testing ==============================================================================================
 	private void GETtest() {
