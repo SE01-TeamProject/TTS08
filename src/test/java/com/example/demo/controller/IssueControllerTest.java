@@ -1,9 +1,14 @@
 package com.example.demo.controller;
 
+import com.example.demo.domain.Issue;
+import com.example.demo.domain.Member;
 import com.example.demo.dto.IssueAddDto;
 import com.example.demo.dto.IssueSetDto;
 import com.example.demo.dto.MemberAddDto;
 import com.example.demo.dto.ProjectAddDto;
+import com.example.demo.repository.IssueRepository;
+import com.example.demo.repository.MemberRepository;
+import com.example.demo.repository.ProjectRepository;
 import com.example.demo.service.IssueService;
 import com.example.demo.service.MemberService;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -45,9 +50,16 @@ class IssueControllerTest {
     @Autowired
     private MemberService memberService;
 
-    private Long testIssueId;
+    @Autowired
+    private MemberRepository memberRepository;
 
-    private Long testProjectId;
+    private Integer testIssueId;
+    private String testMemberName;
+    private Integer testProjectId;
+    @Autowired
+    private IssueRepository issueRepository;
+    @Autowired
+    private ProjectRepository projectRepository;
 
     @BeforeEach
     void setUp() throws Exception{
@@ -59,6 +71,7 @@ class IssueControllerTest {
         memberService.addUser(dev);
         MemberAddDto tester = new MemberAddDto("tester","tester","tester","3");
         memberService.addUser(tester);
+        testMemberName=tester.getName();
         MemberAddDto pl2 = new MemberAddDto("pl2","pl2","pl2","1");
         memberService.addUser(pl2);
         MemberAddDto dev2 = new MemberAddDto("dev2","dev2","dev2","2");
@@ -73,45 +86,32 @@ class IssueControllerTest {
                 .developer("dev")
                 .tester("tester")
                 .build();
-        MvcResult mvcResult = this.mvc.perform(post("/addProject")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(testProjectAdd)))
-                .andExpect(status().isOk())
-                .andReturn();
-        JsonNode node = objectMapper.readTree(mvcResult.getResponse().getContentAsString());
-        JsonNode chkNode = node.get("id");
-        if(chkNode!=null)testProjectId=chkNode.asLong();
-        else testProjectId=null;
-
-        ProjectAddDto testProjectAdd2=ProjectAddDto.builder()
-                .title("test2")
-                .description("test2")
-                .PL("pl2")
-                .developer("dev2")
-                .tester("tester2")
-                .build();
         this.mvc.perform(post("/addProject")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testProjectAdd)))
                 .andExpect(status().isOk());
+        testProjectId=projectRepository.findByTitle(testProjectAdd.getTitle()).getId();
 
+//        IssueAddDto issueAddDto = IssueAddDto.builder()
+//                .title("test")
+//                .description("test")
+//                .build();
+//        this.mvc.perform(post("/addIssue")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(issueAddDto)))
+//                .andExpect(status().isOk());
         IssueAddDto issueAddDto = IssueAddDto.builder()
-                .title("test")
-                .description("test")
-                .build();
-        this.mvc.perform(post("/addIssue")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(issueAddDto)))
-                .andExpect(status().isOk());
-        issueAddDto = IssueAddDto.builder()
                 .title("test2")
                 .description("test2")
+                .reporter("tester")
+                .priority("0")
+                .type("0")
                 .build();
         this.mvc.perform(post("/addIssue")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(issueAddDto)))
                 .andExpect(status().isOk());
-
+        testIssueId=issueRepository.findByTitle(issueAddDto.getTitle()).getId();
 //        IssueSetDto issueSetDto = IssueSetDto.builder()
 //                .id(0)
 //                .priority(0)
@@ -121,7 +121,6 @@ class IssueControllerTest {
 //                .contentType(MediaType.APPLICATION_JSON)
 //                .content(objectMapper.writeValueAsString(issueSetDto)))
 //                .andExpect(status().isOk());
-
     }
 
     @Test
@@ -130,6 +129,9 @@ class IssueControllerTest {
         IssueAddDto issueAddDto=IssueAddDto.builder()
                 .title("test")
                 .description("test")
+                .reporter("tester")
+                .priority("0")
+                .type("0")
                 .build();
         this.mvc.perform(post("/addIssue")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -138,31 +140,32 @@ class IssueControllerTest {
 
     }
 
-//    @Test
-//    @DisplayName("getIssueList Success")
-//    void getIssueList()throws Exception {
-//        this.mvc.perform(get("/listIssue"))
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    @DisplayName("getIssueList by project id Success")
-//    void getIssueListByProjectId()throws Exception {
-//        this.mvc.perform(get("/listIssue/"+testProjectId))
-//                .andExpect(status().isUnauthorized());
-//    }
-//
-//    @Test
-//    @DisplayName("setstate Success")
-//    void setState() throws Exception{
-//        IssueSetDto issueSetDto=IssueSetDto.builder()
-//                .id(0)
-//                .priority(1)
-//                .status(1)
-//                .build();
-//        this.mvc.perform(post("/setIssue")
-//                    .contentType(MediaType.APPLICATION_JSON)
-//                    .content(objectMapper.writeValueAsString(issueSetDto)))
-//                .andExpect(status().isOk());
-//    }
+    @Test
+    @DisplayName("getIssueList Success")
+    void getIssueList()throws Exception {
+        this.mvc.perform(get("/listIssue"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("getIssueList by project id Success")
+    void getIssueListByProjectId()throws Exception {
+        this.mvc.perform(get("/listIssue/"+testProjectId))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("setstate Success")
+    void setState() throws Exception{
+        IssueSetDto issueSetDto=IssueSetDto.builder()
+                .id(testIssueId)
+                .priority(Issue.getPriorityFromString("Major"))
+                .status(Issue.getStatusFromString("Assigned"))
+                //.assignee(testMemberName)
+                .build();
+        this.mvc.perform(post("/setIssue")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(issueSetDto)))
+                .andExpect(status().isOk());
+    }
 }
