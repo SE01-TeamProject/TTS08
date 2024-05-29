@@ -19,10 +19,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.spring6.expression.Mvc;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -64,17 +64,17 @@ class ProjectControllerTest {
         MemberAddDto tester2 = new MemberAddDto("tester2","tester2","tester2","3");
         memberService.addUser(tester2);
 
-        ProjectAddDto testProjectAdd=ProjectAddDto.builder()
-                .title("test")
-                .description("test")
-                .PL("pl")
-                .developer("dev")
-                .tester("tester")
-                .build();
-        this.mvc.perform(post("/addProject")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(testProjectAdd)))
-                .andExpect(status().isOk());
+//        ProjectAddDto testProjectAdd=ProjectAddDto.builder()
+//                .title("test")
+//                .description("test")
+//                .PL("pl")
+//                .developer("dev")
+//                .tester("tester")
+//                .build();
+//        this.mvc.perform(post("/addProject")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(testProjectAdd)))
+//                .andExpect(status().isOk());
 
         ProjectAddDto testProjectAdd2=ProjectAddDto.builder()
                 .title("test2")
@@ -87,6 +87,7 @@ class ProjectControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testProjectAdd2)))
                 .andExpect(status().isOk());
+        testProjectId=projectRepository.findByTitle(testProjectAdd2.getTitle()).getId();
 
     }
 
@@ -100,10 +101,78 @@ class ProjectControllerTest {
                 .developer("dev")
                 .tester("tester")
                 .build();
-        this.mvc.perform(post("/addProject")
+        MvcResult mvcResult=this.mvc.perform(post("/addProject")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(projectAddDto)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn();
+        String response =mvcResult.getResponse().getContentAsString();
+        assertEquals("true", response);
+        System.out.println("Http response : "+response);
+    }
+
+    @Test
+    @DisplayName("Add Fail: title duplicated")
+    void addProjectFail() throws Exception {
+        ProjectAddDto projectAddDto = ProjectAddDto.builder()
+                .title("test2")
+                .description("test")
+                .PL("pl")
+                .developer("dev")
+                .tester("tester")
+                .build();
+        MvcResult mvcResult=this.mvc.perform(post("/addProject")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(projectAddDto)))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response =mvcResult.getResponse().getContentAsString();
+        assertEquals("false", response);
+        System.out.println("Http response : "+response);
+    }
+
+    @Test //현재 title이 비었을 때 addproject가 동작함
+    @DisplayName("Add Fail: empty title")
+    void addProjectFail_2() throws Exception {
+        ProjectAddDto projectAddDto = ProjectAddDto.builder()
+                .title("")
+                .description("")
+                .PL("pl")
+                .developer("dev")
+                .tester("tester")
+                .build();
+        MvcResult mvcResult=this.mvc.perform(post("/addProject")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(projectAddDto)))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response =mvcResult.getResponse().getContentAsString();
+        System.out.println("Http response : "+response);
+        assertEquals("false", response);
+    }
+
+    @Test
+    @DisplayName("getProject by id Success")
+    void getProject()throws Exception {
+        MvcResult mvcResult=this.mvc.perform(get("/project/{id}",testProjectId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.title").value(projectRepository.findById(testProjectId).get().getTitle()))
+                .andExpect(jsonPath("$.description").value(projectRepository.findById(testProjectId).get().getDescription()))
+                .andReturn();
+        String response =mvcResult.getResponse().getContentAsString();
+        System.out.println("Http response : "+response);
+    }
+
+    @Test
+    @DisplayName("getProject by id Fail: wrong Id")
+    void getProjectFail()throws Exception {
+        Integer wrongId=1234;
+        MvcResult mvcResult=this.mvc.perform(get("/project/{id}",wrongId))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response =mvcResult.getResponse().getContentAsString();
+        assertEquals("", response);
+        System.out.println("Http response : "+response);
     }
 
     @Test
