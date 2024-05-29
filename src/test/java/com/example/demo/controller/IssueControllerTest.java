@@ -13,6 +13,7 @@ import com.example.demo.service.IssueService;
 import com.example.demo.service.MemberService;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.bytebuddy.implementation.ToStringMethod;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -101,11 +102,12 @@ class IssueControllerTest {
 //                .content(objectMapper.writeValueAsString(issueAddDto)))
 //                .andExpect(status().isOk());
         IssueAddDto issueAddDto = IssueAddDto.builder()
+                .project(Integer.toString(testProjectId))
                 .title("test2")
                 .description("test2")
                 .reporter("tester")
-                .priority("0")
-                .type("0")
+                .priority("Major")
+                .type("New")
                 .build();
         this.mvc.perform(post("/addIssue")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -127,11 +129,12 @@ class IssueControllerTest {
     @DisplayName("addIssue Success")
     void addIssue()throws Exception {
         IssueAddDto issueAddDto=IssueAddDto.builder()
+                .project("0")
                 .title("test")
                 .description("test")
                 .reporter("tester")
-                .priority("0")
-                .type("0")
+                .priority("Major")
+                .type("New")
                 .build();
         this.mvc.perform(post("/addIssue")
                     .contentType(MediaType.APPLICATION_JSON)
@@ -155,13 +158,35 @@ class IssueControllerTest {
     }
 
     @Test
+    @DisplayName("getIssue by Issue Id Success")
+    void getIssue()throws Exception {
+        this.mvc.perform(get("/issue/"+testIssueId))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("setAssignee Success")
+    void setAssignee()throws Exception {
+        IssueSetDto testIssueSet=IssueSetDto.builder()
+                .id(testIssueId)
+                .priority(issueRepository.findById(testIssueId).orElseThrow().getPriority())
+                .status(issueRepository.findById(testIssueId).orElseThrow().getStatus())
+                .assignee(testMemberName)
+                .build();
+        this.mvc.perform(post("/setAssignee")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(testIssueSet)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     @DisplayName("setstate Success")
     void setState() throws Exception{
         IssueSetDto issueSetDto=IssueSetDto.builder()
                 .id(testIssueId)
                 .priority(Issue.getPriorityFromString("Major"))
                 .status(Issue.getStatusFromString("Assigned"))
-                //.assignee(testMemberName)
+                .assignee(testMemberName)
                 .build();
         this.mvc.perform(post("/setIssue")
                     .contentType(MediaType.APPLICATION_JSON)
