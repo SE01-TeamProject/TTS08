@@ -65,7 +65,7 @@
                     newRow.appendChild(priorityCell);
 
                     const stateCell = document.createElement('td');
-                    stateCell.textContent = issue.state;
+                    stateCell.textContent = issue.status;
                     newRow.appendChild(stateCell);
 
                     const typeCell = document.createElement('td');
