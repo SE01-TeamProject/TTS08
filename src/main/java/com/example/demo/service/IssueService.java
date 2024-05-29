@@ -149,50 +149,52 @@ public class IssueService {
 		return issues.toString();
 	}
 	
-	public String getIssuePriority(int priority) {
+	public String getIssuePriority(String priority) {
 		JSONArray issues = new JSONArray();
 		issueRepository.findAll().forEach(item -> {
-			if (item.getProject() == priority) {
+			if (item.getProject() == Issue.getPriorityFromString(priority)) {
 				issues.put(issueToJSON(item));
 			}
 		});
 		return issues.toString();
 	}
 	
-	public String getIssueStatus(int status) {
+	public String getIssueStatus(String status) {
 		JSONArray issues = new JSONArray();
 		issueRepository.findAll().forEach(item -> {
-			if (item.getProject() == status) {
+			if (item.getProject() == Issue.getStatusFromString(status)) {
 				issues.put(issueToJSON(item));
 			}
 		});
 		return issues.toString();
 	}
 	
-	public String getIssueType(int type) {
+	public String getIssueType(String type) {
 		JSONArray issues = new JSONArray();
 		issueRepository.findAll().forEach(item -> {
-			if (item.getProject() == type) {
+			if (item.getProject() == Issue.getStatusFromString(type)) {
 				issues.put(issueToJSON(item));
 			}
 		});
 		return issues.toString();
 	}
 	
-	public String getIssueReporter(Integer reporter) {
+	public String getIssueReporter(String reporter) {
 		JSONArray issues = new JSONArray();
 		issueRepository.findAll().forEach(item -> {
-			if (item.getProject() == reporter) {
+			Member user = memberRepository.findByName(reporter);
+			if (item.getProject() == user.getId()) {
 				issues.put(issueToJSON(item));
 			}
 		});
 		return issues.toString();
 	}
 	
-	public String getIssueAssignee(Integer assignee) {
+	public String getIssueAssignee(String assignee) {
 		JSONArray issues = new JSONArray();
 		issueRepository.findAll().forEach(item -> {
-			if (item.getProject() == assignee) {
+			Member user = memberRepository.findByName(assignee);
+			if (item.getProject() == user.getId()) {
 				issues.put(issueToJSON(item));
 			}
 		});

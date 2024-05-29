@@ -55,27 +55,27 @@ public class IssueController {
 	}
 	
 	@GetMapping("/issuePriority/{priority}")
-	public String getIssuePriority(@PathVariable("priority") int priority) {
+	public String getIssuePriority(@PathVariable("priority") String priority) {
 		return is.getIssuePriority(priority);
 	}
 	
 	@GetMapping("/issueStatus/{status}")
-	public String getIssueStatus(@PathVariable("status") int status) {
+	public String getIssueStatus(@PathVariable("status") String status) {
 		return is.getIssueStatus(status);
 	}
 	
 	@GetMapping("/issueType/{type}")
-	public String getIssueType(@PathVariable("type") int type) {
+	public String getIssueType(@PathVariable("type") String type) {
 		return is.getIssueType(type);
 	}
 	
 	@GetMapping("/issueReporter/{reporter}")
-	public String getIssueReporter(@PathVariable("reporter") Integer reporter) {
+	public String getIssueReporter(@PathVariable("reporter") String reporter) {
 		return is.getIssueReporter(reporter);
 	}
 	
 	@GetMapping("/issueAssignee/{assignee}")
-	public String getIssueAssignee(@PathVariable("assignee") Integer assignee) {
+	public String getIssueAssignee(@PathVariable("assignee") String assignee) {
 		return is.getIssueAssignee(assignee);
 	}
 	
