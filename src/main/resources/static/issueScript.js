@@ -25,7 +25,7 @@
               .then(data => {
                   if (data === 'true') {
                       alert("Issue add success.")
-                      gotoIssuePage();
+                      closePopUp('issue-popup');
                   } else if (data === 'false') {
                       alert("중복된 이슈입니다.");
                   }
@@ -44,7 +44,7 @@
                 }
                 const issueLists = await response.json();
                 issueLists.forEach(issue => {//issuenum title priority state type Date
-                    const tableBody = document.getElementById('user-table-body');
+                    const tableBody = document.getElementById('issue-table-body');
                     const newRow = document.createElement('tr');
                     newRow.className = 'tc';
 
@@ -85,7 +85,7 @@
         }
 
         function clearAllIssues() {
-            const tableBody = document.getElementById('user-table-body');
+            const tableBody = document.getElementById('issue-table-body');
             tableBody.replaceChildren();
         }
        function disableInput() {

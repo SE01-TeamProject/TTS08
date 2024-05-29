@@ -56,6 +56,7 @@ public class IssueService {
 		} else {
 			int priority = Issue.getPriorityFromString(issueAddDto.getPriority());
 			int type = Issue.getTypeFromString(issueAddDto.getType());
+			System.out.println("projectId : [" + issueAddDto.getProject() + "]");
 			issueRepository.save(new Issue(Integer.valueOf(issueAddDto.getProject()),
 					issueAddDto.getTitle(), 
 					issueAddDto.getDescription(), 
