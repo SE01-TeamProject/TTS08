@@ -56,6 +56,10 @@ TTS08을 실행하기 위해서는 다음과 같은 프로그램이 필요합니
       
     - build.gradle에서 sourceCompatibility = '22'
       
-- 만약 JDK22가 없다면 오류가 발생할 수 있으며, JDK22 설치 후 다음과 같이 세팅을 한 뒤 다시 실행하십시오. 만약 이 세팅으로 실행했는데도 gradle 8.7과 JDK22의 호환 문제가 발생한다면 위의 세팅을 전부 21로 설정한 후 다시 실행하면 됩니다.
+- 만약 JDK22가 없다면 오류가 발생할 수 있으며, JDK22 설치 후 다음과 같이 세팅을 한 뒤 다시 실행하십시오. 만약 이 세팅으로 실행했는데도 gradle 8.7과 JDK22의 호환 문제가 발생한다면   
+```sh
+   sourceCompatibility = '21'
+   ```
+로 설정한 후, Settings > Build Tools > gradle > gradeJVM을 21로 설정하고 다시 실행하세요.
 
 4. 프로젝트를 실행하고 localhost:8080에 접속합니다.
