@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.domain.Issue;
-import com.example.demo.domain.Member;
 import com.example.demo.dto.IssueAddDto;
 import com.example.demo.dto.IssueSetDto;
 import com.example.demo.dto.MemberAddDto;
@@ -11,10 +10,7 @@ import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.ProjectRepository;
 import com.example.demo.service.IssueService;
 import com.example.demo.service.MemberService;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.bytebuddy.implementation.ToStringMethod;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,14 +19,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.spring6.expression.Mvc;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -61,25 +58,51 @@ class IssueControllerTest {
     private IssueRepository issueRepository;
     @Autowired
     private ProjectRepository projectRepository;
+    @Autowired
+    private StringHttpMessageConverter stringHttpMessageConverter;
 
     @BeforeEach
     void setUp() throws Exception{
-        MemberAddDto admin = new MemberAddDto("admin","admin","admin","0");
-        memberService.addUser(admin);
-        MemberAddDto pl = new MemberAddDto("pl","pl","pl","1");
-        memberService.addUser(pl);
-        MemberAddDto dev = new MemberAddDto("dev","dev","dev","2");
-        memberService.addUser(dev);
-        MemberAddDto tester = new MemberAddDto("tester","tester","tester","3");
-        memberService.addUser(tester);
-        testMemberName=tester.getName();
-        MemberAddDto pl2 = new MemberAddDto("pl2","pl2","pl2","1");
-        memberService.addUser(pl2);
-        MemberAddDto dev2 = new MemberAddDto("dev2","dev2","dev2","2");
-        memberService.addUser(dev2);
-        MemberAddDto tester2 = new MemberAddDto("tester2","tester2","tester2","3");
-        memberService.addUser(tester2);
-
+        MemberAddDto admin =MemberAddDto.builder()
+                .name("admin")
+                .fullName("admin")
+                .password("admin")
+                .level("0")
+                .build();
+        this.mvc.perform(post("/addUser")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(admin)))
+                .andExpect(status().isOk());
+        MemberAddDto pl =MemberAddDto.builder()
+                .name("pl")
+                .fullName("pl")
+                .password("pl")
+                .level("1")
+                .build();
+        this.mvc.perform(post("/addUser")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(pl)))
+                .andExpect(status().isOk());
+        MemberAddDto dev =MemberAddDto.builder()
+                .name("dev")
+                .fullName("dev")
+                .password("dev")
+                .level("2")
+                .build();
+        this.mvc.perform(post("/addUser")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dev)))
+                .andExpect(status().isOk());
+        MemberAddDto tester =MemberAddDto.builder()
+                .name("tester")
+                .fullName("tester")
+                .password("tester")
+                .level("3")
+                .build();
+        this.mvc.perform(post("/addUser")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(tester)))
+                .andExpect(status().isOk());
         ProjectAddDto testProjectAdd=ProjectAddDto.builder()
                 .title("test")
                 .description("test")
@@ -92,37 +115,25 @@ class IssueControllerTest {
                         .content(objectMapper.writeValueAsString(testProjectAdd)))
                 .andExpect(status().isOk());
         testProjectId=projectRepository.findByTitle(testProjectAdd.getTitle()).getId();
-
-//        IssueAddDto issueAddDto = IssueAddDto.builder()
-//                .title("test")
-//                .description("test")
-//                .build();
-//        this.mvc.perform(post("/addIssue")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(objectMapper.writeValueAsString(issueAddDto)))
-//                .andExpect(status().isOk());
+        
+        testMemberName="tester";
         IssueAddDto issueAddDto = IssueAddDto.builder()
-                .project(Integer.toString(testProjectId))
+                .project("0")
                 .title("test2")
                 .description("test2")
                 .reporter("tester")
                 .priority("Major")
                 .type("New")
                 .build();
-        this.mvc.perform(post("/addIssue")
+        MvcResult mvcResult=this.mvc.perform(post("/addIssue")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(issueAddDto)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn();
+        String response=mvcResult.getResponse().getContentAsString();
+        System.out.println("http response : "+response);
         testIssueId=issueRepository.findByTitle(issueAddDto.getTitle()).getId();
-//        IssueSetDto issueSetDto = IssueSetDto.builder()
-//                .id(0)
-//                .priority(0)
-//                .status(0)
-//                .build();
-//        this.mvc.perform(post("/setIssue")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(objectMapper.writeValueAsString(issueSetDto)))
-//                .andExpect(status().isOk());
+        System.out.println("testIssueId : "+testIssueId);
     }
 
     @Test
@@ -136,11 +147,29 @@ class IssueControllerTest {
                 .priority("Major")
                 .type("New")
                 .build();
-        this.mvc.perform(post("/addIssue")
+        MvcResult mvcResult=this.mvc.perform(post("/addIssue")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(issueAddDto)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn();
+        String response =mvcResult.getResponse().getContentAsString();
+        assertEquals("true", response);
+        System.out.println("Http response : "+ response);
 
+    }
+
+    @Test
+    @DisplayName("getIssue by Id Success")
+    void getIssue()throws Exception {
+        System.out.println("testIssueId : "+testIssueId);
+        System.out.println("testIssueTitle : "+issueRepository.findById(testIssueId).get().getTitle());
+        MvcResult mvcResult=this.mvc.perform(get("/issue/{id}",testIssueId))
+                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.title").value(issueRepository.findById(testIssueId).get().getTitle()))
+//                .andExpect(jsonPath("$.description").value(issueRepository.findById(testIssueId).get().getDescription()))
+                .andReturn();
+        String response=mvcResult.getResponse().getContentAsString();
+        System.out.println("Http response : "+ response);
     }
 
     @Test
@@ -173,10 +202,13 @@ class IssueControllerTest {
                 .status(issueRepository.findById(testIssueId).orElseThrow().getStatus())
                 .assignee(testMemberName)
                 .build();
-        this.mvc.perform(post("/setAssignee")
+        MvcResult mvcResult = this.mvc.perform(post("/setAssignee")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(testIssueSet)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn();
+
+        assertEquals(memberRepository.findByName(testMemberName).getId(),issueRepository.findById(testIssueId).orElseThrow().getAssignee());
     }
 
     @Test

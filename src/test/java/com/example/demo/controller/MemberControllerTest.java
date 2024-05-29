@@ -129,6 +129,32 @@ class MemberControllerTest {
         assertEquals("true",response);
         System.out.println("Http Response : "+response);
     }
+    @Test
+    @DisplayName("addUser Success")
+    void addUsertest()throws Exception {
+        MemberAddDto testMember = MemberAddDto.builder()
+                .name("dev99")
+                .fullName("jerry")
+                .password("dev99")
+                .level("2")
+                .build();
+        MvcResult mvcResult=this.mvc.perform(post("/addUser")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testMember)))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response=mvcResult.getResponse().getContentAsString();
+        assertEquals("true",response);
+        System.out.println("Http Response : "+response);
+        testMemberId=memberRepository.findByName(testMember.getName()).getId();
+        mvcResult=this.mvc.perform(get("/user/" + testMemberId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(memberRepository.findById(testMemberId).get().getName()))
+                .andExpect(jsonPath("$.fullName").value(memberRepository.findById(testMemberId).get().getFullName()))
+                .andReturn();
+        response=mvcResult.getResponse().getContentAsString();
+        System.out.println("Http Response : "+response);
+    }
 
     @Test
     @DisplayName("addUser Fail: name duplicated")
