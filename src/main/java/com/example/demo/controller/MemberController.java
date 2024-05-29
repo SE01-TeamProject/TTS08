@@ -42,7 +42,7 @@ public class MemberController {
 		return ms.getMember(id);
 	}
 	
-	@GetMapping("/userName/{name}")	// 고유 id를 받아 유저 정보 불러옴
+	@GetMapping("/userName/{name}")	// 로그인 id를 받아 유저 정보 불러옴
 	public String getMember(@PathVariable("name") String name) {
 		return ms.getMember(name);
 	}

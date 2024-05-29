@@ -55,7 +55,7 @@
                     const titleButton = document.createElement('button');
                     titleButton.textContent = issue.title;
                     titleButton.onclick = function () {
-                        //issueupdate페이지로 이동하는 함수
+                        gotoissueUpdatePage(issue.title);
                     };
                     titleCell.appendChild(titleButton);
                     newRow.appendChild(titleCell);
@@ -84,16 +84,22 @@
         }
 
         function openIssueAddModal() {
-             fetch('http://localhost:8080/project/id/' + projectTitle)
+             fetch('http://localhost:8080/userName/' + localStorage.getItem('loginId'))
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);
                     }
-                    return response.text();
+                    return response.json();
                 })
                   .then(data => {
-                      putCurrentUserId();
-                      openPopUp('issue-popup');
+                      const userLevel = data.level;
+                      if(data.level === 0 || data.level === 3) {
+                           putCurrentUserId();
+                           openPopUp('issue-popup');
+                      }
+                      else {
+                          alert("Only admin or tester can add issue");
+                      }
                   })
                   .catch(error => {
                       console.error('There was a problem with the fetch operation:', error);
@@ -104,6 +110,11 @@
             const id = localStorage.getItem('loginId');
             const reporterContainer = document.getElementById('reporter-name');
             reporterContainer.innerText = id;
+        }
+
+        function gotoissueUpdatePage(issueTitle) {
+            localStorage.setItem('currentIssueTitle', issueTitle); //캐싱해뒀다가 issueupdate페이지로 가서 현재 접속한 issue에 대해 알려줄 것임
+            location.href = "http://localhost:8080/issueupdate.html";
         }
 
        function disableInput() {

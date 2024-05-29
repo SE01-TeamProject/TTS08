@@ -1,21 +1,4 @@
 @charset "utf-8";
-        table, th, td {
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 15px;
-            text-align: center;
-            width: 50px;
-        }
-        thead {
-            position : sticky;
-            top : 0;
-            background-color : lightskyblue;
-        }
-        tbody {
-            border : 1px solid black;
-        }
         button {
             border-radius : 10px;
             font-size : 15px;
@@ -34,71 +17,29 @@
             width : 120px;
             background-color : lightgoldenrodyellow;
         }
-        .addbutton {
+        .applybutton {
             position : absolute;
-            right : 490px;
-            bottom : 180px;
+            right : 20px;
+            bottom : -30px;
             padding : 10px;
             width : 130px;
+            background-color : azure;
         }
-        .resetbutton {
-            position : absolute;
-            left : 940px;
-            bottom : 180px;
-            padding : 10px;
-            width : 70px;
-            background-color : burlywood;
-        }
-        .searchbutton {
-            position : absolute;
-            left : 830px;
-            bottom : 180px;
-            padding : 10px;
-            width : 100px;
-        }
-        .searchinput {
-            position : absolute;
-            left : 600px;
-            bottom : 180px;
-            padding : 10px;
-            width : 200px;
-        }
-        #search-select {
-            position : absolute;
-            left : 467px;
-            bottom : 160px;
-            padding : 10px;
+        .newcommentbutton {
+            position: absolute;
+            right: 160px;
+            bottom: -30px;
+            background-color: beige;
+            padding: 10px;
         }
         .popup-addbutton {
-            position : absolute;
-            right : 5%;
-            bottom : 3%;
-            padding : 8px;
-            width : 80px;
-        }
-        .popup-commentaddbutton {
             position : absolute;
             right : 2%;
             bottom : 3%;
             padding : 8px;
             width : 80px;
         }
-        .newcommentbutton {
-            position: absolute;
-            right: 15%;
-            bottom: 3%;
-            background-color: azure;
-            padding: 8px;
-        }
         .xbutton {
-            position : absolute;
-            left : 95%;
-            top : 1%;
-            float: right;
-            background-color: pink;
-            padding : 12px;
-        }
-        .xbuttonsecond {
             position : absolute;
             left : 94%;
             top : 1%;
@@ -121,19 +62,7 @@
             transform : translate(-50%, -50%);
             background-color : white;
             width : 1000px;
-            height : 600px;
-            border : 1px solid black;
-            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-        }
-         .popup-secondpage {
-            z-index : 4;
-            position : absolute;
-            top : 50%;
-            left : 50%;
-            transform : translate(-50%, -50%);
-            background-color : white;
-            width : 1000px;
-            height : 600px;
+            height : 700px;
             border : 1px solid black;
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
         }
@@ -142,17 +71,15 @@
             height : 400px;
         }
         .input-box {
+            padding : 30px;
             margin : 20px;
-            height : 450px;
+            width : 1000px;
+            height : 600px;
+            border : 3px solid black;
         }
         .area-box {
             display : flex;
             flex-direction : column;
-        }
-        .issue-table {
-            height : 550px;
-            border : 1px solid black;
-            overflow-y : scroll;
         }
         input {
             padding : 5px;
