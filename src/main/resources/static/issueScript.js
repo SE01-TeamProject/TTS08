@@ -4,6 +4,7 @@
         });
 
         function addIssue() {
+          const project = localStorage.getItem('projectId');
 		  const title = document.getElementById('title-input').value;
           const description = document.getElementById('description-input').value;
 		  const reporter = localStorage.getItem('loginId');
@@ -18,7 +19,7 @@
               headers: {
                   'Content-Type': 'application/json'
               },
-              body: JSON.stringify({title, description, reporter, priority, type})
+              body: JSON.stringify({project, title, description, reporter, priority, type})
           })
               .then(response => response.text())
               .then(data => {
@@ -29,6 +30,8 @@
                       alert("중복된 이슈입니다.");
                   }
               });
+            clearAllIssues();
+            showAllIssues();
             closePopUp('issue-popup');
         }
 
@@ -81,6 +84,10 @@
             }
         }
 
+        function clearAllIssues() {
+            const tableBody = document.getElementById('user-table-body');
+            tableBody.replaceChildren();
+        }
        function disableInput() {
             //get처리로 권한 받아서 해줘야함.
              const level = 2; //get처리로 받은 권한레벨 순서대로 admin, PL, developer, tester
