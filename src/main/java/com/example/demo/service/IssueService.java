@@ -2,8 +2,11 @@ package com.example.demo.service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
@@ -165,9 +168,25 @@ public class IssueService {
 	}
 	
 	// 이슈 월별 분석: 이슈가 해당 달에 몇 개 생성됐는지 JSONString으로 보내는 메소드
-	public String getIssueStatics() {
-		JSONObject statics = new JSONObject();
-		return statics.toString();
-	}
+		public String getIssueStatics() {
+			List<String> dates = new ArrayList<>();
+			DateTimeFormatter monFormatter = DateTimeFormatter.ofPattern("yyyy/MM");
+			issueRepository.findAll().forEach(item -> dates.add(item.getDate().format(monFormatter)));
+			
+			Map<String, Integer> monCount = new HashMap<>();
+			for (String date : dates) {
+				if (monCount.containsKey(date))
+					monCount.put(date, monCount.get(date)+1);
+				else
+					monCount.put(date, 1);
+			}
+			
+			JSONObject statics = new JSONObject();
+			Map<String, Integer> monCountSorted = new TreeMap<>(monCount);
+			for (String key : monCountSorted.keySet())
+				statics.put(key, monCountSorted.get(key));
+			
+			return statics.toString();
+		}
 	
 }
