@@ -48,16 +48,14 @@
         <button class="resetbutton">Reset</button>
     </div>
     <button class="addbutton" onclick="openPopUp('issue-popup')">Issue Add</button>
-
+                                        <!---나중에 함수 바꿔야함 --->
 
     <div class="popup-page hide" id="issue-popup">
          <button class="xbutton" onclick="closePopUp('issue-popup')">X</button>
     <h1 class="tc">Issue Add</h1>
           <div class="input-box">
-            <p>
-            Issue Num : <span id="issue-num">2<!---fill this with GETapi ---></span>
-            &nbsp;&nbsp;&nbsp;Reporter : <span id="reporter-name">홍길동<!---fill this with GETapi---></span>
-            <!---&nbsp;&nbsp;&nbsp;Assignee : <span id="assignee-name">양시훈</span> --->
+            <p style="margin: 20px">
+            Reporter : <span id="reporter-name"></span>
             </p>
             제목 <input type ="text" id="title-input" placeholder="Title">
                <p>

@@ -1,4 +1,7 @@
-
+ //html이 load되는 즉시 실행되는 함수
+         document.addEventListener('DOMContentLoaded', function() {
+              disableInputs();
+        });
 
 
 
@@ -102,11 +105,16 @@
              }
          }
          function openCommentModal() {
-             openSecondPopUp('comment-popup');
+             openPopUp('comment-popup');
              putWriterOnHead();
          }
          function closeCommentModal() {
-             closeSecondPopUp('comment-popup');
+             closePopUp('comment-popup');
              deleteWriterOnHead();
              document.getElementById('comment-input').value = '';
+         }
+
+         //Admin이 누를 때, PL이 누를 때, Dev가 누를 떄, Tester가 누를 때 다 지정해줘야함. + State를 보고 분기별로 나눠서 생각
+         function disableInputs() {
+             document.getElementById('description-input').setAttribute('readonly', 'true');
          }
