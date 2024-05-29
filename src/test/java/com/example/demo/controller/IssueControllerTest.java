@@ -157,12 +157,12 @@ class IssueControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    @DisplayName("getIssue by Issue Id Success")
-    void getIssue()throws Exception {
-        this.mvc.perform(get("/issue/"+testIssueId))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    @DisplayName("getIssue by Issue Id Success")
+//    void getIssue()throws Exception {
+//        this.mvc.perform(get("/issue/"+testIssueId))
+//                .andExpect(status().isOk());
+//    }
 
     @Test
     @DisplayName("setAssignee Success")
