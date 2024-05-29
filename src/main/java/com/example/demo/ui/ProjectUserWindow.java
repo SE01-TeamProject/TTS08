@@ -85,7 +85,7 @@ public class ProjectUserWindow extends JFrame {
 		// init check boxes
 		userCheckBoxPanel.removeAll();
 		
-		ArrayList<String> users = controller.getTestUsers();
+		ArrayList<String> users = controller.getUserByLevel(-1);
 		for(String user : users) {
 			JCheckBox box = new JCheckBox(user);
 			System.out.println("CheckBox - " + user);
