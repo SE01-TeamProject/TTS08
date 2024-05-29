@@ -3,7 +3,7 @@
               showAllIssues();
         });
 
-        function addIssue() {
+        async function addIssue() {
           const project = localStorage.getItem('projectId');
 		  const title = document.getElementById('title-input').value;
           const description = document.getElementById('description-input').value;
@@ -30,9 +30,8 @@
                       alert("중복된 이슈입니다.");
                   }
               });
-            clearAllIssues();
-            showAllIssues();
-            closePopUp('issue-popup');
+              await delay(200);//alert창 무시하고 페이지 리로드되는 것 방지
+              location.href = "http://localhost:8080/issue.html";
         }
 
         async function showAllIssues() {
@@ -84,10 +83,6 @@
             }
         }
 
-        function clearAllIssues() {
-            const tableBody = document.getElementById('issue-table-body');
-            tableBody.replaceChildren();
-        }
        function disableInput() {
             //get처리로 권한 받아서 해줘야함.
              const level = 2; //get처리로 받은 권한레벨 순서대로 admin, PL, developer, tester

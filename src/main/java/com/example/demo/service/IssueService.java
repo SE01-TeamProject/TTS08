@@ -119,8 +119,13 @@ public class IssueService {
 				obj.put("description", item.getDescription());
 				user = memberRepository.findById(item.getReporter());
 				obj.put("reporter", user.isEmpty() ? "N/A" : user.get().getName());
-				user = memberRepository.findById(item.getAssignee());
-				obj.put("assignee", user.isEmpty() ? "N/A" : user.get().getName());
+				if(item.getAssignee() != null) {
+					user = memberRepository.findById(item.getAssignee());
+					obj.put("assignee", user.isEmpty() ? "N/A" : user.get().getName());
+				}
+				else {
+					obj.put("assignee", "N/A");
+				}
 				obj.put("priority", item.getPriority());
 				obj.put("status", item.getStatus());
 				obj.put("type", item.getType());
