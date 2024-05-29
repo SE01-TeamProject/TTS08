@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistic Page</title>
+    <link rel="stylesheet" href="globalstyle.css">
+    <link rel="stylesheet" href="statisticstyle.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+    <script src="globalScript.js"></script>
+</head>
+
+<body>
+    <button class="back-button" onclick="goToPreviousPage()">Back</button>
+    <h1 class="tc">Statistics & Trend</h1>
+    <div id="statistics-container">
+        <h3 class="tc">Status Statistics</h3>
+        <canvas id="statusChart" width="300" height="100"></canvas>
+        <br>
+        <h3 class="tc">Priority Statistics</h3>
+        <canvas id="priorityChart" width="300" height="100"></canvas>
+        <br>
+        <h3 class="tc">Type Statistics</h3>
+        <canvas id="typeChart" width="300" height="100"></canvas>
+    </div>
+
+    <div id="trend-container">
+        <h2 class="tc">Monthly Trend</h2>
+        <canvas id="trendChart" width="300" height="100"></canvas>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            getStatisticsData();
+            getTrendData();
+        });
+
+        function getStatisticsData() {
+             fetch('http://localhost:8080/issueStatics')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                  .then(data => {
+                      displayStatus(
+                          data.Status.New,
+                          data.Status.Assigned,
+                          data.Status.Fixed,
+                          data.Status.Resolved,
+                          data.Status.Closed,
+                          data.Status.Reopened
+                      );
+                      displayPriority(
+                          data.Priority.Blocker,
+                          data.Priority.Critical,
+                          data.Priority.Major,
+                          data.Priority.Minor,
+                          data.Priority.Trivial
+                      );
+                      displayType(
+                          data.Type.Bug,
+                          data.Type.Task
+                      );
+                  })
+                  .catch(error => {
+                      console.error('There was a problem with the fetch operation:', error);
+                  });
+        }
+
+        function getTrendData() {
+            fetch('http://localhost:8080/issueTrend')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                  .then(data => {
+                      const keyList = [];
+                      const valueList = [];
+                      for (const key in data) {
+                          if (Object.hasOwnProperty.call(data, key)) {
+                              const value = data[key];
+                              keyList.push(key);
+                              valueList.push(value);
+                          }
+                      }
+                      displayTrend(keyList, valueList);
+                  })
+                  .catch(error => {
+                      console.error('There was a problem with the fetch operation:', error);
+                  });
+        }
+
+
+        function displayStatus(newData, assignedData, fixedData, resolvedData, closedData, reopenedData) {
+             const statusCt = document.getElementById('statusChart');
+             const statusChart = new Chart(statusCt, {
+                 type: 'bar',
+                 data: {
+                     labels: ['New', 'Assigned', 'Fixed', 'Resolved', 'Closed', 'Reopened'],
+                     datasets: [
+                         {
+                             data: [newData,assignedData,fixedData,resolvedData, closedData, reopenedData],
+                              backgroundColor: [
+                                  'rgba(75, 192, 192, 0.2)', // 청록
+                                  'rgba(255, 99, 132, 0.2)', // 빨강
+                                  'rgba(255, 206, 86, 0.2)', // 노랑
+                                  'rgba(54, 162, 235, 0.2)', // 파랑
+                                  'rgba(153, 102, 255, 0.2)', // 보라
+                                  'rgba(255, 159, 64, 0.2)' // 주황
+                                  ],
+                             borderColor: [
+                                 'rgba(75, 192, 192, 1)', // 청록
+                                 'rgba(255, 99, 132, 1)', // 빨강
+                                 'rgba(255, 206, 86, 1)', // 노랑
+                                 'rgba(54, 162, 235, 1)', // 파랑
+                                 'rgba(153, 102, 255, 1)', // 보라
+                                 'rgba(255, 159, 64, 1)' // 주황
+                                 ],
+                             borderWidth: 1
+                         }
+                     ]
+                 },
+                 options: {
+                     plugins: {
+                         legend: {
+                             display: false,
+                         }
+                     },
+                     scales: {
+                         x: {
+                             grid: {
+                                 display: false,
+                             }
+                         },
+                         y: {
+                             border: {
+                                 dash: [5, 5]
+                             },
+                         }
+                     }
+                 }
+             });
+        }
+        function displayPriority(blockerData, criticalData, majorData, minorData, trivialData) {
+             const priorityCt = document.getElementById('priorityChart');
+             const priorityChart = new Chart(priorityCt, {
+                 type: 'bar',
+                 data: {
+                     labels: ['Blocker', 'Critical', 'Major', 'Minor', 'Trivial'],
+                     datasets: [
+                         {
+                             data: [blockerData, criticalData, majorData, minorData, trivialData],
+                             backgroundColor: [
+                                  'rgba(255, 99, 132, 0.2)', // 빨강
+                                  'rgba(255, 159, 64, 0.2)', // 주황
+                                  'rgba(255, 206, 86, 0.2)', // 노랑
+                                  'rgba(75, 192, 192, 0.2)', // 청록
+                                  'rgba(54, 162, 235, 0.2)', // 파랑
+                                  ],
+                             borderColor: [
+                                 'rgba(255, 99, 132, 1)', // 빨강
+                                 'rgba(255, 159, 64, 1)', // 주황
+                                 'rgba(255, 206, 86, 1)', // 노랑
+                                 'rgba(75, 192, 192, 1)', // 청록
+                                 'rgba(54, 162, 235, 1)', // 파랑
+                                 ],
+                             borderWidth: 1
+                         }
+                     ]
+                 },
+                 options: {
+                     plugins: {
+                         legend: {
+                             display: false,
+                         }
+                     },
+                     scales: {
+                         x: {
+                             grid: {
+                                 display: false,
+                             }
+                         },
+                         y: {
+                             border: {
+                                 dash: [5, 5]
+                             },
+                         }
+                     }
+                 }
+             });
+        }
+        function displayType(bugData, taskData) {
+             const typeCt = document.getElementById('typeChart');
+             const typeChart = new Chart(typeCt, {
+                 type: 'bar',
+                 data: {
+                     labels: ['Bug', 'Task'],
+                     datasets: [
+                         {
+                             data: [bugData,taskData],
+                             backgroundColor: [
+                                  'rgba(255, 99, 132, 0.2)', // 빨강
+                                  'rgba(75, 192, 192, 0.2)', // 청록
+                                  ],
+                             borderColor: [
+                                 'rgba(255, 99, 132, 1)', // 빨강
+                                 'rgba(75, 192, 192, 1)', // 청록
+                                 ],
+                             borderWidth: 1
+                         }
+                     ]
+                 },
+                 options: {
+                     plugins: {
+                         legend: {
+                             display: false,
+                         }
+                     },
+                     scales: {
+                         x: {
+                             grid: {
+                                 display: false,
+                             }
+                         },
+                         y: {
+                             border: {
+                                 dash: [5, 5]
+                             },
+                         }
+                     }
+                 }
+             });
+        }
+
+        function displayTrend(trendLabel, trendData) {
+             const typeCt = document.getElementById('trendChart');
+             const typeChart = new Chart(typeCt, {
+                 type: 'bar',
+                 data: {
+                     labels: trendLabel,
+                     datasets: [
+                         {
+                             data: trendData,
+                             backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                             borderColor: 'rgba(54, 162, 235, 0.2)',
+                             borderWidth: 1
+                         }
+                     ]
+                 },
+                 options: {
+                     plugins: {
+                         legend: {
+                             display: false,
+                         }
+                     },
+                     scales: {
+                         x: {
+                             grid: {
+                                 display: false,
+                             }
+                         },
+                         y: {
+                             border: {
+                                 dash: [5, 5]
+                             },
+                         }
+                     }
+                 }
+             });
+        }
+
+        function goToPreviousPage() {
+            location.href = localStorage.getItem('statisticsPreviousPage');
+        }
+    </script>
+</body>
+</html>

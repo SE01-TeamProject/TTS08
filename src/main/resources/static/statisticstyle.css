@@ -1,0 +1,34 @@
+@charset "UTF-8";
+
+#statistics-container {
+    position : absolute;
+    left : 1100px;
+    bottom : 0;
+    width: 500px;
+    padding : 30px;
+    margin : 50px;
+    border : 2px solid lightgoldenrodyellow;
+}
+#trend-container {
+    position : absolute;
+    left : 100px;
+    top : 300px;
+    width : 800px;
+    padding : 30px;
+    margin : 50px;
+    background-color : azure;
+    border : 2px solid cornflowerblue;
+}
+button {
+    border-radius : 10px;
+    font-size : 15px;
+    padding : 10px;
+}
+ .back-button {
+     position : absolute;
+     left : 30px;
+     top : 30px;
+     padding : 15px;
+     width : 120px;
+     background-color : lightgoldenrodyellow;
+ }
