@@ -48,6 +48,36 @@ public class IssueController {
 	public String getIssue(@PathVariable("id") Integer id) {
 		return is.getIssue(id);
 	}
+
+ 	@GetMapping("/issueTitle/{title}")
+	public String getIssueTitle(@PathVariable("title") String title) {
+		return is.getIssueTitle(title);
+	}
+	
+	@GetMapping("/issuePriority/{priority}")
+	public String getIssuePriority(@PathVariable("priority") int priority) {
+		return is.getIssuePriority(priority);
+	}
+	
+	@GetMapping("/issueStatus/{status}")
+	public String getIssueStatus(@PathVariable("status") int status) {
+		return is.getIssueStatus(status);
+	}
+	
+	@GetMapping("/issueType/{type}")
+	public String getIssueType(@PathVariable("type") int type) {
+		return is.getIssueType(type);
+	}
+	
+	@GetMapping("/issueReporter/{reporter}")
+	public String getIssueReporter(@PathVariable("reporter") Integer reporter) {
+		return is.getIssueReporter(reporter);
+	}
+	
+	@GetMapping("/issueAssignee/{assignee}")
+	public String getIssueAssignee(@PathVariable("assignee") Integer assignee) {
+		return is.getIssueAssignee(assignee);
+	}
 	
 	// Assignee를 변경하는 메소드
 	@PostMapping("/setAssignee")

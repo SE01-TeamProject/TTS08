@@ -11,6 +11,8 @@ import java.util.TreeMap;
 import org.json.JSONObject;
 import org.json.JSONArray;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.demo.domain.Comment;
 import com.example.demo.domain.Issue;
@@ -108,31 +110,90 @@ public class IssueService {
 		obj.put("date", issue.get().getDate().format(formatter));
 		return obj.toString();
 	}
-
+	
+	public String getIssueTitle(String title) {
+		Issue issue = issueRepository.findByTitle(title);
+		return (issue == null) ? "" : getIssue(issue.getId());
+	}
+	
+	private JSONObject issueToJSON(Issue issue) {
+		JSONObject obj = new JSONObject();
+		Optional<Member> user;
+		obj.put("issuenum", issue.getId());
+		obj.put("title", issue.getTitle());
+		obj.put("description", issue.getDescription());
+		user = memberRepository.findById(issue.getReporter());
+		obj.put("reporter", user.isEmpty() ? "N/A" : user.get().getName());
+		if(issue.getAssignee() != null) {
+			user = memberRepository.findById(issue.getAssignee());
+			obj.put("assignee", user.isEmpty() ? "N/A" : user.get().getName());
+		}
+		else {
+			obj.put("assignee", "N/A");
+		}
+		obj.put("priority", issue.getPriority());
+		obj.put("status", issue.getStatus());
+		obj.put("type", issue.getType());
+		obj.put("date", issue.getDate().format(formatter));
+		return obj;
+	}
+	
 	// 프로젝트 id를 받고 해당 이슈들을 가져오는 메소드
 	public String getIssueList(Integer pid) {
 		JSONArray issues = new JSONArray();
 		issueRepository.findAll().forEach(item -> {
 			if (item.getProject() == pid) {
-				JSONObject obj = new JSONObject();
-				Optional<Member> user;
-				obj.put("issuenum", item.getId());
-				obj.put("title", item.getTitle());
-				obj.put("description", item.getDescription());
-				user = memberRepository.findById(item.getReporter());
-				obj.put("reporter", user.isEmpty() ? "N/A" : user.get().getName());
-				if(item.getAssignee() != null) {
-					user = memberRepository.findById(item.getAssignee());
-					obj.put("assignee", user.isEmpty() ? "N/A" : user.get().getName());
-				}
-				else {
-					obj.put("assignee", "N/A");
-				}
-				obj.put("priority", item.getPriority());
-				obj.put("status", item.getStatus());
-				obj.put("type", item.getType());
-				obj.put("date", item.getDate().format(formatter));
-				issues.put(obj);
+				issues.put(issueToJSON(item));
+			}
+		});
+		return issues.toString();
+	}
+	
+	public String getIssuePriority(int priority) {
+		JSONArray issues = new JSONArray();
+		issueRepository.findAll().forEach(item -> {
+			if (item.getProject() == priority) {
+				issues.put(issueToJSON(item));
+			}
+		});
+		return issues.toString();
+	}
+	
+	public String getIssueStatus(int status) {
+		JSONArray issues = new JSONArray();
+		issueRepository.findAll().forEach(item -> {
+			if (item.getProject() == status) {
+				issues.put(issueToJSON(item));
+			}
+		});
+		return issues.toString();
+	}
+	
+	public String getIssueType(int type) {
+		JSONArray issues = new JSONArray();
+		issueRepository.findAll().forEach(item -> {
+			if (item.getProject() == type) {
+				issues.put(issueToJSON(item));
+			}
+		});
+		return issues.toString();
+	}
+	
+	public String getIssueReporter(Integer reporter) {
+		JSONArray issues = new JSONArray();
+		issueRepository.findAll().forEach(item -> {
+			if (item.getProject() == reporter) {
+				issues.put(issueToJSON(item));
+			}
+		});
+		return issues.toString();
+	}
+	
+	public String getIssueAssignee(Integer assignee) {
+		JSONArray issues = new JSONArray();
+		issueRepository.findAll().forEach(item -> {
+			if (item.getProject() == assignee) {
+				issues.put(issueToJSON(item));
 			}
 		});
 		return issues.toString();
