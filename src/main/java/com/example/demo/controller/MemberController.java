@@ -42,6 +42,11 @@ public class MemberController {
 		return ms.getMember(id);
 	}
 	
+	@GetMapping("/userName/{name}")	// 고유 id를 받아 유저 정보 불러옴
+	public String getMember(@PathVariable("name") String name) {
+		return ms.getMember(name);
+	}
+	
 //	@GetMapping("/getLevel/{id}")	// 사용자의 레벨만 가져오기
 //	public String getMemberLevel(@PathVariable("id") Integer id) {
 //		return ms.getMemberLevel(id);
