@@ -59,4 +59,9 @@ public class IssueController {
 	public String getIssueTrend() {
 		return is.getIssueTrend();
 	}
+	
+	@GetMapping("/issueStatics")
+	public String getIssueStatics() {
+		return is.getIssueStatics();
+	}
 }

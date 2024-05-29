@@ -17,6 +17,7 @@ import com.example.demo.dto.IssueSetDto;
 import com.example.demo.repository.CommentRepository;
 import com.example.demo.repository.IssueRepository;
 import com.example.demo.repository.MemberRepository;
+import com.example.demo.repository.ProjectRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class IssueService {
 	private final IssueRepository issueRepository;
 	private final MemberRepository memberRepository;
+	private final ProjectRepository projectRepository;
 	
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 	
@@ -54,7 +56,8 @@ public class IssueService {
 		} else {
 			int priority = Issue.getPriorityFromString(issueAddDto.getPriority());
 			int type = Issue.getTypeFromString(issueAddDto.getType());
-			issueRepository.save(new Issue(issueAddDto.getTitle(), 
+			issueRepository.save(new Issue(projectRepository.findByTitle(issueAddDto.getProject()).getId(),
+					issueAddDto.getTitle(), 
 					issueAddDto.getDescription(), 
 					memberRepository.findByName(issueAddDto.getReporter()).getId(),
 					priority, type));
@@ -159,6 +162,12 @@ public class IssueService {
 			trend.put("Type", obj);	
 		}
 		return trend.toString();	
+	}
+	
+	// 이슈 월별 분석: 이슈가 해당 달에 몇 개 생성됐는지 JSONString으로 보내는 메소드
+	public String getIssueStatics() {
+		JSONObject statics = new JSONObject();
+		return statics.toString();
 	}
 	
 }
