@@ -128,10 +128,10 @@ public class Issue {
 		return 0;
 	}
 	
-	// TODO: 임시 Issue 생성 - 프론트엔드가 위의 요소 모두 받아야 함 - 그 후 아래 삭제
 	@Builder
-    public Issue(String title, String description, Integer reporter, int priority, int type) {
-        this.title = title;
+    public Issue(Integer project, String title, String description, Integer reporter, int priority, int type) {
+		this.project = project;
+		this.title = title;
         this.description = description;
         this.reporter = reporter;
         this.priority = priority;
@@ -139,8 +139,8 @@ public class Issue {
         this.date = LocalDateTime.now();
     }
 	
-	public static Issue createIssue(String title, String description, Integer reporter, int priority, int type) {
-		Issue issue = new Issue(title, description, reporter, priority, type);
+	public static Issue createIssue(Integer project, String title, String description, Integer reporter, int priority, int type) {
+		Issue issue = new Issue(project, title, description, reporter, priority, type);
     	return issue;
     }
     
