@@ -105,11 +105,11 @@
              }
          }
          function openCommentModal() {
-             openSecondPopUp('comment-popup');
+             openPopUp('comment-popup');
              putWriterOnHead();
          }
          function closeCommentModal() {
-             closeSecondPopUp('comment-popup');
+             closePopUp('comment-popup');
              deleteWriterOnHead();
              document.getElementById('comment-input').value = '';
          }
