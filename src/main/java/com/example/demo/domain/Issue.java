@@ -22,7 +22,7 @@ public class Issue {
 	}
 	
 	public enum Status {
-		NEW, ASSIGNED, RESOLVED, CLOSED, REOPENED
+		NEW, ASSIGNED, RESOLVED, FIXED, CLOSED, REOPENED
 	}
 	
 	public enum Type {
@@ -110,6 +110,8 @@ public class Issue {
 			return Status.ASSIGNED.ordinal();
 		case "Resolved":
 			return Status.RESOLVED.ordinal();
+		case "Fixed":
+			return Status.FIXED.ordinal();
 		case "Closed":
 			return Status.CLOSED.ordinal();
 		case "Reopened":

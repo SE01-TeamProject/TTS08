@@ -59,7 +59,6 @@ public class IssueService {
 		} else {
 			int priority = Issue.getPriorityFromString(issueAddDto.getPriority());
 			int type = Issue.getTypeFromString(issueAddDto.getType());
-			System.out.println("projectId : [" + issueAddDto.getProject() + "]");
 			issueRepository.save(new Issue(Integer.valueOf(issueAddDto.getProject()),
 					issueAddDto.getTitle(), 
 					issueAddDto.getDescription(), 
@@ -140,10 +139,6 @@ public class IssueService {
 	}
 	
 	// 이슈 트렌드 분석: 이슈의 Priority, Status, Type가 몇 개인지 JSONString으로 보내는 메소드
-	/*
-	 TODO: 월별 통계를 하나의 함수로 한번에 가져갈지
-	 		별개의 함수로 만들어 따로 가져갈지 선택
-	 */
 	public String getIssueTrend() {
 		JSONObject trend = new JSONObject();
 		{
@@ -160,6 +155,7 @@ public class IssueService {
 			obj.put("New", issueRepository.countByStatus(Issue.Status.NEW.ordinal()));
 			obj.put("Assigned", issueRepository.countByStatus(Issue.Status.ASSIGNED.ordinal()));
 			obj.put("Resolved", issueRepository.countByStatus(Issue.Status.RESOLVED.ordinal()));
+			obj.put("Fixed", issueRepository.countByStatus(Issue.Status.FIXED.ordinal()));
 			obj.put("Closed", issueRepository.countByStatus(Issue.Status.CLOSED.ordinal()));
 			obj.put("Reopened", issueRepository.countByStatus(Issue.Status.REOPENED.ordinal()));
 			trend.put("Status", obj);	
