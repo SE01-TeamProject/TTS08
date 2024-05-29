@@ -83,6 +83,29 @@
             }
         }
 
+        function openIssueAddModal() {
+             fetch('http://localhost:8080/project/id/' + projectTitle)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.text();
+                })
+                  .then(data => {
+                      putCurrentUserId();
+                      openPopUp('issue-popup');
+                  })
+                  .catch(error => {
+                      console.error('There was a problem with the fetch operation:', error);
+                  });
+        }
+
+        function putCurrentUserId() {
+            const id = localStorage.getItem('loginId');
+            const reporterContainer = document.getElementById('reporter-name');
+            reporterContainer.innerText = id;
+        }
+
        function disableInput() {
             //get처리로 권한 받아서 해줘야함.
              const level = 2; //get처리로 받은 권한레벨 순서대로 admin, PL, developer, tester

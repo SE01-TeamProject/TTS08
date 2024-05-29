@@ -14,7 +14,7 @@
         <p>
             Issue Num : <span id="issue-num">2<!---fill this with GETapi ---></span>
             &nbsp;&nbsp;&nbsp;Reporter : <span id="reporter-name">홍길동<!---fill this with GETapi---></span>
-            <!---&nbsp;&nbsp;&nbsp;Assignee : <span id="assignee-name">양시훈</span> --->
+            &nbsp;&nbsp;&nbsp;Assignee : <span id="assignee-name">양시훈</span>
         </p>
         제목 <input type ="text" id="title" placeholder="Title">
         <p>
@@ -29,20 +29,19 @@
             <option value="Critical">Critical</option>
             <option value="Trivial">Trivial</option>
         </select>
-        <select id="status-input">
+        <select id="status-input"> <!---특정 상황에 따라 readonly인지 아닌지 잘 구별해야할 듯 함--->
             <option value="New">New</option>
             <option value="Assigned">Assigned</option>
+            <option value="fixed">Fixed</option>
             <option value="Resolved">Resolved</option>
             <option value="Closed">Closed</option>
             <option value="Reopened">Reopened</option>
         </select>
-        <select id="type-input">
-            <option value="Bug">Bug</option>
-            <option value="Task">Task</option>
+        <select id="type-input"> <!---Bug Task 중에 하나 지정 후 readonly로 --->
         </select>
         <br><br><br>
         <div class="area-box">
-            Description<textarea id="description-input" rows="13" cols="100" style="resize: none"></textarea>
+            Description<textarea id="description-input" rows="13" cols="100" style="resize: none"></textarea> <!---get으로 채울 것--->
             <br><br>
             <div id="comments-container">
                 <div class="">
@@ -55,6 +54,6 @@
         </div>
     </div>
         <button class="newcommentbutton" onclick="openCommentModal()">New comment</button>
-        <button class="popup-addbutton" onclick="addIssue()">Add</button>
+        <button class="popup-addbutton" onclick="addIssue()">Apply</button>
 </body>
 </html>
