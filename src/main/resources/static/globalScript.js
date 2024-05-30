@@ -63,3 +63,53 @@
         function delay(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
+        function getStatus(number) {
+            let result;
+            switch(number) {
+                case 0 : result = "New";
+                break;
+                case 1 : result = "Assigned";
+                break;
+                case 2 : result = "Fixed";
+                break;
+                case 3 : result = "Resolved";
+                break;
+                case 4 : result = "Closed";
+                break;
+                case 5 : result = "Reopened";
+                break;
+                default : result = "Unknown Status";
+                break;
+            }
+            return result;
+        }
+        function getPriority(number) {
+            let result;
+            switch(number) {
+                case 0 : result = "Major";
+                break;
+                case 1 : result = "Minor";
+                break;
+                case 2 : result = "Blocker";
+                break;
+                case 3 : result = "Critical";
+                break;
+                case 4 : result = "Trivial";
+                break;
+                default : result = "Unknown Priority";
+                break;
+            }
+            return result;
+        }
+        function getType(number) {
+            let result;
+            switch(number) {
+                case 0 : result = "Bug";
+                break;
+                case 1 : result = "Task";
+                break;
+                default : result = "Unknown Type";
+                break;
+            }
+            return result;
+        }

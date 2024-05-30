@@ -17,6 +17,7 @@ function initializeIssueData() {
     const descriptionContainer = document.getElementById('description-input');
 
     reporterContainer.innerText = id;
+    console.log("currentIssueTitle: " + currentIssueTitle);
 
       fetch('http://localhost:8080/issueTitle/' + currentIssueTitle)
           .then(response => {
@@ -28,10 +29,11 @@ function initializeIssueData() {
           .then(data => {
               issuenumContatiner.textContent = data.issuenum;
               localStorage.setItem('issuenum', data.issuenum);
+              console.log("issuenum: " + localStorage.getItem('issuenum'));
               titleContainer.value = data.title;
-              priorityContainer.value = data.priority;
-              statusContainer.value = data.status;
-              typeContainer.value = data.type;
+              priorityContainer.value = getPriority(data.priority);
+              statusContainer.value = getStatus(data.status);
+              typeContainer.value = getType(data.type);
               descriptionContainer.value = data.description;
           })
           .catch(error => {
