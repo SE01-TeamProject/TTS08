@@ -1,10 +1,11 @@
 package com.example.demo.controller;
 
-import com.example.demo.domain.Comment;
 import com.example.demo.dto.CommentAddDto;
+import com.example.demo.dto.IssueAddDto;
 import com.example.demo.dto.MemberAddDto;
 import com.example.demo.dto.ProjectAddDto;
 import com.example.demo.repository.CommentRepository;
+import com.example.demo.repository.IssueRepository;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.ProjectRepository;
 import com.example.demo.service.CommentService;
@@ -22,8 +23,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -51,11 +50,14 @@ class CommentControllerTest {
 
     private String testMemberName;
     private Integer testProjectId;
-    private Integer testCommentId=0;
+    private Integer testCommentId;
+    private String testIssuetitle;
     @Autowired
     private CommentRepository commentRepository;
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private IssueRepository issueRepository;
 
 
     @BeforeEach
@@ -77,7 +79,21 @@ class CommentControllerTest {
         this.mvc.perform(post("/addProject").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testProjectAdd)))
                 .andExpect(status().isOk());
         testProjectId=projectRepository.findByTitle(testProjectAdd.getTitle()).getId();
+
+        IssueAddDto testIssueAdd=IssueAddDto.builder()
+                .project(Integer.toString(testProjectId))
+                .title("test")
+                .description("test")
+                .reporter(testMemberName)
+                .priority("Major")
+                .type("Bug")
+                .build();
+        this.mvc.perform(post("/addIssue").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testIssueAdd)))
+                .andExpect(status().isOk());
+        testIssuetitle = testIssueAdd.getTitle();
+
         CommentAddDto testCommentAdd=CommentAddDto.builder()
+                .issue(testIssuetitle)
                 .writer(testMemberName)
                 .note("test")
                 .build();
@@ -102,6 +118,7 @@ class CommentControllerTest {
     @DisplayName("addComment Success")
     void addComment() throws Exception {
         CommentAddDto testComment=CommentAddDto.builder()
+                .issue(testIssuetitle)
                 .writer(testMemberName)
                 .note("test2")
                 .build();
@@ -126,6 +143,7 @@ class CommentControllerTest {
 //    @DisplayName("addComment Fail : empty note")
 //    void addCommentFail() throws Exception {
 //        CommentAddDto testComment=CommentAddDto.builder()
+//                .issue(testIssuetitle)
 //                .writer(testMemberName)
 //                .note("")
 //                .build();
