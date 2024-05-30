@@ -42,6 +42,26 @@ public class SwingController {
 		//connection = (HttpURLConnection) url.openConnection();
 	}
 	
+	// Statistics ----------------------------------------------------------------------------------
+	//GET
+	public String getIssueStatics(int index) {
+		String response = requestGET("/issueStatics");
+		JSONArray statistic = new JSONArray(response);
+		
+		if(index > 2) return null;
+		
+		JSONObject obj = statistic.getJSONObject(index);
+		return obj.toString();
+		
+		
+	}
+	
+	//GET
+	public String getIssueTrend(){
+		String response = requestGET("/issueTrend");
+		
+		return response;
+	}
 	// Issue (Ticket) ------------------------------------------------------------------------------
 	//GET
 	public String[] getIssueHeader() {

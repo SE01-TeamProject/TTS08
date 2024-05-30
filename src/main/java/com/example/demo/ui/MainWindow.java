@@ -18,13 +18,13 @@ public class MainWindow extends JFrame {
 	private JPanel btnPanel;
 	private ProjectPanel projectPanel = new ProjectPanel();
 	private TicketPanel ticketPanel = new TicketPanel();
-	private TimelinePanel timelinePanel = new TimelinePanel();
+	private StatisticPanel statisticPanel = new StatisticPanel();
 	private AdminPanel adminPanel = new AdminPanel();
 	
 	
 	private JButton homeBtn;
 	private JButton logoutBtn;
-	private JButton timelineBtn;
+	private JButton statisticBtn;
 	private JButton ticketBtn;
 	private JButton adminBtn;
 	private JButton addBtn;
@@ -39,7 +39,7 @@ public class MainWindow extends JFrame {
 		controller = sc;
 		projectPanel = new ProjectPanel(controller);
 		ticketPanel = new TicketPanel(controller);
-		timelinePanel = new TimelinePanel(controller);
+		statisticPanel = new StatisticPanel(controller);
 		adminPanel = new AdminPanel(controller);
 		this.setDpPanel(projectPanel);
 	}
@@ -79,8 +79,8 @@ public class MainWindow extends JFrame {
 		contentPane.add(homeBtn);
 		
 		// Timeline Btn
-		timelineBtn = makeTimelineBtn("Timeline");
-		//btnPanel.add(timelineBtn); // TODO Change into Statistic
+		statisticBtn = makeStatisticBtn("Statistic");
+		btnPanel.add(statisticBtn); // TODO Change into Statistic
 		
 		// Ticket Btn
 		ticketBtn = makeTicketBtn("Tickets");		
@@ -143,6 +143,10 @@ public class MainWindow extends JFrame {
 		projectPanel = new ProjectPanel(controller);
 	}
 	
+	private void updateStatisticPanel() {
+		statisticPanel = new StatisticPanel(controller);
+	}
+	
 	// Buttons -----------------------------------------------------------------------------------------------
 	private JButton makeHomeBtn(String str) {
 		JButton btn = new JButton(str);
@@ -173,14 +177,15 @@ public class MainWindow extends JFrame {
 		return btn;
 	}
 	
-	private JButton makeTimelineBtn(String str) {
+	private JButton makeStatisticBtn(String str) {
 		JButton btn = new JButton(str);
 		btn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Timeline Btn ACtion Listenser
 				System.out.println("Timeline btn pressed!");
 				if(controller.getProjectFlag()) {
-					setDpPanel(timelinePanel);
+					updateStatisticPanel();
+					setDpPanel(statisticPanel);
 				}
 			}
 		});
