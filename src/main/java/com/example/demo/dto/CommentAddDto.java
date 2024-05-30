@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CommentAddDto {
 	
+	private String issue;
 	private String writer;
     private String note;
     

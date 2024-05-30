@@ -26,6 +26,7 @@ public class Comment {
     @Column(name = "DATE")	// 코멘트 작성 날짜
     private LocalDateTime date;
     
+    @Column(name = "ISSUE")
     private Integer issue;	// 코멘트가 소속된 이슈의 id
 
     /*@ManyToOne
@@ -33,14 +34,15 @@ public class Comment {
     private Issue issue;*/
     
     @Builder
-    public Comment(Integer writer, String note) {
+    public Comment(Integer issue, Integer writer, String note) {
+    	this.issue = issue;
     	this.writer = writer;
     	this.note = note;
         this.date = LocalDateTime.now();
     }
     
-	public static Comment createComment(Integer writer, String note) {
-		Comment comment = new Comment(writer, note);
+	public static Comment createComment(Integer issue, Integer writer, String note) {
+		Comment comment = new Comment(issue, writer, note);
     	return comment;
     }
 }
