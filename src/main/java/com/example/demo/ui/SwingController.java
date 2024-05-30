@@ -23,6 +23,7 @@ public class SwingController {
 	private String urlString = "http://localhost:8080";
 	private String userID;
 	private String currProject;
+	private int currProjectID;
 	
 	//private URL url;
 	//private HttpURLConnection connection;
@@ -37,31 +38,39 @@ public class SwingController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		System.out.println("GOOD: " + requestGET("/issueTitle/Issue1"));
-		
+		getIssueJsonByTitle("Issue1");
 		//connection = (HttpURLConnection) url.openConnection();
 	}
 	
 	// Issue (Ticket) ------------------------------------------------------------------------------
 	//GET
 	public String[] getIssueHeader() {
-		String[] header = {"id", "title", "description", "date"};
+		String[] header = {"issuenum", "title", "description", "date"};
 		return header;
 	}
 	
 	public String[][] getIssueContent() {
 		String[][] content;
 		
-		String response = requestGET("/listIssue");
+		System.out.println("/listIssue/" + getCurrProjectID());
+		
+		String response = requestGET("/listIssue/" + getCurrProjectID());
+		System.out.println("ISSUE LIST from project [" + getCurrProject() + "/" + getCurrProjectID() + "]\n" + response);
 		
 		String[] keys = getIssueHeader();
         content = extractValues(response, keys);
-        System.out.println(content);
+        
         return content;
 	}
 	
-	
+	//GET
+	public String getIssueJsonByTitle(String title) {
+		String issue = requestGET("/issueTitle/" + title);
+		JSONObject obj = new JSONObject(issue);
+		System.out.println("ISSUE: " + issue);
+		
+		return issue;
+	}
 	
 	// Users ---------------------------------------------------------------------------------
 	public String getCurrUser() {
@@ -103,7 +112,7 @@ public class SwingController {
 	
 	// Projects -------------------------------------------------------------------------------
 	//GET
-	public ArrayList<String> getProjects(){
+	public ArrayList<String> getProjectTitles(){
 		
 		ArrayList<String> array = new ArrayList<String>();
 		//ArrayList<String> projects = new ArrayList<String>(Arrays.asList("project1", "project2", "project3", "project4"));	// Change this -> Use model call
@@ -227,6 +236,24 @@ public class SwingController {
 		
 	}
 	
+	//GET
+	public int getProjectID(String title) {
+		int id;
+		
+		String response = requestGET("/listProject");
+		JSONArray jsonArray = new JSONArray(response);
+		for(int i = 0; i < jsonArray.length(); i++) {
+			JSONObject obj = jsonArray.getJSONObject(i);
+			if(obj.get("title").equals(title)) {
+				id = (int) obj.get("id");
+				return id;
+			}
+		}
+		
+		System.out.println("Failed to get project ID from [" + title + "]");
+		return (Integer) null;
+	}
+	
 	public boolean getProjectFlag() {
 		return projectSelectFlag;
 	}
@@ -234,9 +261,14 @@ public class SwingController {
 	public String getCurrProject() {
 		return currProject;
 	}
+	public int getCurrProjectID() {
+		return currProjectID;
+	}
 	
 	public void projectSelect(String title){
 		currProject = title;
+		currProjectID = getProjectID(title);
+		System.out.println("Selct project " + title + ", " + currProjectID);
 		projectSelect();
 	}	
 	public void projectSelect() {
@@ -373,7 +405,7 @@ public class SwingController {
 		}
 	}
 	
-	public ArrayList<String> getPriorties(){
+	public ArrayList<String> getPriorities(){
 		ArrayList<String> array = new ArrayList<String>();		
 		ArrayList<String> priority = new ArrayList<String>(Arrays.asList( "Major", "Minor", "Blocker", "Critical", "Trivial"));	// Change this -> Use model call
 		
@@ -393,7 +425,7 @@ public class SwingController {
 		return array;
 	}
 	
-	public ArrayList<String> getStates(){
+	public ArrayList<String> getStatus(){
 		ArrayList<String> array = new ArrayList<String>();		
 		ArrayList<String> milestones = new ArrayList<String>(Arrays.asList("New", "Assigned", "Fixed", "Resolved", "Closed", "Reopened"));	// Change this -> Use model call
 		
@@ -411,6 +443,16 @@ public class SwingController {
 		
 		for(String level : levels) {
 			array.add(level);
+		}
+		return array;
+	}
+	
+	public ArrayList<String> getTypes(){
+		ArrayList<String> array = new ArrayList<String>();
+		ArrayList<String> types = new ArrayList<String>(Arrays.asList("Bug", "Task"));		// Change this -> Use model call
+		
+		for(String type : types) {
+			array.add(type);
 		}
 		return array;
 	}
@@ -465,7 +507,10 @@ public class SwingController {
                 ArrayList<String> devArr = new ArrayList<String>();
                 ArrayList<String> testerArr = new ArrayList<String>();
                 
-
+                plArr.add("N/A");
+                devArr.add("N/A");
+                testerArr.add("N/A");
+                
                 for(int i = 0; i < array.length(); i++) {
                 	JSONObject obj = array.getJSONObject(i);
                 	int lv = obj.getInt("level");
@@ -651,14 +696,33 @@ public class SwingController {
 	 
 	 public enum Priority {
 		 MAJOR, MINOR, BLOCKER, CRITICAL, TRIVIAL
-	 } // TODO Is Order of ENUM Ok?
+	 }
+	 public String getPriorityString(int index) {
+		 ArrayList<String> list = getPriorities();
+		 String[] pri = list.toArray(new String[list.size()]);
+		 return pri[index];
+ 	 }
+	 
 	 public enum Status {
 		 NEW, ASSIGNED, FIXED, RESOLVED, CLOSED, REOPENED
 	 }
+	 public String getStatusString(int index) {
+		 ArrayList<String> list = getStatus();
+		 String[] sta = list.toArray(new String[list.size()]);
+		 
+		 return sta[index];
+	 }
+	 
 	 public enum Type {
 		 BUG, TASK
 	 }
-	 
+	 public String getTypeString(int index) {
+		 ArrayList<String> list = getTypes();
+		 String[] type = list.toArray(new String[list.size()]);
+		 
+		 return type[index];
+	 }
+		 
 	// For testing ==============================================================================================
 	private void GETtest() {
 		
