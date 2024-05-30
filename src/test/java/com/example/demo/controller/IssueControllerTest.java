@@ -77,7 +77,7 @@ class IssueControllerTest {
                 .name("pl")
                 .fullName("pl")
                 .password("pl")
-                .level("1")
+                .level("PL")
                 .build();
         this.mvc.perform(post("/addUser")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -87,7 +87,7 @@ class IssueControllerTest {
                 .name("dev")
                 .fullName("dev")
                 .password("dev")
-                .level("2")
+                .level("Developer")
                 .build();
         this.mvc.perform(post("/addUser")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -97,12 +97,13 @@ class IssueControllerTest {
                 .name("tester")
                 .fullName("tester")
                 .password("tester")
-                .level("3")
+                .level("Tester")
                 .build();
         this.mvc.perform(post("/addUser")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(tester)))
                 .andExpect(status().isOk());
+        testMemberName=tester.getName();
         ProjectAddDto testProjectAdd=ProjectAddDto.builder()
                 .title("test")
                 .description("test")
@@ -115,8 +116,7 @@ class IssueControllerTest {
                         .content(objectMapper.writeValueAsString(testProjectAdd)))
                 .andExpect(status().isOk());
         testProjectId=projectRepository.findByTitle(testProjectAdd.getTitle()).getId();
-        
-        testMemberName="tester";
+
         IssueAddDto issueAddDto = IssueAddDto.builder()
                 .project("0")
                 .title("test2")
@@ -158,15 +158,24 @@ class IssueControllerTest {
 
     }
 
-    @Test
+    @Test //assignee가 비었을때 getIssue가 동작하지 않는 문제있음
     @DisplayName("getIssue by Id Success")
     void getIssue()throws Exception {
-        System.out.println("testIssueId : "+testIssueId);
-        System.out.println("testIssueTitle : "+issueRepository.findById(testIssueId).get().getTitle());
-        MvcResult mvcResult=this.mvc.perform(get("/issue/{id}",testIssueId))
+        IssueSetDto testIssueSet=IssueSetDto.builder()
+                .id(testIssueId)
+                .priority(issueRepository.findById(testIssueId).orElseThrow().getPriority())
+                .status(issueRepository.findById(testIssueId).orElseThrow().getStatus())
+                .assignee(testMemberName)
+                .build();
+        this.mvc.perform(post("/setAssignee")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(testIssueSet)))
+                .andExpect(status().isOk());
+
+        MvcResult mvcResult=this.mvc.perform(get("/issue/"+testIssueId))
                 .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.title").value(issueRepository.findById(testIssueId).get().getTitle()))
-//                .andExpect(jsonPath("$.description").value(issueRepository.findById(testIssueId).get().getDescription()))
+                .andExpect(jsonPath("$.title").value(issueRepository.findById(testIssueId).get().getTitle()))
+                .andExpect(jsonPath("$.description").value(issueRepository.findById(testIssueId).get().getDescription()))
                 .andReturn();
         String response=mvcResult.getResponse().getContentAsString();
         System.out.println("Http response : "+ response);
@@ -185,13 +194,6 @@ class IssueControllerTest {
         this.mvc.perform(get("/listIssue/"+testProjectId))
                 .andExpect(status().isOk());
     }
-
-//    @Test
-//    @DisplayName("getIssue by Issue Id Success")
-//    void getIssue()throws Exception {
-//        this.mvc.perform(get("/issue/"+testIssueId))
-//                .andExpect(status().isOk());
-//    }
 
     @Test
     @DisplayName("setAssignee Success")

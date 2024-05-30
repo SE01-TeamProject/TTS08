@@ -118,7 +118,7 @@ class MemberControllerTest {
                 .name("test2")
                 .fullName("test2")
                 .password("test2")
-                .level("0")
+                .level("Tester")
                 .build();
         MvcResult mvcResult=this.mvc.perform(post("/addUser")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -130,13 +130,13 @@ class MemberControllerTest {
         System.out.println("Http Response : "+response);
     }
     @Test
-    @DisplayName("addUser Success")
+    @DisplayName("addUser / getMember case 1")
     void addUsertest()throws Exception {
         MemberAddDto testMember = MemberAddDto.builder()
                 .name("dev99")
                 .fullName("jerry")
                 .password("dev99")
-                .level("2")
+                .level("Developer")
                 .build();
         MvcResult mvcResult=this.mvc.perform(post("/addUser")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -163,7 +163,7 @@ class MemberControllerTest {
                 .name("test")
                 .fullName("test")
                 .password("test")
-                .level("0")
+                .level("Tester")
                 .build();
         MvcResult mvcResult=this.mvc.perform(post("/addUser")
                         .contentType(MediaType.APPLICATION_JSON)
