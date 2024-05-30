@@ -47,7 +47,7 @@ public class ProjectServiceTest {
 
     @Test
     public void testAddProject_Success() {
-        ProjectAddDto projectAddDto = new ProjectAddDto("Title", "Description", "PL", "Developer", "Tester");
+        ProjectAddDto projectAddDto = new ProjectAddDto("Title", "Description", "PL", "Developer","Developer","Developer", "Tester", "Tester", "Tester");
 
 
         when(projectRepository.findByTitle(any(String.class))).thenReturn(null);
@@ -63,7 +63,7 @@ public class ProjectServiceTest {
 
     @Test
     public void testGetProject_Success() {
-        Project project = new Project("Title", "Description", 1, 2, 3);
+        Project project = new Project("Title", "Description", 1, 2,2,2, 3,3,3);
         when(projectRepository.findById(any(Integer.class))).thenReturn(Optional.of(project));
 
 
@@ -74,7 +74,7 @@ public class ProjectServiceTest {
 
     @Test
     public void testGetAllProjects_Success() {
-        Project project = new Project("Title", "Description", 1, 2, 3);
+        Project project = new Project("Title", "Description", 1, 2,2,2, 3,3,3);
         when(projectRepository.findAll()).thenReturn(List.of(project));
 
 

@@ -75,7 +75,7 @@ class CommentControllerTest {
         this.mvc.perform(post("/addUser").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(tester)))
                 .andExpect(status().isOk());
         testMemberName=tester.getName();
-        ProjectAddDto testProjectAdd=ProjectAddDto.builder().title("test").description("test").PL("pl").developer("dev").tester("tester").build();
+        ProjectAddDto testProjectAdd=ProjectAddDto.builder().title("test").description("test").PL("pl").developer1("dev").developer2("dev").developer3("dev").tester1("tester").tester2("tester").tester3("tester").build();
         this.mvc.perform(post("/addProject").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testProjectAdd)))
                 .andExpect(status().isOk());
         testProjectId=projectRepository.findByTitle(testProjectAdd.getTitle()).getId();

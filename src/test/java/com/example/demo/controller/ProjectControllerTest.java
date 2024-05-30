@@ -80,8 +80,7 @@ class ProjectControllerTest {
                 .title("test2")
                 .description("test2")
                 .PL("pl2")
-                .developer("dev2")
-                .tester("tester2")
+                .developer1("dev").developer2("dev").developer3("dev").tester1("tester").tester2("tester").tester3("tester")
                 .build();
         this.mvc.perform(post("/addProject")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -98,8 +97,7 @@ class ProjectControllerTest {
                 .title("test")
                 .description("test")
                 .PL("pl")
-                .developer("dev")
-                .tester("tester")
+                .developer1("dev").developer2("dev").developer3("dev").tester1("tester").tester2("tester").tester3("tester")
                 .build();
         MvcResult mvcResult=this.mvc.perform(post("/addProject")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -118,8 +116,7 @@ class ProjectControllerTest {
                 .title("test2")
                 .description("test")
                 .PL("pl")
-                .developer("dev")
-                .tester("tester")
+                .developer1("dev").developer2("dev").developer3("dev").tester1("tester").tester2("tester").tester3("tester")
                 .build();
         MvcResult mvcResult=this.mvc.perform(post("/addProject")
                         .contentType(MediaType.APPLICATION_JSON)
