@@ -229,13 +229,39 @@ class IssueControllerTest {
     void setState() throws Exception{
         IssueSetDto issueSetDto=IssueSetDto.builder()
                 .id(testIssueId)
-                .priority(Issue.getPriorityFromString("Major"))
-                .status(Issue.getStatusFromString("Assigned"))
+                .priority(Issue.getPriorityFromString("Minor"))
+                .status(Issue.getStatusFromString("Fixed"))
                 .assignee(testMemberName)
                 .build();
-        this.mvc.perform(post("/setIssue")
+        MvcResult mvcResult =this.mvc.perform(post("/setIssue")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(issueSetDto)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andReturn();
+        String response=mvcResult.getResponse().getContentAsString();
+        assertEquals(issueSetDto.getPriority(),issueRepository.findById(testIssueId).get().getPriority());
+        assertEquals(issueSetDto.getStatus(),issueRepository.findById(testIssueId).get().getStatus());
     }
+
+
+//    @Test
+//    @DisplayName("setstate Fail : wrong Id")
+//    void setStateFail() throws Exception{
+//        Integer wrongId=1234;
+//        IssueSetDto issueSetDto=IssueSetDto.builder()
+//                .id(wrongId)
+//                .priority(Issue.getPriorityFromString("Minor"))
+//                .status(Issue.getStatusFromString("Fixed"))
+//                .assignee(testMemberName)
+//                .build();
+//        MvcResult mvcResult =this.mvc.perform(post("/setIssue")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(issueSetDto)))
+//                .andExpect(status().isOk())
+//                .andReturn();
+//        String response=mvcResult.getResponse().getContentAsString();
+//        System.out.println("Http response : "+ response);
+//    } //현재 setState 기능에 isExist 를 체크할 기능이 없음 / 사실 아이디가 잘못들어갈 일이 없을거라 예상
+
+
 }
