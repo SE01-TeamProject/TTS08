@@ -6,7 +6,7 @@
 
 function initializeIssueData() {
     const id = localStorage.getItem('loginId');
-    const currentIssueTItle = localStorage.getItem('currentIssueTitle');
+    const currentIssueTitle = localStorage.getItem('currentIssueTitle');
 
     const issuenumContatiner = document.getElementById('issue-num');
     const reporterContainer = document.getElementById('reporter-name');
@@ -18,7 +18,7 @@ function initializeIssueData() {
 
     reporterContainer.innerText = id;
 
-      fetch('http://localhost:8080/issueTitle' + currentIssueTItle)
+      fetch('http://localhost:8080/issueTitle' + currentIssueTitle)
           .then(response => {
               if (!response.ok) {
                   throw new Error('Network response was not ok ' + response.statusText);
@@ -45,6 +45,7 @@ function setIssue() {
 
 //여기서부터 Comment관련함수 ------------------------------------------------------------------------------------
  function addComment() {
+             const currentIssueTitle = localStorage.getItem('currentIssueTitle');
              const writer = localStorage.getItem('loginId');
              const note = document.getElementById('comment-input').value;
             fetch('http://localhost:8080/addComment', {
@@ -52,7 +53,7 @@ function setIssue() {
               headers: {
                   'Content-Type': 'application/json'
               },
-              body: JSON.stringify({writer, note})
+              body: JSON.stringify({currentIssueTitle, writer, note})
             })
               .then(response => response.text())
               .then(data => {
@@ -157,5 +158,6 @@ function setIssue() {
 
          //Admin이 누를 때, PL이 누를 때, Dev가 누를 떄, Tester가 누를 때 다 지정해줘야함. + State를 보고 분기별로 나눠서 생각
          function disableInputs() {
+             document.getElementById('title-input').disabled = true;
              document.getElementById('description-input').setAttribute('readonly', 'true');
          }
