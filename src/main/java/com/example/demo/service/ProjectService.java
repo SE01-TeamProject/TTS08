@@ -48,8 +48,12 @@ public class ProjectService {
 			projectRepository.save(new Project(projectAddDto.getTitle(), 
 					projectAddDto.getDescription(), 
 					memberRepository.findByName(projectAddDto.getPL()).getId(), 
-					memberRepository.findByName(projectAddDto.getDeveloper()).getId(),
-					memberRepository.findByName(projectAddDto.getTester()).getId()));
+					memberRepository.findByName(projectAddDto.getDeveloper1()).getId(),
+					memberRepository.findByName(projectAddDto.getDeveloper2()).getId(),
+					memberRepository.findByName(projectAddDto.getDeveloper3()).getId(),
+					memberRepository.findByName(projectAddDto.getTester1()).getId(),
+					memberRepository.findByName(projectAddDto.getTester2()).getId(),
+					memberRepository.findByName(projectAddDto.getTester3()).getId()));
 		}
 		return "true";
 	}
@@ -71,10 +75,18 @@ public class ProjectService {
 			obj.put("description", item.getDescription());
 			user = memberRepository.findById(item.getPL());
 			obj.put("PL", user.isEmpty() ? "N/A" : user.get().getName());
-			user = memberRepository.findById(item.getDeveloper());
-			obj.put("developer", user.isEmpty() ? "N/A" : user.get().getName());
-			user = memberRepository.findById(item.getTester());
-			obj.put("tester", user.isEmpty() ? "N/A" : user.get().getName());
+			user = memberRepository.findById(item.getDeveloper1());
+			obj.put("developer1", user.isEmpty() ? "N/A" : user.get().getName());
+			user = memberRepository.findById(item.getDeveloper2());
+			obj.put("developer2", user.isEmpty() ? "N/A" : user.get().getName());
+			user = memberRepository.findById(item.getDeveloper3());
+			obj.put("developer3", user.isEmpty() ? "N/A" : user.get().getName());
+			user = memberRepository.findById(item.getTester1());
+			obj.put("tester1", user.isEmpty() ? "N/A" : user.get().getName());
+			user = memberRepository.findById(item.getTester2());
+			obj.put("tester2", user.isEmpty() ? "N/A" : user.get().getName());
+			user = memberRepository.findById(item.getTester3());
+			obj.put("tester3", user.isEmpty() ? "N/A" : user.get().getName());
 			obj.put("date", item.getDate().format(formatter));
 			projects.put(obj);
 		});
@@ -92,10 +104,18 @@ public class ProjectService {
 		obj.put("description", prj.get().getDescription());
 		user = memberRepository.findById(prj.get().getPL());
 		obj.put("PL", user.isEmpty() ? "N/A" : user.get().getName());
-		user = memberRepository.findById(prj.get().getDeveloper());
-		obj.put("developer", user.isEmpty() ? "N/A" : user.get().getName());
-		user = memberRepository.findById(prj.get().getTester());
-		obj.put("tester", user.isEmpty() ? "N/A" : user.get().getName());
+		user = memberRepository.findById(prj.get().getDeveloper1());
+		obj.put("developer1", user.isEmpty() ? "N/A" : user.get().getName());
+		user = memberRepository.findById(prj.get().getDeveloper2());
+		obj.put("developer2", user.isEmpty() ? "N/A" : user.get().getName());
+		user = memberRepository.findById(prj.get().getDeveloper3());
+		obj.put("developer3", user.isEmpty() ? "N/A" : user.get().getName());
+		user = memberRepository.findById(prj.get().getTester1());
+		obj.put("tester1", user.isEmpty() ? "N/A" : user.get().getName());
+		user = memberRepository.findById(prj.get().getTester2());
+		obj.put("tester2", user.isEmpty() ? "N/A" : user.get().getName());
+		user = memberRepository.findById(prj.get().getTester3());
+		obj.put("tester3", user.isEmpty() ? "N/A" : user.get().getName());
 		obj.put("date", prj.get().getDate().format(formatter));
 		return obj.toString();
 	}
