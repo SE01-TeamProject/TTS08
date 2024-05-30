@@ -1,25 +1,22 @@
  //html이 load되는 즉시 실행되는 함수
          document.addEventListener('DOMContentLoaded', function() {
              initializeComments();
-             disableInputs();
              initializeIssueData();
+             disableInputs();
              getAssigneeCandidates();
         });
 
 async function initializeIssueData() {
-    const id = localStorage.getItem('loginId');
-    const currentIssueTitle = localStorage.getItem('currentIssueTitle');
-
     const issuenumContainer = document.getElementById('issue-num');
     const reporterContainer = document.getElementById('reporter-name');
+    const assigneeContainer = document.getElementById('assignee-name');
     const titleContainer = document.getElementById('title-input');
     const priorityContainer = document.getElementById('priority-input');
     const statusContainer = document.getElementById('status-input');
     const typeContainer = document.getElementById('type-input');
     const descriptionContainer = document.getElementById('description-input');
 
-    reporterContainer.innerText = id;
-
+    const currentIssueTitle = localStorage.getItem('currentIssueTitle');
     try {
         const response = await fetch('http://localhost:8080/issueTitle/' + currentIssueTitle);
 
@@ -31,6 +28,8 @@ async function initializeIssueData() {
 
         issuenumContainer.textContent = data.issuenum;
         localStorage.setItem('issuenum', data.issuenum);
+        assigneeContainer.textContent = data.assignee;
+        reporterContainer.textContent = data.reporter;
         titleContainer.value = data.title;
         priorityContainer.value = getPriority(data.priority);
         statusContainer.value = getStatus(data.status);
@@ -50,6 +49,12 @@ function setIssue() {
              const issue = localStorage.getItem('currentIssueTitle');
              const writer = localStorage.getItem('loginId');
              const note = document.getElementById('comment-input').value;
+
+             if(note === "") {
+                 alert("내용을 작성하신 후 다시 시도해주세요.");
+                 return;
+             }
+
             fetch('http://localhost:8080/addComment', {
               method: 'POST',
               headers: {

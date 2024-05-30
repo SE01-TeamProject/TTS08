@@ -63,6 +63,7 @@
         .searchinput {
             padding : 10px;
             width : 200px;
+            border: 1px solid black;
         }
         #search-select {
             position : relative;

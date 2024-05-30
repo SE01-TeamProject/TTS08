@@ -34,7 +34,12 @@
               location.href = "http://localhost:8080/issue.html";
         }
 
+        function clearAllIssues() {
+            document.getElementById('issue-table-body').replaceChildren();
+        }
+
         async function showAllIssues() {
+            clearAllIssues();
             const currentProjectId = localStorage.getItem('projectId');
             try {
                 const response = await fetch('http://localhost:8080/listIssue/' + currentProjectId);

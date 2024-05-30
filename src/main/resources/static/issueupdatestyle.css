@@ -72,8 +72,8 @@
             top : 50%;
             left : 50%;
             transform : translate(-50%, -50%);
-            width: 150%;
-            height: 120%;
+            width: 200%;
+            height: 170%;
             background-color: lightgrey;
             opacity: 0.8;
         }
