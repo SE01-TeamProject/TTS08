@@ -201,8 +201,8 @@ public class IssueService {
 		return issues.toString();
 	}
 	
-	// 이슈 트렌드 분석: 이슈의 Priority, Status, Type가 몇 개인지 JSONString으로 보내는 메소드
-	public String getIssueTrend() {
+	// 이슈 통계 분석: 이슈의 Priority, Status, Type가 몇 개인지 JSONString으로 보내는 메소드
+	public String getIssueStatics() {
 		JSONObject trend = new JSONObject();
 		{
 			JSONObject obj = new JSONObject();
@@ -232,8 +232,8 @@ public class IssueService {
 		return trend.toString();	
 	}
 	
-	// 이슈 월별 분석: 이슈가 해당 달에 몇 개 생성됐는지 JSONString으로 보내는 메소드
-	public String getIssueStatics() {
+	// 이슈 트렌드: 이슈가 해당 달에 몇 개 생성됐는지 JSONString으로 보내는 메소드
+	public String getIssueTrend() {
 		List<String> dates = new ArrayList<>();
 		DateTimeFormatter monFormatter = DateTimeFormatter.ofPattern("yyyy/MM");
 		issueRepository.findAll().forEach(item -> dates.add(item.getDate().format(monFormatter)));

@@ -14,6 +14,11 @@
             function gotoLoginPage() {
                 location.href = "http://localhost:8080/login.html";
             }
+            function gotoStatisticPage() {
+                const currentLocation = window.location.href;
+                localStorage.setItem('statisticsPreviousPage', currentLocation);
+                location.href = "http://localhost:8080/statistic.html";
+            }
 
              function hideElements() {
             const hideableElements = document.querySelectorAll('.hideable');

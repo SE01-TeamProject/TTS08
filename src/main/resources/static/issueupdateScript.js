@@ -151,6 +151,9 @@ function setIssue() {
              deleteWriterOnHead();
              document.getElementById('comment-input').value = '';
          }
+         function backToIssuePage() {
+             location.href = "http://localhost:8080/issue.html";
+         }
 
          //Admin이 누를 때, PL이 누를 때, Dev가 누를 떄, Tester가 누를 때 다 지정해줘야함. + State를 보고 분기별로 나눠서 생각
          function disableInputs() {

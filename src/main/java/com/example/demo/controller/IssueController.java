@@ -85,13 +85,11 @@ public class IssueController {
 		is.setAssignee(issueSetDto);
 	}
 	
-	@GetMapping("/issueTrend")
-	public String getIssueTrend() {
-		return is.getIssueTrend();
-	}
-	
 	@GetMapping("/issueStatics")
 	public String getIssueStatics() {
 		return is.getIssueStatics();
 	}
+	
+	@GetMapping("/issueTrend")
+	public String getIssueTrend() { return is.getIssueTrend(); }
 }
