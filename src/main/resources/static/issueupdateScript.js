@@ -4,11 +4,11 @@
               initializeIssueData();
         });
 
-function initializeIssueData() {
+async function initializeIssueData() {
     const id = localStorage.getItem('loginId');
     const currentIssueTitle = localStorage.getItem('currentIssueTitle');
 
-    const issuenumContatiner = document.getElementById('issue-num');
+    const issuenumContainer = document.getElementById('issue-num');
     const reporterContainer = document.getElementById('reporter-name');
     const titleContainer = document.getElementById('title-input');
     const priorityContainer = document.getElementById('priority-input');
@@ -17,28 +17,29 @@ function initializeIssueData() {
     const descriptionContainer = document.getElementById('description-input');
 
     reporterContainer.innerText = id;
-    console.log("currentIssueTitle: " + currentIssueTitle);
+    console.log("currentIssueTitle: [" + currentIssueTitle + "]");
 
-      fetch('http://localhost:8080/issueTitle/' + currentIssueTitle)
-          .then(response => {
-              if (!response.ok) {
-                  throw new Error('Network response was not ok ' + response.statusText);
-              }
-              return response.json();
-          })
-          .then(data => {
-              issuenumContatiner.textContent = data.issuenum;
-              localStorage.setItem('issuenum', data.issuenum);
-              console.log("issuenum: " + localStorage.getItem('issuenum'));
-              titleContainer.value = data.title;
-              priorityContainer.value = getPriority(data.priority);
-              statusContainer.value = getStatus(data.status);
-              typeContainer.value = getType(data.type);
-              descriptionContainer.value = data.description;
-          })
-          .catch(error => {
-              console.error('There was a problem with the fetch operation:', error);
-          });
+    try {
+        const response = await fetch('http://localhost:8080/issueTitle/' + currentIssueTitle);
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+
+        const data = await response.json();
+        console.log('Fetched JSON data:', data);
+
+        issuenumContainer.textContent = data.issuenum;
+        localStorage.setItem('issuenum', data.issuenum);
+        console.log("issuenum: " + localStorage.getItem('issuenum'));
+        titleContainer.value = data.title;
+        priorityContainer.value = getPriority(data.priority);
+        statusContainer.value = getStatus(data.status);
+        typeContainer.value = getType(data.type);
+        descriptionContainer.value = data.description;
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+    }
 }
 
 function setIssue() {
