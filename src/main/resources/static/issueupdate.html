@@ -22,6 +22,7 @@
             <span class="select-head priority-head">priority</span>
             <span class="select-head status-head">status</span>
             <span class="select-head type-head">type</span>
+            <span class="select-head assignee-head">assignee</span>
         </p>
         <select id="priority-input">
             <option value="Major">Major</option>
@@ -38,7 +39,13 @@
             <option value="Closed">Closed</option>
             <option value="Reopened">Reopened</option>
         </select>
-        <select id="type-input"> <!---Bug Task 중에 하나 지정 후 readonly로 --->
+        <select id="type-input">
+            <option value="Bug">Bug</option>
+            <option value="Task">Task</option>
+        </select>
+        <select id="assignee-input">
+            <option value="asdf">Dev111</option>
+            <!---API로 프로젝트에 소속된 모든 Developer 불러오기--->
         </select>
         <br>
         <div class="area-box">
@@ -52,7 +59,7 @@
 
     <!---add comment 모달--->
      <div class="popup-page hide" id="comment-popup">
-         <button class="xbutton" onclick="closeCommentModal()">X</button>
+         <button class="xbutton" id="xbutton" onclick="closeCommentModal()">X</button>
          <h1 class="tc">Comment Add</h1>
          <div class="center" id="comment-popup-head">
              <!---이 자리에 Writer: @@@ 가 함수로 자동으로 들어갈 것임--->
@@ -60,7 +67,7 @@
          </div>
          <button class="popup-addbutton" onclick="addComment()">Add</button>
     </div>
-    <button class="newcommentbutton" onclick="openCommentModal()">New comment</button>
+    <button class="newcommentbutton" onclick="openPopUp('comment-popup')">New comment</button>
     <button class="applybutton" onclick="setIssue()">Apply</button>
     <div id="bg-page" class="hide"></div>
 </body>

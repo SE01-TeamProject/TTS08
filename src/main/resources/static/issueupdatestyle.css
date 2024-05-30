@@ -108,14 +108,16 @@
             top : 26px;
         }
         .priority-head {
-            left : 42px;
+            left : 38px;
         }
-        /*이거 계속 사이즈 기기마다 달라지면 묶어서 조정하기 */
         .status-head {
-            left : 120px;
+            left : 134px;
         }
         .type-head {
-            left : 198px;
+            left : 230px;
+        }
+        .assignee-head {
+            left : 305px;
         }
         textarea {
             width : 800px;
