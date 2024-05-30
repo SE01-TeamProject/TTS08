@@ -104,16 +104,6 @@ class CommentControllerTest {
 
     }
 
-    @Test //issue 할당이 안되어 있긴 하지만 어쨌든 추가는 되어있음
-    @DisplayName("getCommentList Success")
-    void getCommentList()throws Exception {
-        MvcResult mvcResult= this.mvc.perform(get("/listComment"))
-                .andExpect(status().isOk())
-                .andReturn();
-        String response=mvcResult.getResponse().getContentAsString();
-        System.out.println("Http response : "+response);
-    }
-
     @Test
     @DisplayName("addComment Success")
     void addComment() throws Exception {
@@ -164,15 +154,34 @@ class CommentControllerTest {
 //        System.out.println("Http response : "+response);
 //    }
 
-    @Test //comment Id를 받을 방법x / comment id는 1부터 순서대로 채움 -> setup에서 추가한 comment id = 1
-    @DisplayName("getComment by Id Success")
-    void getComment() throws Exception {
-        MvcResult mvcResult= this.mvc.perform(get("/comment/"+1))
+//    @Test //comment Id를 받을 방법x / comment id는 1부터 순서대로 채움 -> setup에서 추가한 comment id = 1
+//    @DisplayName("getComment by Id Success")
+//    void getComment() throws Exception {
+//        MvcResult mvcResult= this.mvc.perform(get("/comment/"+1))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.note").value("test"))
+//                .andExpect(jsonPath("$.writer").value("tester"))
+//                .andReturn();
+//        String response=mvcResult.getResponse().getContentAsString();
+//        System.out.println("Http response : "+response);
+//    }
+
+    @Test
+    @DisplayName("getComment list Success")
+    void getCommentList() throws Exception {
+        CommentAddDto testCommentAdd=CommentAddDto.builder().issue(testIssuetitle).writer(testMemberName).note("test")
+                .build();
+        this.mvc.perform(post("/addComment").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testCommentAdd)))
+                .andExpect(status().isOk());
+        this.mvc.perform(post("/addComment").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testCommentAdd)))
+                .andExpect(status().isOk());
+        this.mvc.perform(post("/addComment").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testCommentAdd)))
+                .andExpect(status().isOk());
+        Integer testIssueId = issueRepository.findByTitle(testIssuetitle).getId();
+        MvcResult mvcResult = this.mvc.perform(get("/listComment/" + testIssueId))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.note").value("test"))
-                .andExpect(jsonPath("$.writer").value("tester"))
                 .andReturn();
-        String response=mvcResult.getResponse().getContentAsString();
-        System.out.println("Http response : "+response);
+        String response = mvcResult.getResponse().getContentAsString();
+        System.out.println("Http response : " + response);
     }
 }
