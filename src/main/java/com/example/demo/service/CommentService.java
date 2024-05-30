@@ -13,6 +13,7 @@ import com.example.demo.domain.Comment;
 import com.example.demo.domain.Member;
 import com.example.demo.dto.CommentAddDto;
 import com.example.demo.repository.CommentRepository;
+import com.example.demo.repository.IssueRepository;
 import com.example.demo.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class CommentService {
 	private final CommentRepository commentRepository;
 	private final MemberRepository memberRepository;
+	private final IssueRepository issueRepository;
 	
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 	
@@ -31,7 +33,7 @@ public class CommentService {
 	
 	// 코멘트를 추가하는 메소드
 	public String addComment(CommentAddDto commentAddDto) {
-		commentRepository.save(new Comment(Integer.valueOf(commentAddDto.getIssue()), 
+		commentRepository.save(new Comment(issueRepository.findByTitle(commentAddDto.getIssue()).getId(), 
 				memberRepository.findByName(commentAddDto.getWriter()).getId(), 
 				commentAddDto.getNote()));
 		return "true";
