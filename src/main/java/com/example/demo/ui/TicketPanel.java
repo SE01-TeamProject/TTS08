@@ -40,12 +40,8 @@ public class TicketPanel extends JPanel {
 	}
 	
 	public JTable tempTable() {
-		String header[] = {"Number", "Name", "Milestone", "Type", "Priority", "State", "Date"};
-		String contents[][] = {
-				{"1", "T1", "Milestone1", "Type1", "Critical", "Closed", "24.05.24"},
-				{"2", "T2", "Milestone2", "Type2", "Trivial", "Closed", "24.05.24"},
-				{"3", "T3", "Milestone3", "Type3", "Blocker", "Closed", "24.05.24"}
-		};
+		String header[] = controller.getIssueHeader();
+		String contents[][] = controller.getIssueContent();
 		
 		JTable table = new JTable();
 		
