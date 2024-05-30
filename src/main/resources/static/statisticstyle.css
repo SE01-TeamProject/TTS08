@@ -2,17 +2,17 @@
 
 #statistics-container {
     position : absolute;
-    left : 1100px;
-    bottom : 0;
-    width: 500px;
+    left : 900px;
+    bottom : -30px;
+    width: 400px;
     padding : 30px;
     margin : 50px;
     border : 2px solid lightgoldenrodyellow;
 }
 #trend-container {
     position : absolute;
-    left : 100px;
-    top : 300px;
+    left : 0;
+    top : 200px;
     width : 800px;
     padding : 30px;
     margin : 50px;
