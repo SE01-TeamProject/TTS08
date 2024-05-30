@@ -152,9 +152,7 @@ public class IssueService {
 	// 이슈 제목을 받고 해당 이슈들을 가져오는 메소드
 	public String getIssueTitle(String title) {
 		Issue issue = issueRepository.findByTitle(title);
-		JSONArray issues = new JSONArray();
-		issues.put(issueToJSON(issue));
-		return issues.toString();
+		return issueToJSON(issue).toString();
 	}
 	
 	public String getIssuePriority(String priority) {
