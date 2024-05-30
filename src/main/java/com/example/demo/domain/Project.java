@@ -30,11 +30,19 @@ public class Project {
 	@Column(name = "PL")
 	private Integer PL;			// 프로젝트에 할당된 PL - 1명만
 	
-	@Column(name = "DEVELOPER")
-	private Integer developer;	// 프로젝트에 할당된 개발자 - 1명만
+	@Column(name = "DEVELOPER1")
+	private Integer developer1;	// 프로젝트에 할당된 개발자
+	@Column(name = "DEVELOPER2")
+	private Integer developer2;	// 프로젝트에 할당된 개발자
+	@Column(name = "DEVELOPER3")
+	private Integer developer3;	// 프로젝트에 할당된 개발자
 	
-	@Column(name = "TESTER")
-	private Integer tester;		// 프로젝트에 할당된 테스터 - 1명만
+	@Column(name = "TESTER1")
+	private Integer tester1;		// 프로젝트에 할당된 테스터
+	@Column(name = "TESTER2")
+	private Integer tester2;		// 프로젝트에 할당된 테스터
+	@Column(name = "TESTER3")
+	private Integer tester3;		// 프로젝트에 할당된 테스터
 
 	@Column(name = "CREATED_DATE")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -50,17 +58,21 @@ public class Project {
 	private List<MemberAssignedPr> userAssignedPrs = new ArrayList<>();
 
 	@Builder
-    public Project(String title, String description, Integer PL, Integer developer, Integer tester) {
+    public Project(String title, String description, Integer PL, Integer developer1, Integer developer2, Integer developer3, Integer tester1, Integer tester2, Integer tester3) {
         this.title = title;
         this.description = description;
         this.PL = PL;
-        this.developer = developer;
-        this.tester = tester;
+        this.developer1 = developer1;
+        this.developer2 = developer2;
+        this.developer3 = developer3;
+        this.tester1 = tester1;
+        this.tester2 = tester2;
+        this.tester3 = tester3;
         this.date = LocalDateTime.now();
     }
 	
-	public static Project createProject(String title, String description, Integer PL, Integer developer, Integer tester) {
-		Project project = new Project(title, description, PL, developer, tester);
+	public static Project createProject(String title, String description, Integer PL, Integer developer1, Integer developer2, Integer developer3, Integer tester1, Integer tester2, Integer tester3) {
+		Project project = new Project(title, description, PL, developer1, developer2, developer3, tester1, tester2, tester3);
     	return project;
     }
 }
