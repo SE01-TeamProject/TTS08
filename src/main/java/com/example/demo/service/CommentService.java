@@ -31,7 +31,9 @@ public class CommentService {
 	
 	// 코멘트를 추가하는 메소드
 	public String addComment(CommentAddDto commentAddDto) {
-		commentRepository.save(new Comment(memberRepository.findByName(commentAddDto.getWriter()).getId(), commentAddDto.getNote()));
+		commentRepository.save(new Comment(Integer.valueOf(commentAddDto.getIssue()), 
+				memberRepository.findByName(commentAddDto.getWriter()).getId(), 
+				commentAddDto.getNote()));
 		return "true";
 	}
 	
