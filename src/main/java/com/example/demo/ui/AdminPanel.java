@@ -22,6 +22,7 @@ public class AdminPanel extends JPanel {
 		controller = sc;
 	}
 	
+	
 	public AdminPanel() {
 		setBorder(new LineBorder(new Color(0, 128, 255), 2, true));
 		setLayout(null);
@@ -51,6 +52,7 @@ public class AdminPanel extends JPanel {
 		return btn;
 	}
 	
+	// Buttons ---------------------------------------------------------------------
 	private JButton makeProjectUserManageBtn(String str) {
 		JButton btn = new JButton(str);
 		btn.addActionListener(new ActionListener() {

@@ -43,6 +43,7 @@ public class MainWindow extends JFrame {
 		adminPanel = new AdminPanel(controller);
 		this.setDpPanel(projectPanel);
 	}
+	
 	public MainWindow() {
 		super("Issue Ticketing System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,7 +80,7 @@ public class MainWindow extends JFrame {
 		
 		// Timeline Btn
 		timelineBtn = makeTimelineBtn("Timeline");
-		btnPanel.add(timelineBtn);
+		//btnPanel.add(timelineBtn); // TODO Change into Statistic
 		
 		// Ticket Btn
 		ticketBtn = makeTicketBtn("Tickets");		
@@ -118,7 +119,6 @@ public class MainWindow extends JFrame {
 	}
 	
 	public void setDpPanel(JPanel panel) {
-		
 		System.out.print("setDpPanel: ");
 		System.out.println(panel);
 		
@@ -135,6 +135,13 @@ public class MainWindow extends JFrame {
 		userIdTextField.setText("USER: " + id);
 	}
 	
+	private void updateTicketPanel() {
+		ticketPanel = new TicketPanel(controller);
+	}
+	
+	private void updateProjectPanel() {
+		projectPanel = new ProjectPanel(controller);
+	}
 	
 	// Buttons -----------------------------------------------------------------------------------------------
 	private JButton makeHomeBtn(String str) {
@@ -143,12 +150,12 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// Home Btn ACtion Listenser
 				System.out.println("Home btn pressed!");
+				updateProjectPanel();
 				setDpPanel(projectPanel);
 			}
 		});
 		btn.setBounds(12, 10, 150, 53);		
 		return btn;
-		
 	}
 	
 	private JButton makeLogoutBtn(String str) {
@@ -188,6 +195,7 @@ public class MainWindow extends JFrame {
 				// Ticket Btn ACtion Listener
 				System.out.println("Ticket btn pressed!");
 				if(controller.getProjectFlag()) {
+					updateTicketPanel();
 					setDpPanel(ticketPanel);
 				}
 			}
@@ -202,6 +210,7 @@ public class MainWindow extends JFrame {
 				// Admin Btn ACtion Listener
 				System.out.println("Admin btn pressed!");
 				if(controller.getCurrUserInfo("level").equals("0")) {
+					updateTicketPanel();
 					setDpPanel(adminPanel);
 				}
 				

@@ -1,9 +1,11 @@
 package com.example.demo.ui;
-
 import java.awt.EventQueue;
 
 import javax.swing.*;
 import javax.swing.border.*;
+
+import org.json.JSONObject;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -22,7 +24,6 @@ public class IssueWindow extends JFrame {
 	
 	private JComboBox<String> priorityComboBox = new JComboBox();
 	private JComboBox<String> stateComboBox = new JComboBox();
-	private JComboBox<String> milestoneComboBox = new JComboBox();	
 	private JComboBox<String> assigneeComboBox = new JComboBox();
 	private JTextArea decriptionTextArea = new JTextArea();
 	private JTextArea commentTextArea = new JTextArea();
@@ -48,6 +49,15 @@ public class IssueWindow extends JFrame {
 		});
 	}
 	
+	public void updateValues(String name) {
+		String jsonString = controller.getIssueJsonByTitle(name);
+		JSONObject obj = new JSONObject(jsonString);
+		
+		String title = obj.getString("title");
+		//String id = obj.getString(title)
+		
+	}
+	
 	public IssueWindow(SwingController sc) {
 		this();
 		controller = sc;
@@ -64,7 +74,7 @@ public class IssueWindow extends JFrame {
 	public IssueWindow() {
 		setTitle("Issue Information");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 600, 900);
+		setBounds(100, 100, 600, 760);
 		contentPane = new JPanel();
 		contentPane.setForeground(new Color(0, 0, 0));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -73,11 +83,11 @@ public class IssueWindow extends JFrame {
 		contentPane.setLayout(null);
 		
 		commentPanel = new JScrollPane();
-		commentPanel.setBounds(12, 565, 450, 200);
+		commentPanel.setBounds(12, 440, 450, 200);
 		contentPane.add(commentPanel);
 		
 		descriptionPanel = new JScrollPane();
-		descriptionPanel.setBounds(12, 335, 450, 200);
+		descriptionPanel.setBounds(12, 200, 450, 200);
 		contentPane.add(descriptionPanel);
 		
 		commentTextArea = new JTextArea();
@@ -115,26 +125,21 @@ public class IssueWindow extends JFrame {
 		
 			// Assignee
 		JLabel assigneeLabel = new JLabel("Assignee");
-		assigneeLabel.setBounds(178, 195, 57, 15);
+		assigneeLabel.setBounds(344, 93, 57, 15);
 		contentPane.add(assigneeLabel);
-		
-			// Milestone
-		JLabel milestoneLabel = new JLabel("Milestone");
-		milestoneLabel.setBounds(12, 195, 57, 15);
-		contentPane.add(milestoneLabel);
 		
 			// Description
 		JLabel decriptionLabel = new JLabel("Description");
-		decriptionLabel.setBounds(12, 320, 140, 15);
+		decriptionLabel.setBounds(12, 180, 140, 15);
 		contentPane.add(decriptionLabel);
 				
 			// Comment
 		JLabel commentLabel = new JLabel("Comments");
-		commentLabel.setBounds(12, 550, 140, 15);
+		commentLabel.setBounds(12, 420, 140, 15);
 		contentPane.add(commentLabel);
 			// New Comment
 		JLabel newCommentLabel = new JLabel("New Comment");
-		newCommentLabel.setBounds(12, 780, 140, 15);
+		newCommentLabel.setBounds(12, 660, 140, 15);
 		contentPane.add(newCommentLabel);
 		
 		
@@ -170,12 +175,8 @@ public class IssueWindow extends JFrame {
 		stateComboBox.setBounds(12, 113, 116, 32);
 		contentPane.add(stateComboBox);
 		
-		milestoneComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Milestone1", "Milestone2", "Milestone3", "Milestone4"}));
-		milestoneComboBox.setBounds(12, 215, 116, 32);
-		contentPane.add(milestoneComboBox);
-		
 		assigneeComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"None"}));
-		assigneeComboBox.setBounds(178, 215, 116, 32);
+		assigneeComboBox.setBounds(346, 113, 116, 32);
 		contentPane.add(assigneeComboBox);		
 		
 		decriptionTextArea = new JTextArea();
@@ -185,7 +186,7 @@ public class IssueWindow extends JFrame {
 
 		newCommentTextField = new JTextField();
 		newCommentTextField.setText("");
-		newCommentTextField.setBounds(12, 795, 450, 32);
+		newCommentTextField.setBounds(12, 679, 450, 32);
 		contentPane.add(newCommentTextField);
 		newCommentTextField.setColumns(10);
 	}
@@ -216,10 +217,10 @@ public class IssueWindow extends JFrame {
 			redraw();
 		}
 	}
-
+	
 	public void initPriorityCBox() {
 		if(controller != null) {
-			ArrayList<String> list = controller.getPriorties();
+			ArrayList<String> list = controller.getPriorities();
 			String priority[] = list.toArray(new String[list.size()]);
 			priorityComboBox.setModel(new DefaultComboBoxModel<String>(priority));
 		}
@@ -228,7 +229,7 @@ public class IssueWindow extends JFrame {
 	
 	public void initStateCBox() {
 		if(controller != null) {
-			ArrayList<String> list = controller.getStates();
+			ArrayList<String> list = controller.getStatus();
 			String priority[] = list.toArray(new String[list.size()]);
 			priorityComboBox.setModel(new DefaultComboBoxModel<String>(priority));
 		}

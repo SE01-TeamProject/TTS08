@@ -101,7 +101,7 @@ public class ProjectUserWindow extends JFrame {
 		// init combobox
 		projectComboBox.removeAll();
 		
-		ArrayList<String> projects = controller.getProjects();
+		ArrayList<String> projects = controller.getProjectTitles();
 		for(String project : projects) {
 			projectComboBox.addItem(project);
 		}
