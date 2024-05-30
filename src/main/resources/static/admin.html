@@ -18,6 +18,8 @@
         <button onclick="openPopUp('projectadd-pop');displayUsersInProjectAdd()">Add Project</button>
         <button onclick="openPopUp('usermanage-pop')">User Management</button>
     </div>
+
+    <!----------------------------user add modal --------------------------->
     <div id="useradd-pop" class="popup-page hide">
          <button class="xbutton" onclick="closePopUp('useradd-pop')">X</button>
          <h1 class="tc">Add User</h1>
@@ -38,6 +40,8 @@
     </div>
 
 
+
+     <!----------------------------project add modal --------------------------->
     <div id="projectadd-pop" class="popup-page hide">
          <button class="xbutton" onclick="closePopUp('projectadd-pop')">X</button>
          <h1 class="tc">Project Add</h1>
@@ -56,10 +60,10 @@
                 <select id="PL-select">
                     <!---PL들 들어갈 자리--->
                 </select>
-                <select id="developer-select">
+                <select id="developer-select" multiple>
                     <!---Developer들 들어갈 자리--->
                 </select>
-                <select id="tester-select">
+                <select id="tester-select" multiple>
                     <!---Tester들 들어갈 자리--->
                 </select>
         </div>
@@ -67,6 +71,8 @@
     </div>
 
 
+
+     <!----------------------------user manage modal --------------------------->
     <div id="usermanage-pop" class="popup-page hide">
          <button class="xbutton" onclick="closePopUp('usermanage-pop')">X</button>
          <h1 class="tc">User Manage</h1>

@@ -113,3 +113,19 @@
             }
             return result;
         }
+        function getLevel(number) {
+            let result;
+             switch(number) {
+                case 0 : result = "Admin";
+                break;
+                case 1 : result = "PL";
+                break;
+                case 2 : result = "Developer";
+                break;
+                case 3 : result = "Tester";
+                break;
+                default : result = "Unknown Type";
+                break;
+            }
+            return result;
+        }

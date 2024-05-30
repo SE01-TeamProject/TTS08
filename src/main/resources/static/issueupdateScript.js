@@ -2,6 +2,7 @@
          document.addEventListener('DOMContentLoaded', function() {
               disableInputs();
               initializeIssueData();
+              initializeComments();
         });
 
 async function initializeIssueData() {
@@ -17,7 +18,6 @@ async function initializeIssueData() {
     const descriptionContainer = document.getElementById('description-input');
 
     reporterContainer.innerText = id;
-    console.log("currentIssueTitle: [" + currentIssueTitle + "]");
 
     try {
         const response = await fetch('http://localhost:8080/issueTitle/' + currentIssueTitle);
@@ -27,11 +27,9 @@ async function initializeIssueData() {
         }
 
         const data = await response.json();
-        console.log('Fetched JSON data:', data);
 
         issuenumContainer.textContent = data.issuenum;
         localStorage.setItem('issuenum', data.issuenum);
-        console.log("issuenum: " + localStorage.getItem('issuenum'));
         titleContainer.value = data.title;
         priorityContainer.value = getPriority(data.priority);
         statusContainer.value = getStatus(data.status);
@@ -47,7 +45,7 @@ function setIssue() {
 }
 
 //여기서부터 Comment관련함수 ------------------------------------------------------------------------------------
- function addComment() {
+ async function addComment() {
              const issue = localStorage.getItem('currentIssueTitle');
              const writer = localStorage.getItem('loginId');
              const note = document.getElementById('comment-input').value;
@@ -66,11 +64,16 @@ function setIssue() {
                       alert("Comment add failed");
                   }
               });
-              showAllComments();
+              initializeComments();
               closeCommentModal();
          }
 
-         function showAllComments() {
+         async function initializeComments() {
+                await clearAllComments();
+                await showAllComments();
+         }
+
+         async function showAllComments() {
              fetch('http://localhost:8080/listComment/' + localStorage.getItem('issuenum'))
                 .then(response => {
                     if (!response.ok) {
@@ -90,6 +93,7 @@ function setIssue() {
                   .catch(error => {
                       console.error('There was a problem with the fetch operation:', error);
                   });
+             await new Promise(resolve => setTimeout(resolve, 1000));
         }
 
          function showComment(writer, note, date) {
@@ -121,46 +125,33 @@ function setIssue() {
             // 댓글 컨테이너를 댓글 목록에 추가
             commentsContainer.appendChild(commentContainer);
          }
+         async function clearAllComments() {
+                document.getElementById('comments-container').replaceChildren();
+                await new Promise(resolve => setTimeout(resolve, 1000));
+         }
 
-        function putWriterOnHead() {
-             const writerId = localStorage.getItem('loginId');
-             const head = document.getElementById('comment-popup-head');
-             const headInfo = document.createElement('p');
-             headInfo.textContent = 'Writer : ' + writerId;
-             const firstChild = head.firstChild;
-             head.insertBefore(headInfo, firstChild);
-        }
-         function deleteWriterOnHead() {
-             console.log("deleteWriterAccess");
-             const head = document.getElementById('comment-popup-head');
-             if (head) {
-                const headInfo = head.firstElementChild;
-                if (headInfo) {
-                head.removeChild(headInfo);
-                console.log('Element removed:', headInfo);
-                }
-                else {
-                console.error('No child element found in #comment-popup-head');
-                }
-             } else {
-                console.error('#comment-popup-head element not found');
-             }
-         }
-         function openCommentModal() {
-             openPopUp('comment-popup');
-             putWriterOnHead();
-         }
          function closeCommentModal() {
              closePopUp('comment-popup');
-             deleteWriterOnHead();
              document.getElementById('comment-input').value = '';
          }
          function backToIssuePage() {
              location.href = "http://localhost:8080/issue.html";
+         }
+         function disableButtonX() {
+             document.getElementById('xbutton').disabed = true;
+         }
+         function activeButtonX() {
+             document.getElementById('xbutton').disabled = false;
          }
 
          //Admin이 누를 때, PL이 누를 때, Dev가 누를 떄, Tester가 누를 때 다 지정해줘야함. + State를 보고 분기별로 나눠서 생각
          function disableInputs() {
              document.getElementById('title-input').disabled = true;
              document.getElementById('description-input').setAttribute('readonly', 'true');
+             document.getElementById('type-input').disabled = true;
+             document.getElementById('status-input').disabled = true;
+             const level = getLevel(parseInt(localStorage.getItem('level')));
+             if(level !== 'Admin' && level !== 'PL') {
+                 document.getElementById('assignee-input').disabled = true;
+             }
          }
