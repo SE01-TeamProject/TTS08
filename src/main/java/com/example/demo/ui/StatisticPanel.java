@@ -50,6 +50,11 @@ public class StatisticPanel extends JPanel {
 		String priorityString = controller.getIssueStatics(2);
 		String trendString = controller.getIssueTrend();
 		
+		System.out.println(statusString + "\n"
+							+ typeString + "\n"
+							+ priorityString + "\n"
+							+ trendString + "\n");
+		
 		JSONObject trend = new JSONObject(trendString);
 		JSONObject status = new JSONObject(statusString);
 		JSONObject priority = new JSONObject(priorityString);
@@ -97,7 +102,18 @@ public class StatisticPanel extends JPanel {
 	            g.fillRect(x, getHeight() - barHeight - 50, barWidth, barHeight);
 	            g.setColor(Color.BLACK);
 	            g.drawRect(x, getHeight() - barHeight - 50, barWidth, barHeight);
-	            g.drawString(entry.getKey(), x, getHeight() - 30);
+
+	            // 값 표시
+	            String valueStr = String.valueOf(entry.getValue());
+	            FontMetrics fm = g.getFontMetrics();
+	            int valueWidth = fm.stringWidth(valueStr);
+	            g.drawString(valueStr, x + (barWidth - valueWidth) / 2, getHeight() - barHeight - 60);
+
+	            // 라벨 표시
+	            String label = entry.getKey();
+	            int labelWidth = fm.stringWidth(label);
+	            g.drawString(label, x + (barWidth - labelWidth) / 2, getHeight() - 30);
+	            
 	            x += barWidth + gap;
 	        }
 	    }
