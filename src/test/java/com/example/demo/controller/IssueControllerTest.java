@@ -180,6 +180,17 @@ class IssueControllerTest {
         String response=mvcResult.getResponse().getContentAsString();
         System.out.println("Http response : "+ response);
     }
+    @Test
+    @DisplayName("getIssue Fail: wrong Id ")
+    void getIssueFail()throws Exception {
+        Integer wrongId=1234;
+        MvcResult mvcResult=this.mvc.perform(get("/issue/"+wrongId))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response=mvcResult.getResponse().getContentAsString();
+        assertEquals("", response);
+        System.out.println("Http response : "+ response);
+    }
 
     @Test
     @DisplayName("getIssueList Success")
