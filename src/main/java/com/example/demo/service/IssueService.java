@@ -151,12 +151,9 @@ public class IssueService {
 	
 	// 이슈 제목을 받고 해당 이슈들을 가져오는 메소드
 	public String getIssueTitle(String title) {
+		Issue issue = issueRepository.findByTitle(title);
 		JSONArray issues = new JSONArray();
-		issueRepository.findAll().forEach(item -> {
-			if (item.getProject() == issueRepository.findByTitle(title).getId()) {
-				issues.put(issueToJSON(item));
-			}
-		});
+		issues.put(issueToJSON(issue));
 		return issues.toString();
 	}
 	
