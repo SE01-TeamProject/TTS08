@@ -17,7 +17,7 @@ public class MainWindow extends JFrame {
 	private JPanel dpPanel;
 	private JPanel btnPanel;
 	private ProjectPanel projectPanel = new ProjectPanel();
-	private TicketPanel ticketPanel = new TicketPanel();
+	private TicketPanel ticketPanel;
 	private StatisticPanel statisticPanel = new StatisticPanel();
 	private AdminPanel adminPanel = new AdminPanel();
 	

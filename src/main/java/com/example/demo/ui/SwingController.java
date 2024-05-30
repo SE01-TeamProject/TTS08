@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import org.json.simple.*;
 import com.example.demo.service.*;
 
+import java.awt.RenderingHints.Key;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -38,7 +39,7 @@ public class SwingController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		getIssueJsonByTitle("Issue1");
+		//getIssueJsonByTitle("Issue1");
 		//connection = (HttpURLConnection) url.openConnection();
 	}
 	
@@ -46,11 +47,23 @@ public class SwingController {
 	//GET
 	public String getIssueStatics(int index) {
 		String response = requestGET("/issueStatics");
-		JSONArray statistic = new JSONArray(response);
+		JSONObject statistic = new JSONObject(response);
+		System.out.println(response);
 		
 		if(index > 2) return null;
 		
-		JSONObject obj = statistic.getJSONObject(index);
+		ArrayList<String> keys = new ArrayList<String>();
+		
+		Iterator<String> keyIter = statistic.keys();
+		while(keyIter.hasNext()) {
+			String key = (String) keyIter.next();
+			keys.add(key);
+		}
+		
+		System.out.println(keys.get(index));
+		System.out.println(statistic.getJSONObject(keys.get(index)));
+		
+		JSONObject obj = statistic.getJSONObject(keys.get(index));
 		return obj.toString();
 		
 		
@@ -58,8 +71,7 @@ public class SwingController {
 	
 	//GET
 	public String getIssueTrend(){
-		String response = requestGET("/issueTrend");
-		
+		String response = requestGET("/issueTrend");		
 		return response;
 	}
 	// Issue (Ticket) ------------------------------------------------------------------------------
