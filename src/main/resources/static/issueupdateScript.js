@@ -1,8 +1,9 @@
  //html이 load되는 즉시 실행되는 함수
          document.addEventListener('DOMContentLoaded', function() {
-              disableInputs();
-              initializeIssueData();
-              initializeComments();
+             initializeComments();
+             disableInputs();
+             initializeIssueData();
+             getAssigneeCandidates();
         });
 
 async function initializeIssueData() {
@@ -143,7 +144,7 @@ function setIssue() {
          function activeButtonX() {
              document.getElementById('xbutton').disabled = false;
          }
-
+         //----------------------------------------여기까지가 comment -------------------------------------------
          //Admin이 누를 때, PL이 누를 때, Dev가 누를 떄, Tester가 누를 때 다 지정해줘야함. + State를 보고 분기별로 나눠서 생각
          function disableInputs() {
              document.getElementById('title-input').disabled = true;
@@ -154,4 +155,22 @@ function setIssue() {
              if(level !== 'Admin' && level !== 'PL') {
                  document.getElementById('assignee-input').disabled = true;
              }
+         }
+
+         function getAssigneeCandidates(){
+             fetch('http://localhost:8080/project/' + localStorage.getItem("projectId"))
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                  .then(data => {
+                       addOption('assignee-input', data.developer1);
+                       addOption('assignee-input', data.developer2);
+                       addOption('assignee-input', data.developer3);
+                  })
+                  .catch(error => {
+                      console.error('There was a problem with the fetch operation:', error);
+                  });
          }
