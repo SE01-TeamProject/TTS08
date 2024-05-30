@@ -27,6 +27,8 @@
                 <th><button>Priority</button></th>
                 <th><button>State</button></th>
                 <th><button>Type</button></th>
+                <th><button>Reporter</button></th>
+                <th><button>Assignee</button></th>
                 <th><button>Date</button></th>
             </tr>
             </thead>
@@ -46,7 +48,7 @@
         </select>
         <span><input type="text" class="searchinput" placeholder="search..."></span>
         <button class="searchbutton">Search</button>
-        <button class="resetbutton">Reset</button>
+        <button class="resetbutton" onclick="showAllIssues()">Reset</button>
         <button class="addbutton" onclick="openIssueAddModal()">Issue Add</button>
     </div>
 

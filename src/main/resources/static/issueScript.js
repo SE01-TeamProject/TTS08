@@ -61,16 +61,24 @@
                     newRow.appendChild(titleCell);
 
                     const priorityCell = document.createElement('td');
-                    priorityCell.textContent = issue.priority;
+                    priorityCell.textContent = getPriority(issue.priority);
                     newRow.appendChild(priorityCell);
 
                     const stateCell = document.createElement('td');
-                    stateCell.textContent = issue.status;
+                    stateCell.textContent = getStatus(issue.status);
                     newRow.appendChild(stateCell);
 
                     const typeCell = document.createElement('td');
-                    typeCell.textContent = issue.type;
+                    typeCell.textContent = getType(issue.type);
                     newRow.appendChild(typeCell);
+
+                    const reporterCell = document.createElement('td');
+                    reporterCell.textContent = issue.reporter;
+                    newRow.appendChild(reporterCell);
+
+                    const assigneeCell = document.createElement('td');
+                    assigneeCell.textContent = issue.assignee;
+                    newRow.appendChild(assigneeCell);
 
                     const dateCell = document.createElement('td');
                     dateCell.textContent = issue.date;
@@ -81,6 +89,10 @@
             } catch (error) {
                 console.error('Fetch error:', error);
             }
+        }
+
+        function showSearchIssues() {
+            
         }
 
         function openIssueAddModal() {
@@ -116,6 +128,8 @@
             localStorage.setItem('currentIssueTitle', issueTitle); //캐싱해뒀다가 issueupdate페이지로 가서 현재 접속한 issue에 대해 알려줄 것임
             location.href = "http://localhost:8080/issueupdate.html";
         }
+
+
 
        function disableInput() {
             //get처리로 권한 받아서 해줘야함.

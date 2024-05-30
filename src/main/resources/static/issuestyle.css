@@ -23,7 +23,7 @@
         }
         .buttonSet {
             position : relative;
-            left : 69%;
+            left : 78%;
             top : -10px;
         }
         .homebutton {
@@ -151,3 +151,4 @@
         #description-input {
             border : 1px solid black;
         }
+
