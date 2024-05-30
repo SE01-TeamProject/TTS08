@@ -18,7 +18,7 @@ function initializeIssueData() {
 
     reporterContainer.innerText = id;
 
-      fetch('http://localhost:8080/issueTitle' + currentIssueTitle)
+      fetch('http://localhost:8080/issueTitle/' + currentIssueTitle)
           .then(response => {
               if (!response.ok) {
                   throw new Error('Network response was not ok ' + response.statusText);
@@ -45,7 +45,7 @@ function setIssue() {
 
 //여기서부터 Comment관련함수 ------------------------------------------------------------------------------------
  function addComment() {
-             const currentIssueTitle = localStorage.getItem('currentIssueTitle');
+             const issue = localStorage.getItem('currentIssueTitle');
              const writer = localStorage.getItem('loginId');
              const note = document.getElementById('comment-input').value;
             fetch('http://localhost:8080/addComment', {
@@ -53,7 +53,7 @@ function setIssue() {
               headers: {
                   'Content-Type': 'application/json'
               },
-              body: JSON.stringify({currentIssueTitle, writer, note})
+              body: JSON.stringify({issue, writer, note})
             })
               .then(response => response.text())
               .then(data => {

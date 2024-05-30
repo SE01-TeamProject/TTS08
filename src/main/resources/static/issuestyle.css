@@ -125,6 +125,7 @@
             margin : 20px;
             padding : 10px;
             font-size : 15px;
+            border : 1px solid black;
         }
          .select-head {
             position : relative;
@@ -143,4 +144,10 @@
         textarea {
             width : 800px;
             font-size : 16px;
+        }
+         #title-input {
+            border : 1px solid black;
+        }
+        #description-input {
+            border : 1px solid black;
         }
