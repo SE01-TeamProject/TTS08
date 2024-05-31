@@ -38,7 +38,7 @@ public class IssueController {
 		return is.getIssueList(id);
 	}
 	
-	// 우선순위와 상태를 변경하는 메소드
+	// 우선순위와 상태, 담당자를 변경하는 메소드
 	@PostMapping("/setIssue")
 	public void setState(@RequestBody IssueSetDto issueSetDto) {
 		is.setState(issueSetDto);
@@ -80,10 +80,10 @@ public class IssueController {
 	}
 	
 	// Assignee를 변경하는 메소드
-	@PostMapping("/setAssignee")
-	public void setAssignee(@RequestBody IssueSetDto issueSetDto) {
-		is.setAssignee(issueSetDto);
-	}
+//	@PostMapping("/setAssignee")
+//	public void setAssignee(@RequestBody IssueSetDto issueSetDto) {
+//		is.setAssignee(issueSetDto);
+//	}
 	
 	@GetMapping("/issueStatics")
 	public String getIssueStatics() {

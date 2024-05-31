@@ -42,16 +42,16 @@ public class IssueService {
 	// 우선순위와 상태를 변경하는 메소드
 	public void setState(IssueSetDto issueSetDto) {
 		Issue issue = issueRepository.findById(issueSetDto.getId()).get();
-		issue.setState(issueSetDto.getPriority(), issueSetDto.getStatus());
+		issue.setState(issueSetDto.getPriority(), issueSetDto.getStatus(), memberRepository.findByName(issueSetDto.getAssignee()).getId());
 		issueRepository.save(issue);
 	}
 	
 	// Assignee를 변경하는 메소드
-	public void setAssignee(IssueSetDto issueSetDto) {
-		Issue issue = issueRepository.findById(issueSetDto.getId()).get();
-		issue.setAssignee(memberRepository.findByName(issueSetDto.getAssignee()).getId());
-		issueRepository.save(issue);
-	}
+//	public void setAssignee(IssueSetDto issueSetDto) {
+//		Issue issue = issueRepository.findById(issueSetDto.getId()).get();
+//		issue.setAssignee(memberRepository.findByName(issueSetDto.getAssignee()).getId());
+//		issueRepository.save(issue);
+//	}
 	
 	// 이슈를 추가하는 메소드
 	public String addIssue(IssueAddDto issueAddDto) {
