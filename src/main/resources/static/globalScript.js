@@ -83,6 +83,26 @@
             }
             return result;
         }
+        function getStatusNum(string) {
+            let result;
+            switch(string) {
+                case "New" : result = 0;
+                break;
+                case "Assigned" : result = 1;
+                break;
+                case "Fixed" : result = 2;
+                break;
+                case "Resolved" : result = 3;
+                break;
+                case "Closed" : result = 4;
+                break;
+                case "Reopened" : result = 5;
+                break;
+                default : result = -1;
+                break;
+            }
+            return result;
+        }
         function getPriority(number) {
             let result;
             switch(number) {
@@ -97,6 +117,24 @@
                 case 4 : result = "Trivial";
                 break;
                 default : result = "Unknown Priority";
+                break;
+            }
+            return result;
+        }
+        function getPriorityNum(string) {
+            let result;
+            switch(string) {
+                case "Major" : result = 0;
+                break;
+                case "Minor" : result = 1;
+                break;
+                case "Blocker" : result = 2;
+                break;
+                case "Critical" : result = 3;
+                break;
+                case "Trivial" : result = 4;
+                break;
+                default : result = -1;
                 break;
             }
             return result;

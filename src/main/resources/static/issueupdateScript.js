@@ -1,10 +1,34 @@
- //html이 load되는 즉시 실행되는 함수
-         document.addEventListener('DOMContentLoaded', function() {
-             initializeComments();
-             initializeIssueData();
-             disableInputs();
-             getAssigneeCandidates();
+let beforeAssignee;//수정 전의 Assignee값
+//html이 load되는 즉시 실행되는 함수
+document.addEventListener('DOMContentLoaded', function() {
+    getAssigneeCandidates();
+    initializeComments();
+});
+
+function clearAssigneeCandidates() {
+    document.getElementById('assignee-input').replaceChildren();
+}
+
+ function getAssigneeCandidates(){
+    clearAssigneeCandidates();
+    fetch('http://localhost:8080/project/' + localStorage.getItem("projectId"))
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            addOption('assignee-input', data.developer1);
+            addOption('assignee-input', data.developer2);
+            addOption('assignee-input', data.developer3);
+            console.log("모든 개발자를 목록에 추가하였습니다.");
+            initializeIssueData();
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
         });
+ }
 
 async function initializeIssueData() {
     const issuenumContainer = document.getElementById('issue-num');
@@ -14,6 +38,7 @@ async function initializeIssueData() {
     const priorityContainer = document.getElementById('priority-input');
     const statusContainer = document.getElementById('status-input');
     const typeContainer = document.getElementById('type-input');
+    const assigneeSelectContainer = document.getElementById('assignee-input');
     const descriptionContainer = document.getElementById('description-input');
 
     const currentIssueTitle = localStorage.getItem('currentIssueTitle');
@@ -29,12 +54,17 @@ async function initializeIssueData() {
         issuenumContainer.textContent = data.issuenum;
         localStorage.setItem('issuenum', data.issuenum);
         assigneeContainer.textContent = data.assignee;
+        beforeAssignee = data.assignee;
         reporterContainer.textContent = data.reporter;
         titleContainer.value = data.title;
         priorityContainer.value = getPriority(data.priority);
         statusContainer.value = getStatus(data.status);
+        localStorage.setItem('status', getStatus(data.status));
         typeContainer.value = getType(data.type);
+        assigneeSelectContainer.value = data.assignee;
+        console.log("assignee select의 목록을 [" + data.assignee + "] 로 변경하였습니다.");
         descriptionContainer.value = data.description;
+        disableInputs();
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
     }
@@ -42,9 +72,18 @@ async function initializeIssueData() {
 
 async function setIssue() {
     const id = parseInt(localStorage.getItem('issuenum'));
-    const priority = document.getElementById('priority-input').value;
-    const status = document.getElementById('status-input').value;
+    const priority = getPriorityNum(document.getElementById('priority-input').value);
     const assignee = document.getElementById('assignee-input').value;
+    let status = getStatusNum(document.getElementById('status-input').value);
+    const level = getLevel(parseInt(localStorage.getItem('level')));
+    if(level !== 'Admin' && level !== 'PL' && getStatus(status) === 'New') {
+        alert("Only Admin or PL can update \"New\" Issue");
+        return;
+    }
+    if(beforeAssignee === 'N/A' && assignee !== 'N/A') {
+        status = getStatusNum("Assigned");
+    }
+    const description = document.getElementById('description-input').value;
     const url = 'http://localhost:8080/setIssue';
 
     const response = await fetch(url, {
@@ -52,17 +91,39 @@ async function setIssue() {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({id, priority, status, assignee}),
+        body: JSON.stringify({id, priority, status, assignee, description}),
     });
 
     if (response.ok) {
-        initializeIssueData();
-        console.log('Issue updated.');
+        getAssigneeCandidates();
+        alert('Issue updated.');
     } else {
-        console.error('Failed to update Issue');
+        alert('Failed to update Issue');
     }
 }
 
+ function disableInputs() {
+     document.getElementById('title-input').disabled = true;
+     document.getElementById('description-input').setAttribute('readonly', 'true');
+     document.getElementById('type-input').disabled = true;
+     const assigneeSelectContainer = document.getElementById('assignee-input');
+     const priorityContainer = document.getElementById('priority-input');
+     const statusContainer = document.getElementById('status-input');
+     const level = getLevel(parseInt(localStorage.getItem('level')));
+     if (statusContainer.value === 'New') {
+         statusContainer.disabled = true;
+     } else if (statusContainer.value === 'Closed') {
+         assigneeSelectContainer.disabled = true;
+         priorityContainer.disabled = true;
+     } else {
+         statusContainer.disabled = false;
+         priorityContainer.disabled = false;
+         assigneeSelectContainer.disabled = false;
+     }
+     if (level !== 'Admin' && level !== 'PL') {
+         assigneeSelectContainer.disabled = true;
+     }
+ }
 //여기서부터 Comment관련함수 ------------------------------------------------------------------------------------
  async function addComment() {
              const issue = localStorage.getItem('currentIssueTitle');
@@ -155,6 +216,15 @@ async function setIssue() {
                 await new Promise(resolve => setTimeout(resolve, 1000));
          }
 
+         function openCommentModal() {
+             if( localStorage.getItem('status') === 'Closed') {
+                 alert("You cannot add a comment to Issue with status \"Closed\"");
+             }
+             else {
+                 openPopUp('comment-popup');
+             }
+         }
+
          function closeCommentModal() {
              closePopUp('comment-popup');
              document.getElementById('comment-input').value = '';
@@ -162,39 +232,4 @@ async function setIssue() {
          function backToIssuePage() {
              location.href = "http://localhost:8080/issue.html";
          }
-         function disableButtonX() {
-             document.getElementById('xbutton').disabed = true;
-         }
-         function activeButtonX() {
-             document.getElementById('xbutton').disabled = false;
-         }
          //----------------------------------------여기까지가 comment -------------------------------------------
-         //Admin이 누를 때, PL이 누를 때, Dev가 누를 떄, Tester가 누를 때 다 지정해줘야함. + State를 보고 분기별로 나눠서 생각
-         function disableInputs() {
-             document.getElementById('title-input').disabled = true;
-             document.getElementById('description-input').setAttribute('readonly', 'true');
-             document.getElementById('type-input').disabled = true;
-             document.getElementById('status-input').disabled = true;
-             const level = getLevel(parseInt(localStorage.getItem('level')));
-             if(level !== 'Admin' && level !== 'PL') {
-                 document.getElementById('assignee-input').disabled = true;
-             }
-         }
-
-         function getAssigneeCandidates(){
-             fetch('http://localhost:8080/project/' + localStorage.getItem("projectId"))
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.json();
-                })
-                  .then(data => {
-                       addOption('assignee-input', data.developer1);
-                       addOption('assignee-input', data.developer2);
-                       addOption('assignee-input', data.developer3);
-                  })
-                  .catch(error => {
-                      console.error('There was a problem with the fetch operation:', error);
-                  });
-         }
