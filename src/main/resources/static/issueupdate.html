@@ -34,7 +34,7 @@
         <select id="status-input"> <!---특정 상황에 따라 readonly인지 아닌지 잘 구별해야할 듯 함--->
             <option value="New">New</option>
             <option value="Assigned">Assigned</option>
-            <option value="fixed">Fixed</option>
+            <option value="Fixed">Fixed</option>
             <option value="Resolved">Resolved</option>
             <option value="Closed">Closed</option>
             <option value="Reopened">Reopened</option>
@@ -66,7 +66,7 @@
          </div>
          <button class="popup-addbutton" onclick="addComment()">Add</button>
     </div>
-    <button class="newcommentbutton" onclick="openPopUp('comment-popup')">New comment</button>
+    <button class="newcommentbutton" onclick="openCommentModal()">New comment</button>
     <button class="applybutton" onclick="setIssue()">Apply</button>
     <div id="bg-page" class="hide"></div>
 </body>

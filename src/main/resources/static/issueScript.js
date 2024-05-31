@@ -109,9 +109,12 @@
                     return response.json();
                 })
                   .then(data => {
-                      const userLevel = data.level;
                       if(data.level === 0 || data.level === 3) {
                            putCurrentUserId();
+                           document.getElementById('title-input').value = '';
+                           document.getElementById('description-input').value = '';
+                           document.getElementById('priority-input').value = 'Major';
+                           document.getElementById('type-input').value = 'Bug';
                            openPopUp('issue-popup');
                       }
                       else {
