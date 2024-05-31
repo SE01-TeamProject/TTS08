@@ -281,9 +281,12 @@ public class IssueService {
 
 		commentRepository.findAll().forEach(item -> {
 			Integer uid = item.getWriter(); // by comment writer
-			if (score.containsKey(uid) == false) score.put(uid, 0.);
-			matcher.set(issueSetDto.getDescription(), item.getNote());
-			score.put(uid, score.get(uid) + matcher.ratio());
+			Optional<Member> user = memberRepository.findById(uid);
+			if (user.get().getLevel() == Member.Level.DEVELOPER.ordinal()) {
+				if (score.containsKey(uid) == false) score.put(uid, 0.);
+				matcher.set(issueSetDto.getDescription(), item.getNote());
+				score.put(uid, score.get(uid) + matcher.ratio());
+			}
 		});
 	
 		Integer maxKey = 0;

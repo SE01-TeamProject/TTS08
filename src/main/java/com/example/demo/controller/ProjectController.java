@@ -47,6 +47,11 @@ public class ProjectController {
 	public String getProjectList() {
 		return ps.getProjectList();
 	}
+	
+	@GetMapping("/listProject/{uname}")
+	public String getProjectList(@PathVariable("uname") String uname) {
+		return ps.getProjectList(uname);
+	}
 
 	@GetMapping("/project")  //프로젝트 조회
 	public ResponseEntity<List<ProjectDto>> getAllProjects() {

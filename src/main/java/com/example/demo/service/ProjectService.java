@@ -93,6 +93,41 @@ public class ProjectService {
 		return projects.toString();
 	}
 	
+	public String getProjectList(String userName) {
+		JSONArray projects = new JSONArray();
+		projectRepository.findAll().forEach(item -> {
+			Optional<Member> PL = memberRepository.findById(item.getPL());
+			Optional<Member> dev1 = memberRepository.findById(item.getDeveloper1());
+			Optional<Member> dev2 = memberRepository.findById(item.getDeveloper2());
+			Optional<Member> dev3 = memberRepository.findById(item.getDeveloper3());
+			Optional<Member> test1 = memberRepository.findById(item.getTester1());
+			Optional<Member> test2 = memberRepository.findById(item.getTester2());
+			Optional<Member> test3 = memberRepository.findById(item.getTester3());
+			if ((!PL.isEmpty() && userName.equals(PL.get().getName())) || 
+				(!dev1.isEmpty() && userName.equals(dev1.get().getName())) ||
+				(!dev2.isEmpty() && userName.equals(dev2.get().getName())) ||
+				(!dev3.isEmpty() && userName.equals(dev3.get().getName())) ||
+				(!test1.isEmpty() && userName.equals(test1.get().getName())) ||
+				(!test2.isEmpty() && userName.equals(test2.get().getName())) ||
+				(!test3.isEmpty() && userName.equals(test3.get().getName()))) {
+				JSONObject obj = new JSONObject();
+				obj.put("id", item.getId());
+				obj.put("title", item.getTitle());
+				obj.put("description", item.getDescription());
+				obj.put("PL", PL.isEmpty() ? "N/A" : PL.get().getName());
+				obj.put("developer1", dev1.isEmpty() ? "N/A" : dev1.get().getName());
+				obj.put("developer2", dev2.isEmpty() ? "N/A" : dev2.get().getName());
+				obj.put("developer3", dev3.isEmpty() ? "N/A" : dev3.get().getName());
+				obj.put("tester1", test1.isEmpty() ? "N/A" : test1.get().getName());
+				obj.put("tester2", test2.isEmpty() ? "N/A" : test2.get().getName());
+				obj.put("tester3", test3.isEmpty() ? "N/A" : test3.get().getName());
+				obj.put("date", item.getDate().format(formatter));
+				projects.put(obj);
+			}
+		});
+		return projects.toString();
+	}
+	
 	// id를 받고 해당 프로젝트 정보를 가져오는 메소드
 	public String getProject(Integer id) {
 		Optional<Project> prj = projectRepository.findById(id);
