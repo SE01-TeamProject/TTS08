@@ -9,12 +9,10 @@ import lombok.NoArgsConstructor;
 public class UserAssignDto {
     private String projectTitle;
     private String username;
-    private String level; // String으로 받아서 변환
 
     @Builder
-    public UserAssignDto(String projectTitle, String username, String level) {
+    public UserAssignDto(String projectTitle, String username) {
         this.projectTitle = projectTitle;
         this.username = username;
-        this.level = level;
     }
 }

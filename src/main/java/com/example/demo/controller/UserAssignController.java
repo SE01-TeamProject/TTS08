@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/user-assign")
 public class UserAssignController {
 
     private final UserAssignService us;
@@ -18,21 +17,22 @@ public class UserAssignController {
     @Autowired
     public UserAssignController(UserAssignService us) {this.us = us;}
 
-    @PostMapping("/assign")
+    @PostMapping("/addassign")
     public String assignUserToProject(@RequestBody UserAssignDto userAssignDto) {
         return us.assignUserToProject(userAssignDto);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UserAssignDto> getAssignment(@PathVariable Integer id) {
-        Optional<UserAssignDto> userAssignDto = us.findAssignmentById(id);
-        return userAssignDto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    @GetMapping("/assign/{id}")
+    public String getAssignment(@PathVariable("id") Integer id) {return us.getAssignment(id);}
+
+    @GetMapping("/assign/project/{pid}")
+    public String getAssignmentByPid(@PathVariable Integer pid) {
+        return us.getAssignmentByProject(pid);
     }
 
-    @GetMapping("/projec/{pid}")
-    public ResponseEntity<List<UserAssignDto>> getAssignmentsByPid(@PathVariable Integer pid) {
-        List<UserAssignDto> assignments = us.findAssignmentsByPid(pid);
-        return ResponseEntity.ok(assignments);
+    @GetMapping("/assign/user/{uid}")
+    public String getAssignmentByUid(@PathVariable Integer uid) {
+        return us.getAssignmentByMember(uid);
     }
 
     @GetMapping("/user/{uid}")
@@ -42,8 +42,7 @@ public class UserAssignController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteAssignmentById(@PathVariable Integer id) {
-        us.deleteAssignmentById(id);
-        return ResponseEntity.noContent().build();
+    public String deleteAssignmentById(@PathVariable Integer id) {
+        return us.deleteAssignmentById(id);
     }
 }
