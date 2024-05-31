@@ -104,19 +104,72 @@ class UserAssignControllerTest {
         String response = mvcResult.getResponse().getContentAsString();
         assertEquals("true", response);
         System.out.println("Http response : "+response);
-
     }
+    @Test
+    @DisplayName("assign user to project Fail: set(pid,uid) duplicated")
+    void assignUserToProjectFail() throws Exception {
+        UserAssignDto testAssign = UserAssignDto.builder().projectTitle(testProjectTitle).username(testUserName)
+                .build();
+        this.mockMvc.perform(post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
+                .andExpect(status().isOk());
+        MvcResult mvcResult =this.mockMvc.perform(post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response = mvcResult.getResponse().getContentAsString();
+        assertEquals("false", response);
+        System.out.println("Http response : "+response);
+    }
+
+    @Test
+    @DisplayName("assign user to project Fail: wrong project title")
+    void assignUserToProjectFail_2() throws Exception {
+        UserAssignDto testAssign = UserAssignDto.builder().projectTitle("wrongProject").username(testUserName)
+                .build();
+        MvcResult mvcResult=this.mockMvc.perform(post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        assertEquals("false", response);
+        System.out.println("Http response : "+response);
+    }
+    @Test
+    @DisplayName("assign user to project Fail: wrong user name")
+    void assignUserToProjectFail_3() throws Exception {
+        UserAssignDto testAssign = UserAssignDto.builder().projectTitle(testProjectTitle).username("wrongName")
+                .build();
+        MvcResult mvcResult=this.mockMvc.perform(post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        String response = mvcResult.getResponse().getContentAsString();
+        assertEquals("false", response);
+        System.out.println("Http response : "+response);
+    }
+
 
     @Test
     @DisplayName("getAssignment Success")
     void getAssignment() throws Exception {
-        Integer testAssignId = userAssignRepository.findByUidAndPid(memberRepository.findByName("pl").getId(),projectRepository.findByTitle("test2").getId()).get().getId();
-        MvcResult mvcResult= this.mockMvc.perform(get("/assign/{id}",1))
+        Integer testAssignId = userAssignRepository.findByUidAndPid(memberRepository.findByName("pl").getId(),projectRepository.findByTitle("test2").getId()).getId();
+        MvcResult mvcResult= this.mockMvc.perform(get("/assign/{id}",testAssignId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.project").value("test2"))
                 .andExpect(jsonPath("$.user").value("pl"))
                 .andReturn();
         String response=mvcResult.getResponse().getContentAsString();
+        System.out.println("Http response : "+response);
+    }
+
+    @Test
+    @DisplayName("getAssignment Fail")
+    void getAssignmentFail() throws Exception {
+        Integer wrongId=1111;
+        MvcResult mvcResult= this.mockMvc.perform(get("/assign/{id}",wrongId))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response=mvcResult.getResponse().getContentAsString();
+        assertEquals("", response);
         System.out.println("Http response : "+response);
     }
 
@@ -164,7 +217,7 @@ class UserAssignControllerTest {
     @Test
     @DisplayName("delete assign Success")
     void deleteAssignmentById() throws Exception {
-        Integer testAssignId = userAssignRepository.findByUidAndPid(memberRepository.findByName("pl").getId(),projectRepository.findByTitle("test2").getId()).get().getId();
+        Integer testAssignId = userAssignRepository.findByUidAndPid(memberRepository.findByName("pl").getId(),projectRepository.findByTitle("test2").getId()).getId();
         MvcResult mvcResult=this.mockMvc.perform(delete("/delete/"+testAssignId))
                 .andExpect(status().isOk())
                 .andReturn();
@@ -172,4 +225,16 @@ class UserAssignControllerTest {
         assertEquals("true", response);
         System.out.println("Http response : "+response);
     }
+    @Test
+    @DisplayName("delete assign Fail: wrong Id")
+    void deleteAssignmentByIdFail() throws Exception {
+        Integer wrongId=1111;
+        MvcResult mvcResult=this.mockMvc.perform(delete("/delete/"+wrongId))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response=mvcResult.getResponse().getContentAsString();
+        assertEquals("false", response);
+        System.out.println("Http response : "+response);
+    }
+
 }

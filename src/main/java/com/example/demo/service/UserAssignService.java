@@ -30,12 +30,12 @@ public class UserAssignService {
     public String assignUserToProject(UserAssignDto userAssignDto) {
         String projectTitle=userAssignDto.getProjectTitle();
         String username=userAssignDto.getUsername();
-
         Project project = projectRepository.findByTitle(projectTitle);
         if (project == null) {return "false";}
-
         Member member = memberRepository.findByName(username);
         if (member == null) {return "false";}
+        UserAssignProj userAssign=userAssignRepository.findByUidAndPid(memberRepository.findByName(username).getId(),projectRepository.findByTitle(projectTitle).getId());
+        if(userAssign != null){return "false";}
 
         Integer pid = project.getId();
         Integer uid = member.getId();
