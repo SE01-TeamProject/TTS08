@@ -40,8 +40,27 @@ async function initializeIssueData() {
     }
 }
 
-function setIssue() {
+async function setIssue() {
+    const id = localStorage.getItem('issuenum');
+    const priority = document.getElementById('priority-input').value;
+    const status = document.getElementById('status-input').value;
+    const assignee = document.getElementById('assignee-input').value;
+    const url = 'http://localhost:8080/setIssue';
 
+    const response = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({id, priority, status, assignee}),
+    });
+
+    if (response.ok) {
+        initializeIssueData();
+        console.log('Issue updated.');
+    } else {
+        console.error('Failed to update Issue');
+    }
 }
 
 //여기서부터 Comment관련함수 ------------------------------------------------------------------------------------
