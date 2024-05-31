@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserAssignRepository extends JpaRepository<UserAssignProj,Integer> {
-    Optional<UserAssignProj> findUserAssignProjById(@Param("id") Integer id);
+    Optional<UserAssignProj> findById(@Param("id") Integer id);
     Optional<UserAssignProj> findByUidAndPid(@Param("uid") Integer uid, @Param("pid") Integer pid);
     List<UserAssignProj> findAllByPid(@Param("pid") Integer pid);
     List<UserAssignProj> findAllByUid(@Param("uid") Integer uid);

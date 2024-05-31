@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.domain.Member;
 import com.example.demo.dto.MemberAddDto;
 import com.example.demo.dto.ProjectAddDto;
 import com.example.demo.dto.UserAssignDto;
@@ -22,7 +21,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -47,17 +45,15 @@ class UserAssignControllerTest {
     private MemberService memberService;
     @Autowired
     private ProjectService projectService;
-
-    private String testProjectTitle;
-    private String testUserName;
     @Autowired
     private UserAssignRepository userAssignRepository;
     @Autowired
     private MemberRepository memberRepository;
-
-    private Integer testAssignId;
     @Autowired
     private ProjectRepository projectRepository;
+
+    private String testProjectTitle;
+    private String testUserName;
 
     @BeforeEach
     void setUp()throws Exception {
@@ -89,7 +85,7 @@ class UserAssignControllerTest {
         projectService.addProject(testProject);
 
         UserAssignDto testAssign = UserAssignDto.builder().projectTitle("test2").username("pl").build();
-        this.mockMvc.perform((RequestBuilder) post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
+        this.mockMvc.perform(post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
                 .andExpect(status().isOk());
     }
 
@@ -128,13 +124,13 @@ class UserAssignControllerTest {
     @DisplayName("get assignments by pid Success")
     void getAssignmentsByPid()throws Exception {
         UserAssignDto testAssign = UserAssignDto.builder().projectTitle(testProjectTitle).username(testUserName).build();
-        this.mockMvc.perform((RequestBuilder) post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
+        this.mockMvc.perform(post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
                 .andExpect(status().isOk());
         testAssign = UserAssignDto.builder().projectTitle(testProjectTitle).username("pl").build();
-        this.mockMvc.perform((RequestBuilder) post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
+        this.mockMvc.perform(post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
                 .andExpect(status().isOk());
         testAssign = UserAssignDto.builder().projectTitle(testProjectTitle).username("dev1").build();
-        this.mockMvc.perform((RequestBuilder) post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
+        this.mockMvc.perform( post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
                 .andExpect(status().isOk());
 
         MvcResult mvcResult=this.mockMvc.perform(get("/assign/project/"+projectRepository.findByTitle(testProjectTitle).getId()))
@@ -149,13 +145,13 @@ class UserAssignControllerTest {
     @DisplayName("get assignments by uid Success")
     void getAssignmentsByUid() throws Exception {
         UserAssignDto testAssign = UserAssignDto.builder().projectTitle(testProjectTitle).username(testUserName).build();
-        this.mockMvc.perform((RequestBuilder) post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
+        this.mockMvc.perform( post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
                 .andExpect(status().isOk());
         testAssign = UserAssignDto.builder().projectTitle("test2").username(testUserName).build();
-        this.mockMvc.perform((RequestBuilder) post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
+        this.mockMvc.perform( post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
                 .andExpect(status().isOk());
         testAssign = UserAssignDto.builder().projectTitle("test3").username(testUserName).build();
-        this.mockMvc.perform((RequestBuilder) post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
+        this.mockMvc.perform(post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
                 .andExpect(status().isOk());
 
         MvcResult mvcResult=this.mockMvc.perform(get("/assign/user/"+memberRepository.findByName(testUserName).getId()))
@@ -168,11 +164,7 @@ class UserAssignControllerTest {
     @Test
     @DisplayName("delete assign Success")
     void deleteAssignmentById() throws Exception {
-//        UserAssignDto testAssign = UserAssignDto.builder().projectTitle(testProjectTitle).username(testUserName).build();
-//        this.mockMvc.perform((RequestBuilder) post("/addassign").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testAssign)))
-//                .andExpect(status().isOk());
         Integer testAssignId = userAssignRepository.findByUidAndPid(memberRepository.findByName("pl").getId(),projectRepository.findByTitle("test2").getId()).get().getId();
-
         MvcResult mvcResult=this.mockMvc.perform(delete("/delete/"+testAssignId))
                 .andExpect(status().isOk())
                 .andReturn();
