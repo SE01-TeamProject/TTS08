@@ -81,9 +81,10 @@ public class Issue {
     	return issue;
     }
 	
-	public void setState(int priority, int status) {
+	public void setState(int priority, int status, Integer assignee) {
     	this.priority = priority;
 		this.status = status;
+		this.assignee = assignee;
     }
 	
 	public static int getPriorityFromString(String priority) {
