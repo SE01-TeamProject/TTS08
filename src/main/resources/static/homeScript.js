@@ -6,7 +6,12 @@
 
     async function loadAllProjects() {
             try {
-                const response = await fetch('http://localhost:8080/listProject');
+                let url = 'http://localhost:8080/listProject';
+                if(localStorage.getItem('loginId') !== 'admin') {
+                    url +='/' + localStorage.getItem('loginId');
+                }
+
+                const response = await fetch(url);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
