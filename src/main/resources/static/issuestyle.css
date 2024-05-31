@@ -60,7 +60,7 @@
             width : 100px;
             height : 40px;
         }
-        .searchinput {
+        #search-input {
             padding : 10px;
             width : 200px;
             border: 1px solid black;

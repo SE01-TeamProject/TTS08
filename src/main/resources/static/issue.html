@@ -46,8 +46,8 @@
             <option value="reporter">reporter</option>
             <option value="assignee">assignee</option>
         </select>
-        <span><input type="text" class="searchinput" placeholder="search..."></span>
-        <button class="searchbutton">Search</button>
+        <span><input type="text" id="search-input" placeholder="search..."></span>
+        <button class="searchbutton" onclick="showSearchedIssues()">Search</button>
         <button class="resetbutton" onclick="showAllIssues()">Reset</button>
         <button class="addbutton" onclick="openIssueAddModal()">Issue Add</button>
     </div>

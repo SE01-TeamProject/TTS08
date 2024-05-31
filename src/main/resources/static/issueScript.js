@@ -48,56 +48,122 @@
                 }
                 const issueLists = await response.json();
                 issueLists.forEach(issue => {//issuenum title priority state type Date
-                    const tableBody = document.getElementById('issue-table-body');
-                    const newRow = document.createElement('tr');
-                    newRow.className = 'tc';
-
-                    const issueNumCell = document.createElement('td');
-                    issueNumCell.textContent = issue.issuenum;
-                    newRow.appendChild(issueNumCell);
-
-                    const titleCell = document.createElement('td');
-                    const titleButton = document.createElement('button');
-                    titleButton.textContent = issue.title;
-                    titleButton.onclick = function () {
-                        gotoissueUpdatePage(issue.title);
-                    };
-                    titleCell.appendChild(titleButton);
-                    newRow.appendChild(titleCell);
-
-                    const priorityCell = document.createElement('td');
-                    priorityCell.textContent = getPriority(issue.priority);
-                    newRow.appendChild(priorityCell);
-
-                    const stateCell = document.createElement('td');
-                    stateCell.textContent = getStatus(issue.status);
-                    newRow.appendChild(stateCell);
-
-                    const typeCell = document.createElement('td');
-                    typeCell.textContent = getType(issue.type);
-                    newRow.appendChild(typeCell);
-
-                    const reporterCell = document.createElement('td');
-                    reporterCell.textContent = issue.reporter;
-                    newRow.appendChild(reporterCell);
-
-                    const assigneeCell = document.createElement('td');
-                    assigneeCell.textContent = issue.assignee;
-                    newRow.appendChild(assigneeCell);
-
-                    const dateCell = document.createElement('td');
-                    dateCell.textContent = issue.date;
-                    newRow.appendChild(dateCell);
-
-                    tableBody.appendChild(newRow);
+                    showIssue(
+                        issue.issuenum,
+                        issue.title,
+                        issue.priority,
+                        issue.status,
+                        issue.type,
+                        issue.reporter,
+                        issue.assignee,
+                        issue.date
+                    );
                  });
             } catch (error) {
                 console.error('Fetch error:', error);
             }
         }
 
-        function showSearchIssues() {
-            
+        async function showSearchedIssues() {
+            clearAllIssues();
+            const searchStr = document.getElementById('search-input').value;
+            const searchTarget = document.getElementById('search-select').value;
+            let baseStr;
+
+            if(searchStr === '') {
+                alert("Search input is empty. Fill the input and try again.");
+                return;
+            }
+
+            const currentProjectId = localStorage.getItem('projectId');
+            try {
+                const response = await fetch('http://localhost:8080/listIssue/' + currentProjectId);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const issueLists = await response.json();
+                issueLists.forEach(issue => {//issuenum title priority state type Date
+                    switch (searchTarget) {
+                        case 'title':
+                            baseStr = issue.title;
+                            break;
+                        case 'priority':
+                            baseStr = getPriority(issue.priority);
+                            break;
+                        case 'state':
+                            baseStr = getStatus(issue.status);
+                            break;
+                        case 'type':
+                            baseStr = getType(issue.type);
+                            break;
+                        case 'reporter' :
+                            baseStr = issue.reporter;
+                            break;
+                        case 'assignee' :
+                            baseStr = issue.assignee;
+                            break;
+                    }
+                    if(baseStr.includes(searchStr)) {
+                        showIssue(
+                        issue.issuenum,
+                        issue.title,
+                        issue.priority,
+                        issue.status,
+                        issue.type,
+                        issue.reporter,
+                        issue.assignee,
+                        issue.date
+                    );
+                    }
+                 });
+            } catch (error) {
+                console.error('Fetch error:', error);
+            }
+        }
+
+        function showIssue(issuenum, title, priority, status, type, reporter, assignee, date) {
+            const tableBody = document.getElementById('issue-table-body');
+            const newRow = document.createElement('tr');
+            newRow.className = 'tc';
+
+            const issueNumCell = document.createElement('td');
+            issueNumCell.textContent = issuenum;
+            newRow.appendChild(issueNumCell);
+
+            const titleCell = document.createElement('td');
+            const titleButton = document.createElement('button');
+            titleButton.textContent = title;
+            titleButton.onclick = function () {
+                gotoissueUpdatePage(title);
+            };
+            titleCell.appendChild(titleButton);
+            newRow.appendChild(titleCell);
+
+            const priorityCell = document.createElement('td');
+            priorityCell.textContent = getPriority(priority);
+            newRow.appendChild(priorityCell);
+
+            const stateCell = document.createElement('td');
+            stateCell.textContent = getStatus(status);
+            newRow.appendChild(stateCell);
+
+            const typeCell = document.createElement('td');
+            typeCell.textContent = getType(type);
+            newRow.appendChild(typeCell);
+
+            const reporterCell = document.createElement('td');
+            reporterCell.textContent = reporter;
+            newRow.appendChild(reporterCell);
+
+            const assigneeCell = document.createElement('td');
+            assigneeCell.textContent = assignee;
+            newRow.appendChild(assigneeCell);
+
+            const dateCell = document.createElement('td');
+            dateCell.textContent = date;
+            newRow.appendChild(dateCell);
+
+            tableBody.appendChild(newRow);
         }
 
         function openIssueAddModal() {
