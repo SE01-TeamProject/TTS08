@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.example.demo.difflib.SequenceMatcher;
 import com.example.demo.domain.Comment;
 import com.example.demo.domain.Issue;
 import com.example.demo.domain.Member;
@@ -32,6 +33,7 @@ public class IssueService {
 	private final IssueRepository issueRepository;
 	private final MemberRepository memberRepository;
 	private final ProjectRepository projectRepository;
+	private final CommentRepository commentRepository;
 	
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 	
@@ -258,6 +260,46 @@ public class IssueService {
 			statics.put(key, monCountSorted.get(key));
 		
 		return statics.toString();
+	}
+	
+	// 추천 기능
+	/*
+	 * description을 다른 이슈들의 description들과 내용을 비교해서 유사도 측정 후 해당 이슈들에 배정된 assignee들 탐색
+	 * 이슈 작성 시 description을 작성 후 추천 버튼 누르면
+	 * 가장 추천도가 높은 "assignee: x", "score: x"를 반환
+	 * assignee를 [추천] 이라는 글자 옆에 띄우면 될 듯 
+	 */
+	public String suggestAssignee(IssueSetDto issueSetDto) {
+		SequenceMatcher matcher = new SequenceMatcher();
+		Map<Integer, Double> score = new HashMap(); // <Member.id, score> pair
+		issueRepository.findAll().forEach(item -> {
+			Integer uid = item.getAssignee(); // by issue assignee
+			if (score.containsKey(uid) == false) score.put(uid, 0.);
+			matcher.set(issueSetDto.getDescription(), item.getDescription());
+			score.put(uid, score.get(uid) + matcher.ratio());
+		});
+
+		commentRepository.findAll().forEach(item -> {
+			Integer uid = item.getWriter(); // by comment writer
+			if (score.containsKey(uid) == false) score.put(uid, 0.);
+			matcher.set(issueSetDto.getDescription(), item.getNote());
+			score.put(uid, score.get(uid) + matcher.ratio());
+		});
+	
+		Integer maxKey = 0;
+		Double maxVal = 0.;
+		for(Integer i : score.keySet()) {
+		    if(score.get(i) > maxVal) {
+		        maxKey = i;
+		        maxVal = score.get(i);
+		    }
+		}
+
+		JSONObject json = new JSONObject();
+		Optional<Member> user = memberRepository.findById(maxKey);
+		json.put("assignee", user.isEmpty() ? "N/A" : user.get().getName());
+		json.put("score", score.get(maxKey));
+		return json.toString();
 	}
 	
 }

@@ -88,4 +88,9 @@ public class IssueController {
 	
 	@GetMapping("/issueTrend")
 	public String getIssueTrend() { return is.getIssueTrend(); }
+	
+	@PostMapping("/suggestAssinee")
+	public String suggestAssignee(@RequestBody IssueSetDto issueSetDto) {
+		return is.suggestAssignee(issueSetDto); 
+	}
 }
