@@ -41,7 +41,7 @@ async function initializeIssueData() {
 }
 
 async function setIssue() {
-    const id = localStorage.getItem('issuenum');
+    const id = parseInt(localStorage.getItem('issuenum'));
     const priority = document.getElementById('priority-input').value;
     const status = document.getElementById('status-input').value;
     const assignee = document.getElementById('assignee-input').value;
