@@ -15,5 +15,6 @@ public class IssueSetDto {
 	private int priority;
 	private int status;
 	private String assignee;
+	private String description;
 
 }
