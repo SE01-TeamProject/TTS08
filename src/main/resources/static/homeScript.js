@@ -12,6 +12,8 @@
                 }
                 const projectLists = await response.json();
                 projectLists.forEach(project => {
+
+
                     const tableBody = document.getElementById('project-table-body');
                     const newRow = document.createElement('tr');
                     newRow.className = 'tc';

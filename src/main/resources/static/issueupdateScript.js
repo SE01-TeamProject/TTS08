@@ -160,6 +160,7 @@ async function setIssue() {
          }
 
          async function showAllComments() {
+             const level = getLevel(parseInt(localStorage.getItem('level')));
              fetch('http://localhost:8080/listComment/' + localStorage.getItem('issuenum'))
                 .then(response => {
                     if (!response.ok) {
@@ -170,7 +171,7 @@ async function setIssue() {
                   .then(data => {
                       if (Array.isArray(data)) {
                           data.forEach(comment => {// writer note date
-                              showComment(comment.writer, comment.note, comment.date);
+                              showComment(comment.writer, comment.note, comment.date, level);
                           });
                       } else {
                           console.error('Expected an array but received:', data);
@@ -182,7 +183,7 @@ async function setIssue() {
              await new Promise(resolve => setTimeout(resolve, 1000));
         }
 
-         function showComment(writer, note, date) {
+         function showComment(writer, note, date, level) {
             // 댓글을 추가할 컨테이너 요소 선택
             const commentsContainer = document.getElementById('comments-container');
 
@@ -193,7 +194,9 @@ async function setIssue() {
             // 댓글 헤더 생성
             const commentHead = document.createElement('span');
             commentHead.className = 'comment-head';
-            commentHead.innerHTML = `Comment&nbsp;&nbsp;&nbsp;Writer: <span>${writer}</span>&nbsp;&nbsp;&nbsp;Date: <span>${date}</span>`;
+            commentHead.innerHTML = `Comment&nbsp;&nbsp;&nbsp;
+                                     Writer: <span>${writer}</span>&nbsp;&nbsp;&nbsp;
+                                     Date: <span>${date}</span>`;
 
             // 댓글 내용 생성
             const commentTextarea = document.createElement('textarea');
