@@ -25,17 +25,29 @@ public class IssueWindow extends JFrame {
 	private JComboBox<String> priorityComboBox = new JComboBox();
 	private JComboBox<String> stateComboBox = new JComboBox();
 	private JComboBox<String> assigneeComboBox = new JComboBox();
-	private JTextArea decriptionTextArea = new JTextArea();
+	private JTextArea descriptionTextArea = new JTextArea();
 	private JTextArea commentTextArea = new JTextArea();
 	private JTextField newCommentTextField = new JTextField();
 	
 	private JLabel numberLabel = new JLabel();
 	private JLabel titleLabel = new JLabel();
 	private JLabel reporterLabel = new JLabel();
+	private String ticketIDString = "";
 	
-	/**
-	 * Launch the application.
-	 */
+	private Component[] level0comp = {editBtn, saveBtn, priorityComboBox,
+									stateComboBox, assigneeComboBox};
+	
+	private Component[] level1comp = {editBtn, saveBtn, priorityComboBox,
+									stateComboBox, assigneeComboBox};
+	
+	private Component[] level2comp = {editBtn, saveBtn, priorityComboBox,
+									stateComboBox};
+	
+	private Component[] level3comp = {editBtn, saveBtn, priorityComboBox,
+									stateComboBox};
+	
+
+	/*
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -47,18 +59,11 @@ public class IssueWindow extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 	
-	public void updateValues(String name) {
-		String jsonString = controller.getIssueJsonByTitle(name);
-		JSONObject obj = new JSONObject(jsonString);
-		
-		String title = obj.getString("title");
-		//String id = obj.getString(title)
-		
-	}
 	
-	public IssueWindow(SwingController sc) {
+	
+	public IssueWindow(SwingController sc, String ticketTitle) {
 		this();
 		controller = sc;
 		
@@ -69,6 +74,9 @@ public class IssueWindow extends JFrame {
 			}
 		});
 		
+		updateValues(ticketTitle);
+		lockAccessibility();
+		redraw();
 	}
 	
 	public IssueWindow() {
@@ -91,7 +99,6 @@ public class IssueWindow extends JFrame {
 		contentPane.add(descriptionPanel);
 		
 		commentTextArea = new JTextArea();
-		commentTextArea.setEnabled(false);
 		commentTextArea.setEditable(false);
 		commentPanel.setViewportView(commentTextArea);
 		
@@ -149,7 +156,9 @@ public class IssueWindow extends JFrame {
 		saveBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Save btn action listener
-				setTitle("save");
+				//setIssue();
+				addComment();
+				setVisible(false);
 			}
 		});
 		saveBtn.setBounds(475, 54, 97, 38);
@@ -160,29 +169,27 @@ public class IssueWindow extends JFrame {
 		editBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Edit btn action listener
-				setTitle("edit");
+				unlockAccessibility();
 			}
 		});
 		editBtn.setBounds(475, 6, 97, 38);
 		contentPane.add(editBtn);
 		
 		// Combo Boxes		
-		priorityComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Blocker", "Critical", "Major", "Minor", "Trivial"}));
+		//priorityComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"Blocker", "Critical", "Major", "Minor", "Trivial"}));
 		priorityComboBox.setBounds(178, 113, 116, 32);
 		contentPane.add(priorityComboBox);
 		
-		stateComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"New", "Assigned", "Resolved", "Closed", "Reopened"}));
+		//stateComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"New", "Assigned", "Resolved", "Closed", "Reopened"}));
 		stateComboBox.setBounds(12, 113, 116, 32);
 		contentPane.add(stateComboBox);
 		
-		assigneeComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"None"}));
+		//assigneeComboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"None"}));
 		assigneeComboBox.setBounds(346, 113, 116, 32);
 		contentPane.add(assigneeComboBox);		
 		
-		decriptionTextArea = new JTextArea();
-		decriptionTextArea.setEnabled(false);
-		decriptionTextArea.setEditable(false);
-		descriptionPanel.setViewportView(decriptionTextArea);
+		descriptionTextArea = new JTextArea();
+		descriptionPanel.setViewportView(descriptionTextArea);
 
 		newCommentTextField = new JTextField();
 		newCommentTextField.setText("");
@@ -191,15 +198,77 @@ public class IssueWindow extends JFrame {
 		newCommentTextField.setColumns(10);
 	}
 	
+	public void addComment() {
+		String text = newCommentTextField
+						.getText()
+						.trim();
+		
+		if(!text.equals("")) controller.addComment(this.titleLabel.getText(), text);
+	}
+	
+	public void setIssue() {
+		/*
+		obj.put("id", id);
+		obj.put("priority", priority);
+		obj.put("status", status);
+		obj.put("assignee", assignee);
+		obj.put("description", description);*/
+		String id = ticketIDString;
+		int priority = priorityComboBox.getSelectedIndex();
+		int status = stateComboBox.getSelectedIndex();
+		String assignee = (String) assigneeComboBox.getSelectedItem();
+		String description = descriptionTextArea.getText();
+		
+		controller.setIssue(id, priority, status, assignee, description);
+	}
+	
+	public void updateValues(String title) {
+		String jsonString = controller.getIssueJsonByTitle(title);		
+		setAll(jsonString);
+	}
+	
+	public void setAll(String jsonString) {
+		initComboBoxes();
+		JSONObject obj = new JSONObject(jsonString);
+		
+		System.out.println(jsonString);
+		
+		String id = "" + obj.get("issuenum");
+		String title = obj.getString("title");
+		
+		String reporter = obj.getString("reporter");
+		String assignee = obj.getString("assignee");
+		
+		String priority = controller.getPriorityString(obj.getInt("priority"));
+		String type = controller.getTypeString(obj.getInt("type"));
+		String status = controller.getStatusString(obj.getInt("status"));
+		
+		String description = obj.getString("description");
+		//String comment = controller.getIssueComment(id);
+		
+		setNumber(id);
+		setTitle(title);
+		setReporter(reporter);
+		
+		setPriority(priority);
+		setAssignee(assignee);
+		setStatus(status);
+		
+		setDescription(description);
+		setComment(id);
+	}
+	
 	public void setNumber(String str) {
+		ticketIDString = "" + str;
 		if(numberLabel != null) {
-			numberLabel.setText(str);
+			numberLabel.setText("ID: " + ticketIDString);
 			redraw();
 		}
 	}
 	public void setNumber(int num) {
+		ticketIDString = "" + num;
 		if(numberLabel != null) {
-			numberLabel.setText("" + num);
+			numberLabel.setText("ID: " + ticketIDString);
 			redraw();
 		}
 	}
@@ -213,27 +282,110 @@ public class IssueWindow extends JFrame {
 	
 	public void setReporter(String str) {
 		if(reporterLabel != null) {
-			reporterLabel.setText(str);
+			reporterLabel.setText("Reporter: " + str);
 			redraw();
 		}
 	}
 	
+	public void setPriority(String priority) {
+		this.priorityComboBox.setSelectedItem(priority);
+	}
+
+	public void setStatus(String status) {
+		stateComboBox.setSelectedItem(status);
+	}
+	
+	public void setAssignee(String devID) {
+		assigneeComboBox.setSelectedItem(devID);
+	}
+	
+	public void setDescription(String description) {
+		descriptionTextArea.setText(description);
+		descriptionTextArea.setEditable(false);
+	}
+	
+	public void setComment(String issueID) {
+		String comment = controller.getIssueComment(issueID);
+		commentTextArea.setText(comment);
+		commentTextArea.setEditable(false);
+	}
+	
+	public void lockAccessibility() {
+		for(Component compo : level0comp) {
+			if(compo != null) compo.setEnabled(false);
+		}
+		newCommentTextField.setEditable(false);
+	}
+	
+	public void unlockAccessibility() {
+		int level = controller.getUserLevel();
+		switch(level) {
+		case 0:
+			for(Component compo : level0comp) {
+				if(compo != null) compo.setEnabled(true);
+			}
+			break;
+		case 1:
+			for(Component compo : level1comp) {
+				if(compo != null) compo.setEnabled(true);
+			}
+			break;
+		case 2:
+			for(Component compo : level2comp) {
+				if(compo != null) compo.setEnabled(true);
+			}
+			break;
+		case 3:
+			for(Component compo : level3comp) {
+				if(compo != null) compo.setEnabled(true);
+			}
+			break;			
+		}
+		newCommentTextField.setEditable(true);
+	}
+	
+	public void initComboBoxes() {
+		//stateComboBox
+		initPriorityCBox();
+		initStateCBox();
+		initAssigneeCBox();
+	}
+	
 	public void initPriorityCBox() {
+		priorityComboBox.removeAll();
 		if(controller != null) {
 			ArrayList<String> list = controller.getPriorities();
 			String priority[] = list.toArray(new String[list.size()]);
-			priorityComboBox.setModel(new DefaultComboBoxModel<String>(priority));
+			
+			for(String pri : priority) {
+				priorityComboBox.addItem(pri);
+			}
+			
 		}
-		
 	}
 	
 	public void initStateCBox() {
+		stateComboBox.removeAll();
 		if(controller != null) {
 			ArrayList<String> list = controller.getStatus();
-			String priority[] = list.toArray(new String[list.size()]);
-			priorityComboBox.setModel(new DefaultComboBoxModel<String>(priority));
+			String status[] = list.toArray(new String[list.size()]);
+			for(String sta : status) {
+				stateComboBox.addItem(sta);
+			}
 		}
-		
+	}
+
+	public void initAssigneeCBox() {
+		assigneeComboBox.removeAll();
+		if(controller != null) {
+			ArrayList<String> list = controller.getUserByLevel(2);
+			String devs[] = list.toArray(new String[list.size()]);
+			
+			//assigneeComboBox.addItem("N/A");
+			for(String dev : devs) {
+				assigneeComboBox.addItem(dev);
+			}
+		}
 	}
 	
  	private void redraw() {
@@ -243,4 +395,6 @@ public class IssueWindow extends JFrame {
 		}
 	}
 	
+ 	
+ 	
 }

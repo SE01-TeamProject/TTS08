@@ -106,6 +106,9 @@ public class TicketPanel extends JPanel {
                         System.out.print(data + " ");
                     }
                     System.out.println();
+                    
+                    IssueWindow issueWindow = new IssueWindow(controller, (String) rowData[1]);
+                    issueWindow.setVisible(true);
                 }
 			}
 			public void mousePressed(MouseEvent e) {				

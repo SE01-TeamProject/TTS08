@@ -14,6 +14,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.net.*;
 
 
@@ -35,7 +37,6 @@ public class SwingController {
 	
 		try {
 			loginWindow.setVisible(true);
-			//url = new URL("http://localhost:8080/");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -77,7 +78,7 @@ public class SwingController {
 	// Issue (Ticket) ------------------------------------------------------------------------------
 	//GET
 	public String[] getIssueHeader() {
-		String[] header = {"issuenum", "title", "description", "date"};
+		String[] header = {"issuenum", "title", "priority", "status", "type", "reporter", "assignee", "date"};
 		return header;
 	}
 	
@@ -92,6 +93,25 @@ public class SwingController {
 		String[] keys = getIssueHeader();
         content = extractValues(response, keys);
         
+        if (content.length < 1) return null;        
+        for(int col = 2; col < 5; col++) {
+        	for(int row = 0; row < content.length; row++) {
+        		//System.out.println(content[row][col]);
+        		switch(col) {
+        		case 2:
+        			content[row][col] = this.getPriorityString(Integer.valueOf(content[row][col]));
+        			break;
+        		case 3:
+        			content[row][col] = this.getStatusString(Integer.valueOf(content[row][col]));
+        			break;
+        		case 4:
+        			content[row][col] = this.getTypeString(Integer.valueOf(content[row][col]));
+        		}
+        			
+        	}
+        	
+        }
+        
         return content;
 	}
 	
@@ -102,6 +122,54 @@ public class SwingController {
 		System.out.println("ISSUE: " + issue);
 		
 		return issue;
+	}
+	
+	//GET
+	public String getIssueComment(String issueID) {
+		String response = requestGET("/listComment/" + issueID);
+		JSONArray comments = new JSONArray(response);
+		System.out.println(comments.toString());
+		
+		String everyComment = "";
+		
+		if(comments == null || comments.length() < 1) return everyComment;
+		
+		for(int i = 0; i < comments.length(); i++) {
+			JSONObject obj = comments.getJSONObject(i);
+			String date = obj.getString("date");
+			String writer = obj.getString("writer");
+			String note = obj.getString("note");
+			
+			everyComment = everyComment + date + "  -  " + writer
+							+ "\n" + note + "\n\n";
+		}
+		
+		return everyComment;
+	}
+	
+	//POST
+	public void addComment(String issueTitle, String comment) {
+		JSONObject obj = new JSONObject();
+		obj.put("writer", getCurrUser());
+		obj.put("issue", issueTitle);
+		obj.put("note", comment);
+		String inputString = obj.toString();
+		
+		requestPOST("/addComment", inputString);
+	}
+	
+	//PATCH
+	public void setIssue(String id, int priority, int status, String assignee, String description) {
+		JSONObject obj = new JSONObject();
+		int ticketID = Integer.valueOf(id);
+		obj.put("id", ticketID);
+		obj.put("priority", priority);
+		obj.put("status", status);
+		obj.put("assignee", assignee);
+		obj.put("description", description);
+		String inputString = obj.toString();
+		
+		requestPOST("/setIssue", inputString);
 	}
 	
 	// Users ---------------------------------------------------------------------------------
@@ -140,6 +208,15 @@ public class SwingController {
 			}
 		}
 		return null;
+	}
+	
+	public int getUserLevel() {
+		int level;
+		
+		String levelString = getCurrUserInfo("level");
+		level = Integer.valueOf(levelString);
+		
+		return level;
 	}
 	
 	// Projects -------------------------------------------------------------------------------
@@ -205,6 +282,26 @@ public class SwingController {
 		}		
 		return array;	
 		*/
+	}
+	
+	//GET
+	public String[][] getProjectContent(){
+		String [][] content;
+		String response = requestGET("/listProject/" + getCurrUser());
+        System.out.println("project content: " + response.toString());
+        
+        // Parse --------------------------------------------------------- 
+        String[] keys = getProjectHeader();
+        content = extractValues(response.toString(), keys);
+        System.out.println(content);
+        return content;
+        
+            
+	}
+	
+	public String[] getProjectHeader() {
+		String[] header = {"title", "description", "date"};
+		return header;
 	}
 	
 	//POST
@@ -359,6 +456,7 @@ public class SwingController {
 	    				mainWindow = new MainWindow(this);
 	    				userID = id;
 	    				mainWindow.setUser(userID);
+	    				mainWindow.updateProjectPanel();
 	    				
 	    				loginWindow.setVisible(false);
 	    				mainWindow.setVisible(true);
@@ -387,55 +485,6 @@ public class SwingController {
 	}
 	
 	// Getters -------------------------------------------------------------------------------
-	
-	public String[][] getProjectContent(){
-		String [][] content;
-		try {
-			JSONObject projectList = new JSONObject();
-			
-			URL url = new URL(urlString+"/listProject");
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();		
-			connection.setRequestMethod("GET");
-			connection.setDoOutput(true);
-	
-			//connection.setRequestProperty("Content-Type", "application/json; utf-8");
-            //connection.setRequestProperty("Accept", "application/json");
-            
-			 
-			int responseCode = connection.getResponseCode();
-            System.out.println("GET Response Code :: " + responseCode);
-
-			
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-                System.out.println(response.toString());
-                JSONArray projects = new JSONArray(response.toString());
-                
-                // Parse --------------------------------------------------------- 
-                
-                
-                String[] keys = {"title", "description", "date"};
-                content = extractValues(response.toString(), keys);
-                System.out.println(content);
-                return content;
-                
-            } else {
-                System.out.println("Failed to GET PROJECTLIST");
-                return null;
-            }
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
 	
 	public ArrayList<String> getPriorities(){
 		ArrayList<String> array = new ArrayList<String>();		
@@ -667,7 +716,7 @@ public class SwingController {
 	                    response.append(inputLine);
 	                }
 	                in.close();
-	                //System.out.println(response.toString());
+	                System.out.println("Success to GET REQUEST - [" + url + "]");
 	                return response.toString();
 	            } else {
 	                System.out.println("Failed to GET REQUEST - [" + url + "]");
@@ -712,7 +761,7 @@ public class SwingController {
 	                in.close();
 
 	                String responseString = response.toString();
-	                System.out.println(responseString);
+	                System.out.println("Success to POST REQUEST - [" + url + "], [" + inputString + "]");
 	                return responseString;
 	                
 	                
