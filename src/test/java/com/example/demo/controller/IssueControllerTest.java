@@ -40,7 +40,6 @@ class IssueControllerTest {
     private MockMvc mvc;
     @Autowired
     private ObjectMapper objectMapper;
-
     @Autowired
     private MemberRepository memberRepository;
     @Autowired

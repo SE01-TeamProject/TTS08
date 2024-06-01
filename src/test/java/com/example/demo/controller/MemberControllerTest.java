@@ -31,10 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @ActiveProfiles
 class MemberControllerTest {
-
-    @Mock
-    private MemberService memberService;
-
     @Autowired
     private MockMvc mvc;
     @Autowired
@@ -65,8 +61,6 @@ class MemberControllerTest {
         MvcResult mvcResult = this.mvc.perform(post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(testLoginDto)))
-//                .andExpect(jsonPath("$.id").value(testLoginDto.getId()))
-//                .andExpect(jsonPath("$.password").value(testLoginDto.getPassword()))
                 .andExpect(status().isOk())
                 .andReturn();
         String response = mvcResult.getResponse().getContentAsString();
