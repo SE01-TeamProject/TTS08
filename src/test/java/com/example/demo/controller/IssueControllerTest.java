@@ -118,6 +118,27 @@ class IssueControllerTest {
         System.out.println("Http response : "+ response);
 
     }
+    @Test
+    @DisplayName("addIssue Fail: duplicated title")
+    void addIssueFail()throws Exception {
+        IssueAddDto issueAddDto=IssueAddDto.builder()
+                .project("0")
+                .title("test2")
+                .description("test")
+                .reporter("tester")
+                .priority("Major")
+                .type("New")
+                .build();
+        MvcResult mvcResult=this.mvc.perform(post("/addIssue")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(issueAddDto)))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response =mvcResult.getResponse().getContentAsString();
+        assertEquals("false", response);
+        System.out.println("Http response : "+ response);
+
+    }
 
     @Test //assignee가 비었을때 getIssue가 동작하지 않는 문제있음
     @DisplayName("getIssue by Id Success")
@@ -155,15 +176,21 @@ class IssueControllerTest {
     @Test
     @DisplayName("getIssueList Success")
     void getIssueList()throws Exception {
-        this.mvc.perform(get("/listIssue"))
-                .andExpect(status().isOk());
+        MvcResult mvcResult= this.mvc.perform(get("/listIssue"))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response=mvcResult.getResponse().getContentAsString();
+        System.out.println("Http response : "+ response);
     }
 
     @Test
     @DisplayName("getIssueList by project id Success")
     void getIssueListByProjectId()throws Exception {
-        this.mvc.perform(get("/listIssue/"+testProjectId))
-                .andExpect(status().isOk());
+        MvcResult mvcResult=this.mvc.perform(get("/listIssue/"+0))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response=mvcResult.getResponse().getContentAsString();
+        System.out.println("Http response : "+ response);
     }
 
 //    @Test
@@ -183,6 +210,23 @@ class IssueControllerTest {
 //
 //        assertEquals(memberRepository.findByName(testMemberName).getId(),issueRepository.findById(testIssueId).orElseThrow().getAssignee());
 //    }//set assignee 기능 제거
+
+    @Test
+    @DisplayName("setAssignee Success")
+    void setAssignee()throws Exception {
+        IssueSetDto testIssueSet=IssueSetDto.builder()
+                .id(testIssueId)
+                .priority(issueRepository.findById(testIssueId).orElseThrow().getPriority())
+                .status(issueRepository.findById(testIssueId).orElseThrow().getStatus())
+                .assignee(testMemberName)
+                .build();
+        MvcResult mvcResult = this.mvc.perform(patch("/setIssue")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(testIssueSet)))
+                .andExpect(status().isOk())
+                .andReturn();
+        assertEquals(memberRepository.findByName(testMemberName).getId(),issueRepository.findById(testIssueId).orElseThrow().getAssignee());
+    }
 
     @Test
     @DisplayName("setstate Success")
