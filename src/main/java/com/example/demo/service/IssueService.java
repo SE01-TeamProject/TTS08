@@ -273,10 +273,12 @@ public class IssueService {
 		SequenceMatcher matcher = new SequenceMatcher();
 		Map<Integer, Double> score = new HashMap(); // <Member.id, score> pair
 		issueRepository.findAll().forEach(item -> {
-			Integer uid = item.getAssignee(); // by issue assignee
-			if (score.containsKey(uid) == false) score.put(uid, 0.);
-			matcher.set(description, item.getDescription());
-			score.put(uid, score.get(uid) + matcher.ratio());
+			if (item.getStatus() == Issue.Status.CLOSED.ordinal() || item.getStatus() == Issue.Status.RESOLVED.ordinal()) {
+				Integer uid = item.getAssignee(); // by issue assignee
+				if (score.containsKey(uid) == false) score.put(uid, 0.);
+				matcher.set(description, item.getDescription());
+				score.put(uid, score.get(uid) + matcher.ratio());
+			}
 		});
 
 		commentRepository.findAll().forEach(item -> {
