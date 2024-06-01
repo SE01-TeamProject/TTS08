@@ -15,8 +15,9 @@ public class ProjectUserWindow extends JFrame {
 	private JPanel userCheckBoxPanel = new JPanel();
 	private JScrollPane scrollPane = new JScrollPane();
 	private JButton confirmBtn = new JButton();
-	private JComboBox<String> projectComboBox = new JComboBox<String>();
 	
+	private JComboBox<String> projectComboBox = new JComboBox<String>();
+	private JComboBox<String> searchCategotyBox = new JComboBox<String>();
 	
 	public ProjectUserWindow(SwingController sc) {
 		this();
