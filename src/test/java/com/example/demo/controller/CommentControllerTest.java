@@ -36,29 +36,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 class CommentControllerTest {
-
-    @Mock
-    private CommentService commentService;
     @Autowired
     private MockMvc mvc;
     @Autowired
     private ObjectMapper objectMapper;
-    @Autowired
-    private MemberService memberService;
+
     @Autowired
     private ProjectRepository projectRepository;
-
-    private String testMemberName;
-    private Integer testProjectId;
-    private Integer testCommentId;
-    private String testIssuetitle;
-    @Autowired
-    private CommentRepository commentRepository;
-    @Autowired
-    private MemberRepository memberRepository;
     @Autowired
     private IssueRepository issueRepository;
 
+    private String testMemberName;
+    private Integer testProjectId;
+    private String testIssuetitle;
 
     @BeforeEach
     void setUp()throws Exception {
