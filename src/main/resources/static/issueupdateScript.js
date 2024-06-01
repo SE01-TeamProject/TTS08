@@ -250,9 +250,10 @@ async function setIssue() {
                 })
                   .then(data => {
                       console.log("recommend Assignee : [" + data.assignee + "]" );
-                      recommendContainer.value = data.assignee;
+                      recommendContainer.textContent = data.assignee;
                   })
                   .catch(error => {
-                      console.error('There was a problem with the fetch operation:', error);
+                      console.error('There was a problem with the get recommend assignee:', error);
+                      recommendContainer.textContent = 'N/A';
                   });
         }

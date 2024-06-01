@@ -36,14 +36,13 @@
         }
         .addbutton {
             position : absolute;
-            left : 810px;
+            left : 755px;
             padding : 10px;
             width : 130px;
             background : azure;
         }
          .search-set {
-            top : 700px;
-            left : 760px;
+            top : 650px;
             display : flex;
             flex-direction : row;
         }
@@ -72,7 +71,7 @@
         }
         .popup-addbutton {
             position : absolute;
-            right : 5%;
+            right : 3%;
             bottom : 3%;
             padding : 8px;
             width : 80px;
@@ -113,7 +112,7 @@
             flex-direction : column;
         }
         .issue-table {
-            height : 550px;
+            height : 500px;
             border : 1px solid black;
             overflow-y : scroll;
         }
