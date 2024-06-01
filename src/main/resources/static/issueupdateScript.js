@@ -84,7 +84,7 @@ async function setIssue() {
     if(beforeAssignee === 'N/A' && assignee !== 'N/A') {
         status = getStatusNum("Assigned");
     }
-    if(assit gnee !== 'N/A' && getStatus(status) === 'New') {
+    if(assignee !== 'N/A' && getStatus(status) === 'New') {
         alert("You cannot go back to \"New\" status.");
         return;
     }
