@@ -64,6 +64,7 @@ async function initializeIssueData() {
         assigneeSelectContainer.value = data.assignee;
         console.log("assignee select의 목록을 [" + data.assignee + "] 로 변경하였습니다.");
         descriptionContainer.value = data.description;
+        getRecommendedAssignee();
         disableInputs();
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
@@ -236,18 +237,20 @@ async function setIssue() {
          }
          //----------------------------------------여기까지가 comment -------------------------------------------
 
-         async function getRecommendedAssignee() {
+         function getRecommendedAssignee() {
              const description = document.getElementById('description-input').value;
+             console.log("description : [" + description + "]");
              const recommendContainer = document.getElementById('recommended-assignee');
-             fetch('http://localhost:8080/suggestAssignee?description=' + description)
+             fetch('http://localhost:8080/suggestAssignee/' + description)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);
                     }
-                    return response.text();
+                    return response.json();
                 })
                   .then(data => {
-                      recommendContainer.value = data;
+                      console.log("recommend Assignee : [" + data.assignee + "]" );
+                      recommendContainer.value = data.assignee;
                   })
                   .catch(error => {
                       console.error('There was a problem with the fetch operation:', error);
