@@ -88,6 +88,10 @@ async function setIssue() {
         alert("You cannot go back to \"New\" status.");
         return;
     }
+    if(localStorage.getItem('status') === 'Closed' && getStatus(status) !== 'Reopened') {
+        alert("You can only change \"Closed\" to \"Reopened\".");
+        return;
+    }
     const description = document.getElementById('description-input').value;
     const url = 'http://localhost:8080/setIssue';
 
