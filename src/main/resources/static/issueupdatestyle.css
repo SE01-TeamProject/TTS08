@@ -145,3 +145,11 @@
         #description-input {
             border : 1px solid black;
         }
+        #recommended-assignee {
+            margin-left : 95px;
+            padding : 5px;
+            border : 4px solid royalblue;
+        }
+        .recommend-head {
+            left : 385px;
+        }

@@ -35,7 +35,7 @@ public class IssueController {
 	}
 	
 	// 우선순위와 상태, 담당자를 변경하는 메소드
-	@PatchMapping("/setIssue")
+	@PostMapping("/setIssue")
 	public void setState(@RequestBody IssueSetDto issueSetDto) {
 		is.setState(issueSetDto);
 	}
@@ -89,8 +89,8 @@ public class IssueController {
 	@GetMapping("/issueTrend")
 	public String getIssueTrend() { return is.getIssueTrend(); }
 	
-	@PostMapping("/suggestAssinee")
-	public String suggestAssignee(@RequestBody IssueSetDto issueSetDto) {
-		return is.suggestAssignee(issueSetDto); 
+	@GetMapping("/suggestAssignee")
+	public String suggestAssignee(@RequestParam String description) {
+		return is.suggestAssignee(description);
 	}
 }

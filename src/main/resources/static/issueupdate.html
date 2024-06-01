@@ -23,6 +23,7 @@
             <span class="select-head status-head">status</span>
             <span class="select-head type-head">type</span>
             <span class="select-head assignee-head">assignee</span>
+            <span class="select-head recommend-head">Recommend Assignee</span>
         </p>
         <select id="priority-input">
             <option value="Major">Major</option>
@@ -31,7 +32,7 @@
             <option value="Critical">Critical</option>
             <option value="Trivial">Trivial</option>
         </select>
-        <select id="status-input"> <!---특정 상황에 따라 readonly인지 아닌지 잘 구별해야할 듯 함--->
+        <select id="status-input">
             <option value="New">New</option>
             <option value="Assigned">Assigned</option>
             <option value="Fixed">Fixed</option>
@@ -46,6 +47,7 @@
         <select id="assignee-input">
             <!---API로 프로젝트에 소속된 모든 Developer 불러오기--->
         </select>
+        <span id="recommended-assignee"></span>
         <br>
         <div class="area-box">
             Description<textarea id="description-input" rows="13" cols="100" style="resize: none"></textarea> <!---get으로 채울 것--->

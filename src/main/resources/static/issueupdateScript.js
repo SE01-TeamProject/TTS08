@@ -87,7 +87,7 @@ async function setIssue() {
     const url = 'http://localhost:8080/setIssue';
 
     const response = await fetch(url, {
-        method: 'PATCH',
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -155,11 +155,11 @@ async function setIssue() {
          }
 
          async function initializeComments() {
-                await clearAllComments();
-                await showAllComments();
+               await clearAllComments();
+               showAllComments();
          }
 
-         async function showAllComments() {
+         function showAllComments() {
              const level = getLevel(parseInt(localStorage.getItem('level')));
              fetch('http://localhost:8080/listComment/' + localStorage.getItem('issuenum'))
                 .then(response => {
@@ -180,7 +180,6 @@ async function setIssue() {
                   .catch(error => {
                       console.error('There was a problem with the fetch operation:', error);
                   });
-             await new Promise(resolve => setTimeout(resolve, 1000));
         }
 
          function showComment(writer, note, date, level) {
@@ -236,3 +235,21 @@ async function setIssue() {
              location.href = "http://localhost:8080/issue.html";
          }
          //----------------------------------------여기까지가 comment -------------------------------------------
+
+         async function getRecommendedAssignee() {
+             const description = document.getElementById('description-input').value;
+             const recommendContainer = document.getElementById('recommended-assignee');
+             fetch('http://localhost:8080/suggestAssignee?description=' + description)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.text();
+                })
+                  .then(data => {
+                      recommendContainer.value = data;
+                  })
+                  .catch(error => {
+                      console.error('There was a problem with the fetch operation:', error);
+                  });
+        }
