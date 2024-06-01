@@ -63,70 +63,32 @@ class IssueControllerTest {
 
     @BeforeEach
     void setUp() throws Exception{
-        MemberAddDto admin =MemberAddDto.builder()
-                .name("admin")
-                .fullName("admin")
-                .password("admin")
-                .level("0")
+        MemberAddDto admin =MemberAddDto.builder().name("admin").fullName("admin").password("admin").level("0")
                 .build();
-        this.mvc.perform(post("/addUser")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(admin)))
+        this.mvc.perform(post("/addUser").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(admin)))
                 .andExpect(status().isOk());
-        MemberAddDto pl =MemberAddDto.builder()
-                .name("pl")
-                .fullName("pl")
-                .password("pl")
-                .level("PL")
+        MemberAddDto pl =MemberAddDto.builder().name("pl").fullName("pl").password("pl").level("PL")
                 .build();
-        this.mvc.perform(post("/addUser")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(pl)))
+        this.mvc.perform(post("/addUser").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(pl)))
                 .andExpect(status().isOk());
-        MemberAddDto dev =MemberAddDto.builder()
-                .name("dev")
-                .fullName("dev")
-                .password("dev")
-                .level("Developer")
+        MemberAddDto dev =MemberAddDto.builder().name("dev").fullName("dev").password("dev").level("Developer")
                 .build();
-        this.mvc.perform(post("/addUser")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dev)))
+        this.mvc.perform(post("/addUser").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(dev)))
                 .andExpect(status().isOk());
-        MemberAddDto tester =MemberAddDto.builder()
-                .name("tester")
-                .fullName("tester")
-                .password("tester")
-                .level("Tester")
+        MemberAddDto tester =MemberAddDto.builder().name("tester").fullName("tester").password("tester").level("Tester")
                 .build();
-        this.mvc.perform(post("/addUser")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(tester)))
+        this.mvc.perform(post("/addUser").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(tester)))
                 .andExpect(status().isOk());
         testMemberName=tester.getName();
-        ProjectAddDto testProjectAdd=ProjectAddDto.builder()
-                .title("test")
-                .description("test")
-                .PL("pl")
-                .developer1("dev").developer2("dev").developer3("dev").tester1("tester").tester2("tester").tester3("tester")
+        ProjectAddDto testProjectAdd=ProjectAddDto.builder().title("test").description("test").PL("pl").developer1("dev").developer2("dev").developer3("dev").tester1("tester").tester2("tester").tester3("tester")
                 .build();
-        this.mvc.perform(post("/addProject")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(testProjectAdd)))
+        this.mvc.perform(post("/addProject").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testProjectAdd)))
                 .andExpect(status().isOk());
         testProjectId=projectRepository.findByTitle(testProjectAdd.getTitle()).getId();
 
-        IssueAddDto issueAddDto = IssueAddDto.builder()
-                .project("0")
-                .title("test2")
-                .description("test2")
-                .reporter("tester")
-                .priority("Major")
-                .type("New")
+        IssueAddDto issueAddDto = IssueAddDto.builder().project("0").title("test2").description("test2").reporter("tester").priority("Major").type("New")
                 .build();
-        MvcResult mvcResult=this.mvc.perform(post("/addIssue")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(issueAddDto)))
+        MvcResult mvcResult=this.mvc.perform(post("/addIssue").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(issueAddDto)))
                 .andExpect(status().isOk())
                 .andReturn();
         String response=mvcResult.getResponse().getContentAsString();
@@ -166,11 +128,10 @@ class IssueControllerTest {
                 .status(issueRepository.findById(testIssueId).orElseThrow().getStatus())
                 .assignee(testMemberName)
                 .build();
-        this.mvc.perform(post("/setAssignee")
+        this.mvc.perform(patch("/setIssue")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testIssueSet)))
                 .andExpect(status().isOk());
-
         MvcResult mvcResult=this.mvc.perform(get("/issue/"+testIssueId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value(issueRepository.findById(testIssueId).get().getTitle()))
@@ -205,23 +166,23 @@ class IssueControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    @DisplayName("setAssignee Success")
-    void setAssignee()throws Exception {
-        IssueSetDto testIssueSet=IssueSetDto.builder()
-                .id(testIssueId)
-                .priority(issueRepository.findById(testIssueId).orElseThrow().getPriority())
-                .status(issueRepository.findById(testIssueId).orElseThrow().getStatus())
-                .assignee(testMemberName)
-                .build();
-        MvcResult mvcResult = this.mvc.perform(post("/setAssignee")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(testIssueSet)))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        assertEquals(memberRepository.findByName(testMemberName).getId(),issueRepository.findById(testIssueId).orElseThrow().getAssignee());
-    }
+//    @Test
+//    @DisplayName("setAssignee Success")
+//    void setAssignee()throws Exception {
+//        IssueSetDto testIssueSet=IssueSetDto.builder()
+//                .id(testIssueId)
+//                .priority(issueRepository.findById(testIssueId).orElseThrow().getPriority())
+//                .status(issueRepository.findById(testIssueId).orElseThrow().getStatus())
+//                .assignee(testMemberName)
+//                .build();
+//        MvcResult mvcResult = this.mvc.perform(post("/setAssignee")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(testIssueSet)))
+//                .andExpect(status().isOk())
+//                .andReturn();
+//
+//        assertEquals(memberRepository.findByName(testMemberName).getId(),issueRepository.findById(testIssueId).orElseThrow().getAssignee());
+//    }//set assignee 기능 제거
 
     @Test
     @DisplayName("setstate Success")
@@ -232,7 +193,7 @@ class IssueControllerTest {
                 .status(Issue.getStatusFromString("Fixed"))
                 .assignee(testMemberName)
                 .build();
-        MvcResult mvcResult =this.mvc.perform(post("/setIssue")
+        MvcResult mvcResult =this.mvc.perform(patch("/setIssue")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(issueSetDto)))
                 .andExpect(status().isOk())
