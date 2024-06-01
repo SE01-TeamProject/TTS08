@@ -18,7 +18,8 @@ public class TicketPanel extends JPanel {
 	public TicketPanel(SwingController sc) {
 		this();
 		controller = sc;
-		tickets = tempTable();
+		//tickets = getTable();
+		setTable();		
 		scrollPane = new JScrollPane(tickets);
 		add(scrollPane);
 	}
@@ -39,7 +40,13 @@ public class TicketPanel extends JPanel {
 
 	}
 	
-	public JTable tempTable() {
+	public void setTable(){
+		tickets = getTable();
+		revalidate();
+		repaint();		
+	}
+	
+	public JTable getTable() {
 		String header[] = controller.getIssueHeader();
 		String contents[][] = controller.getIssueContent();
 		
@@ -54,6 +61,7 @@ public class TicketPanel extends JPanel {
 		
 		// Table Header
 		JTableHeader tableHeader = table.getTableHeader();
+		
 		tableHeader.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -74,9 +82,7 @@ public class TicketPanel extends JPanel {
 			public void mouseExited(MouseEvent e) {
 			}
 		});		
-		
-		
-		
+
 		table.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -112,6 +118,8 @@ public class TicketPanel extends JPanel {
 			}
 		});
 		
+		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+        table.setRowSorter(sorter);
 		
 		return table;
 	}	
