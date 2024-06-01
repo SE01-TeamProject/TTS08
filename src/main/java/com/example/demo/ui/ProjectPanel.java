@@ -57,7 +57,7 @@ public class ProjectPanel extends JPanel {
 		 * 	2. Get project name & description as 2D-Array (from controller.
 		 * 		-> Controller will get it from model as JSON
 		 */
-		String header[] = {"Title", "Description", "Date"};
+		String header[] = controller.getProjectHeader();
 		String contents[][] = controller.getProjectContent();
 		
 		JTable table = new JTable();

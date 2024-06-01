@@ -135,15 +135,15 @@ public class MainWindow extends JFrame {
 		userIdTextField.setText("USER: " + id);
 	}
 	
-	private void updateTicketPanel() {
+	public void updateTicketPanel() {
 		ticketPanel = new TicketPanel(controller);
 	}
 	
-	private void updateProjectPanel() {
+	public void updateProjectPanel() {
 		projectPanel = new ProjectPanel(controller);
 	}
 	
-	private void updateStatisticPanel() {
+	public void updateStatisticPanel() {
 		statisticPanel = new StatisticPanel(controller);
 	}
 	
