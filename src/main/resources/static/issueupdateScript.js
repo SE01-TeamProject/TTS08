@@ -84,7 +84,7 @@ async function setIssue() {
     if(beforeAssignee === 'N/A' && assignee !== 'N/A') {
         status = getStatusNum("Assigned");
     }
-    if(assignee !== 'N/A' && getStatus(status) === 'New') {
+    if(assit gnee !== 'N/A' && getStatus(status) === 'New') {
         alert("You cannot go back to \"New\" status.");
         return;
     }
@@ -260,4 +260,14 @@ async function setIssue() {
                       console.error('There was a problem with the get recommend assignee:', error);
                       recommendContainer.textContent = 'N/A';
                   });
+        }
+
+        function applyRecommendedAssignee() {
+                const statusContainer = document.getElementById('status-input');
+                if(statusContainer.value === 'Closed') {
+                    alert("You cannot change \"Closed\" issue's assignee");
+                    return;
+                }
+                const assigneeSelectContainer = document.getElementById('assignee-input');
+                assigneeSelectContainer.value = document.getElementById('recommended-assignee').textContent;
         }

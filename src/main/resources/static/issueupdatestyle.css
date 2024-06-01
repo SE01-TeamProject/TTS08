@@ -156,3 +156,9 @@
         #assignee-input {
             width: 150px;
         }
+        #recommend-button {
+            position : relative;
+            left : 700px;
+            bottom : 10px;
+            background-color : cornflowerblue;
+        }
