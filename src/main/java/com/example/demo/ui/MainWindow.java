@@ -232,7 +232,8 @@ public class MainWindow extends JFrame {
 				System.out.println("Add btn pressed!");
 				if(controller.getProjectFlag()) {
 					// Adding Ticket Here
-					
+					AddIssueWindow frame = new AddIssueWindow(controller);
+					frame.setVisible(true);
 				}
 			}
 		});
