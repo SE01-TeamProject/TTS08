@@ -84,6 +84,10 @@ async function setIssue() {
     if(beforeAssignee === 'N/A' && assignee !== 'N/A') {
         status = getStatusNum("Assigned");
     }
+    if(assignee !== 'N/A' && getStatus(status) === 'New') {
+        alert("You cannot go back to \"New\" status.");
+        return;
+    }
     const description = document.getElementById('description-input').value;
     const url = 'http://localhost:8080/setIssue';
 
