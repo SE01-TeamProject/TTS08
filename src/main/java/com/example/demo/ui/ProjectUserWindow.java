@@ -65,7 +65,7 @@ public class ProjectUserWindow extends JFrame {
 					if(component instanceof JCheckBox) {
 						JCheckBox box = (JCheckBox) component;
 						if(box.isSelected()) {
-							selectedUsers.add(box.getText());
+							//selectedUsers.add(box.getText());
 						}
 					}
 				}
@@ -86,6 +86,7 @@ public class ProjectUserWindow extends JFrame {
 		userCheckBoxPanel.removeAll();
 		
 		ArrayList<String> users = controller.getUserByLevel(-1);
+		
 		for(String user : users) {
 			JCheckBox box = new JCheckBox(user);
 			System.out.println("CheckBox - " + user);

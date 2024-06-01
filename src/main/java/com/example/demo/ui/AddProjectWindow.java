@@ -1,10 +1,13 @@
 package com.example.demo.ui;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
+import java.awt.EventQueue;
 import java.awt.event.*;
-import java.util.*;
+import java.util.ArrayList;
+
+import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 public class AddProjectWindow extends JFrame {
 
@@ -14,9 +17,16 @@ public class AddProjectWindow extends JFrame {
 	private JTextField titleTextField;
 	private JTextArea descriptionTextArea = new JTextArea();
 	private JButton addBtn;
+	
 	private JComboBox<String> plComboBox = new JComboBox<String>();
-	private JComboBox<String> devComboBox = new JComboBox<String>();
-	private JComboBox<String> testerComboBox = new JComboBox<String>();
+	
+	private JComboBox<String> devComboBox1 = new JComboBox<String>();
+	private JComboBox<String> devComboBox2 = new JComboBox<String>();
+	private JComboBox<String> devComboBox3 = new JComboBox<String>();
+
+	private JComboBox<String> testerComboBox1 = new JComboBox<String>();
+	private JComboBox<String> testerComboBox2 = new JComboBox<String>();
+	private JComboBox<String> testerComboBox3 = new JComboBox<String>();
 	
 	
 	public AddProjectWindow(SwingController sc) {
@@ -24,7 +34,7 @@ public class AddProjectWindow extends JFrame {
 		
 		setTitle("Add new project");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 470, 300);
+		setBounds(100, 100, 470, 350);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -67,38 +77,73 @@ public class AddProjectWindow extends JFrame {
 				String title = titleTextField.getText();
 				String description = descriptionTextArea.getText().replace('\n', ' ');
 				String pl = plComboBox.getSelectedItem().toString();
-				String dev = devComboBox.getSelectedItem().toString();
-				String tester = testerComboBox.getSelectedItem().toString();
 				
-				if(!title.isEmpty() && !description.isEmpty()) {
-					controller.addProject(title, description, pl, dev, tester);
+				String dev1 = devComboBox1.getSelectedItem().toString();
+				String dev2 = devComboBox2.getSelectedItem().toString();
+				String dev3 = devComboBox3.getSelectedItem().toString();
+				
+				String tester1 = testerComboBox1.getSelectedItem().toString();
+				String tester2 = testerComboBox2.getSelectedItem().toString();
+				String tester3 = testerComboBox3.getSelectedItem().toString();
+				
+				boolean devCheck = (dev1 == dev2 || dev2 == dev3 || dev3 == dev1);
+				boolean testerCheck = (tester1 == tester2 || tester2 == tester3 || tester3 == tester1);
+				
+				if(!title.isEmpty() && !description.isEmpty() && !devCheck && !testerCheck) {
+					controller.addProject(title, description, pl, dev1, dev2, dev3, tester1, tester2, tester3);
 					setVisible(false);
 				}			
 			}
 		});
-		addBtn.setBounds(180, 228, 100, 23);
+		addBtn.setBounds(180, 282, 100, 23);
 		contentPane.add(addBtn);
 		
 		// Combo Boxes
 		plComboBox.setBounds(12, 189, 100, 23);
 		contentPane.add(plComboBox);
 
-		devComboBox.setBounds(180, 189, 100, 23);
-		contentPane.add(devComboBox);
+		devComboBox2.setBounds(180, 203, 100, 23);
+		contentPane.add(devComboBox2);
 
-		testerComboBox.setBounds(342, 189, 100, 23);
-		contentPane.add(testerComboBox);
+		testerComboBox2.setBounds(342, 203, 100, 23);
+		contentPane.add(testerComboBox2);
+		devComboBox3.setBounds(180, 236, 100, 23);
+		
+		contentPane.add(devComboBox3);
+		devComboBox1.setBounds(180, 170, 100, 23);
+		
+		contentPane.add(devComboBox1);
+		testerComboBox1.setBounds(342, 170, 100, 23);
+		
+		contentPane.add(testerComboBox1);
+		testerComboBox3.setBounds(342, 236, 100, 23);
+		
+		contentPane.add(testerComboBox3);
 		
 		setComboBox();
 	}
 	
 	private void setComboBox() {
-		JComboBox[] arr = {plComboBox, devComboBox, testerComboBox};
+		JComboBox[] plArr = {plComboBox};
+		JComboBox[] devArr = {devComboBox1, devComboBox2, devComboBox3};
+		JComboBox[] testerArr = {testerComboBox1, testerComboBox2, testerComboBox3}; 
 		
-		for(int i = 0; i < arr.length; i++) {
-			ArrayList<String> users = controller.getUserByLevel(i + 1);
-			for(String user : users) {
-				arr[i].addItem(user);
+		ArrayList<String> pls = controller.getUserByLevel(1);
+		for(String user : pls) {
+			for(JComboBox box : plArr) {
+				box.addItem(user);
+			}
+		}
+		ArrayList<String> devs = controller.getUserByLevel(2);
+		for(String user : devs) {
+			for(JComboBox box : devArr) {
+				box.addItem(user);
+			}
+		}
+		ArrayList<String> testers = controller.getUserByLevel(3);
+		for(String user : testers) {
+			for(JComboBox box : testerArr) {
+				box.addItem(user);
 			}
 		}
 		revalidate();

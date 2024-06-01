@@ -72,9 +72,11 @@ public class SwingController {
 	
 	//GET
 	public String getIssueTrend(){
+
 		String response = requestGET("/issueTrend");		
 		return response;
 	}
+	
 	// Issue (Ticket) ------------------------------------------------------------------------------
 	//GET
 	public String[] getIssueHeader() {
@@ -233,6 +235,23 @@ public class SwingController {
 		return null;
 	}
 	
+	//GET
+	public String getUserLeve(String userID) {
+		String response = requestGET("/userName/" + userID + "");
+		if(response != null) {
+			//System.out.println("Response: " + response);
+			JSONObject obj = new JSONObject(response);
+			
+			if(obj.has("level")) {
+				return obj.get("level").toString();
+			}
+			else {
+				return null;
+			}
+		}
+		return null;
+	}
+	
 	public int getUserLevel() {
 		int level;
 		
@@ -331,64 +350,30 @@ public class SwingController {
 	}
 	
 	//POST
-	public void addProject(String title, String description, String pl, String dev, String tester) {
-		System.out.println("[Title: " + title + "] [Description: " + description + "]" + "["+ pl + "/" + dev + "/" + tester +"]");
+	public void addProject(String title, String description, String pl,
+							String dev1, String dev2, String dev3,
+							String tester1, String tester2, String tester3) {
 		
-		try {
-			
-			URL url = new URL(urlString+"/addProject");
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();		
-			connection.setRequestMethod("POST");
-			connection.setDoOutput(true);
-			connection.setRequestProperty("Content-Type", "application/json;");
-            connection.setRequestProperty("Accept", "application/json");
-            
-            // Make input data
-			JSONObject project = new JSONObject();
-			project.put("title", title);
-			project.put("description", description);
-			project.put("pl", pl);
-			project.put("developer", dev);
-			project.put("tester", tester);
-			String inputString = project.toString();
-			System.out.println(inputString);
-
-            // Write input data
-            try(OutputStream os = connection.getOutputStream()) {
-                byte[] input = inputString.getBytes("utf-8");
-                os.write(input, 0, input.length);           
-            }
-            // Check ACK
-            int responseCode = connection.getResponseCode();
-            System.out.println("GET Response Code :: " + responseCode);
-            
-            // Get Data
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
-                String inputLine;
-                StringBuilder response = new StringBuilder();
-
-                while ((inputLine = in.readLine()) != null) {
-                    response.append(inputLine);
-                }
-                in.close();
-
-                String responseString = response.toString();
-                
-                System.out.println(responseString);
-                if(responseString.equals("false")){
-                	System.out.println("Project Already Exist");
-                }
-                
-                
-            } else {
-                System.out.println("Failed to POST addProject");
-            }
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
+		System.out.println("[Title: " + title + "] [Description: " + description + "]" + "[pl: " + pl + "]\n"
+							+ "dev	["+ dev1 + "/" + dev2 + "/" + dev3 +"]\n"
+							+ "tester	["+ tester1 + "/" + tester2 + "/" + tester3 +"]\n");
+		String inputString;
+		JSONObject obj = new JSONObject();
+		obj.put("title", title);
+		obj.put("description", description);
+		obj.put("pl", pl);
 		
+		obj.put("developer1", dev1);
+		obj.put("developer2", dev2);
+		obj.put("developer3", dev3);
+		
+		obj.put("tester1", tester1);
+		obj.put("tester2", tester2);
+		obj.put("tester3", tester3);
+		
+		inputString = obj.toString();
+		
+		requestPOST("/addProject", inputString);		
 	}
 	
 	//GET
