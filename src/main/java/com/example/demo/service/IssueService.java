@@ -269,13 +269,13 @@ public class IssueService {
 	 * 가장 추천도가 높은 "assignee: x", "score: x"를 반환
 	 * assignee를 [추천] 이라는 글자 옆에 띄우면 될 듯 
 	 */
-	public String suggestAssignee(IssueSetDto issueSetDto) {
+	public String suggestAssignee(String description) {
 		SequenceMatcher matcher = new SequenceMatcher();
 		Map<Integer, Double> score = new HashMap(); // <Member.id, score> pair
 		issueRepository.findAll().forEach(item -> {
 			Integer uid = item.getAssignee(); // by issue assignee
 			if (score.containsKey(uid) == false) score.put(uid, 0.);
-			matcher.set(issueSetDto.getDescription(), item.getDescription());
+			matcher.set(description, item.getDescription());
 			score.put(uid, score.get(uid) + matcher.ratio());
 		});
 
@@ -284,7 +284,7 @@ public class IssueService {
 			Optional<Member> user = memberRepository.findById(uid);
 			if (user.get().getLevel() == Member.Level.DEVELOPER.ordinal()) {
 				if (score.containsKey(uid) == false) score.put(uid, 0.);
-				matcher.set(issueSetDto.getDescription(), item.getNote());
+				matcher.set(description, item.getNote());
 				score.put(uid, score.get(uid) + matcher.ratio());
 			}
 		});
@@ -301,7 +301,7 @@ public class IssueService {
 		JSONObject json = new JSONObject();
 		Optional<Member> user = memberRepository.findById(maxKey);
 		json.put("assignee", user.isEmpty() ? "N/A" : user.get().getName());
-		json.put("score", score.get(maxKey));
+		//json.put("score", score.get(maxKey));
 		return json.toString();
 	}
 	
