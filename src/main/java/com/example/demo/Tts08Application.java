@@ -34,10 +34,19 @@ public class Tts08Application {
 			memberRepository.save(new Member("Dev1", "Dev1user", "dev1", 2));
 			memberRepository.save(new Member("Dev2", "Dev2user", "dev2", 2));
 			memberRepository.save(new Member("Dev3", "Dev3user", "dev3", 2));
+			memberRepository.save(new Member("Dev4", "Dev4user", "dev4", 2));
+			memberRepository.save(new Member("Dev5", "Dev5user", "dev5", 2));
+			memberRepository.save(new Member("Dev6", "Dev6user", "dev6", 2));
+			memberRepository.save(new Member("Dev7", "Dev7user", "dev7", 2));
+			memberRepository.save(new Member("Dev8", "Dev8user", "dev8", 2));
+			memberRepository.save(new Member("Dev9", "Dev9user", "dev9", 2));
+			memberRepository.save(new Member("Dev10", "Dev10user", "dev10", 2));
 
 			memberRepository.save(new Member("QA1", "QA1user", "qa1", 3));
 			memberRepository.save(new Member("QA2", "QA2user", "qa2", 3));
 			memberRepository.save(new Member("QA3", "QA3user", "qa3", 3));
+			memberRepository.save(new Member("QA4", "QA4user", "qa4", 3));
+			memberRepository.save(new Member("QA5", "QA5user", "qa5", 3));
 		}
 
 		ProjectRepository projectRepository = context.getBean(ProjectRepository.class);
