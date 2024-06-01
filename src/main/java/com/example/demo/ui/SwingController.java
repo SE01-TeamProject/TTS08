@@ -158,7 +158,7 @@ public class SwingController {
 		requestPOST("/addComment", inputString);
 	}
 	
-	//PATCH
+	//POST
 	public void setIssue(String id, int priority, int status, String assignee, String description) {
 		JSONObject obj = new JSONObject();
 		int ticketID = Integer.valueOf(id);
@@ -170,6 +170,31 @@ public class SwingController {
 		String inputString = obj.toString();
 		
 		requestPOST("/setIssue", inputString);
+	}
+	
+	//POST
+	public void addIssue(String title, String priority, String type, String description) {
+		/* DTO
+		private String project;
+		private String title;
+	    private String description;
+	    private String reporter;
+	    private String priority;
+	    private String type;*/
+		
+		String project = "" + this.getCurrProjectID();
+		String reporter = this.getCurrUser();
+		
+		JSONObject obj = new JSONObject();
+		obj.put("project", project);
+		obj.put("title", title);
+		obj.put("description", description);
+		obj.put("reporter", reporter);
+		obj.put("priority", priority);
+		obj.put("type", type);
+		String inputString = obj.toString();
+		
+		requestPOST("/addIssue", inputString);
 	}
 	
 	// Users ---------------------------------------------------------------------------------
@@ -188,8 +213,6 @@ public class SwingController {
 		
 		String response = requestPOST("/addUser", inputString);
 		System.out.println("Add USER: " + response);
-		
-		
 	}
 	
 	//GET
@@ -287,7 +310,10 @@ public class SwingController {
 	//GET
 	public String[][] getProjectContent(){
 		String [][] content;
-		String response = requestGET("/listProject/" + getCurrUser());
+		String response;
+		if(getUserLevel() == 0)	response = requestGET("/listProject");
+		else response = requestGET("/listProject/" + getCurrUser());
+		
         System.out.println("project content: " + response.toString());
         
         // Parse --------------------------------------------------------- 
@@ -453,8 +479,8 @@ public class SwingController {
 	                
 	                if(response.toString().equals("true")) {
 	    				// Login Success. Every login, initialize mainWindow
-	    				mainWindow = new MainWindow(this);
-	    				userID = id;
+	                	userID = id;
+	                	mainWindow = new MainWindow(this);	    				
 	    				mainWindow.setUser(userID);
 	    				mainWindow.updateProjectPanel();
 	    				
@@ -773,6 +799,12 @@ public class SwingController {
 				e.printStackTrace();
 			}
 		 return null;
+	 }
+	 
+	 public void updateMainWindow() {
+		 mainWindow.updateProjectPanel();
+		 mainWindow.updateStatisticPanel();
+		 mainWindow.updateTicketPanel();
 	 }
 	 
 	 public enum Priority {

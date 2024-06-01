@@ -156,8 +156,9 @@ public class IssueWindow extends JFrame {
 		saveBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Save btn action listener
-				//setIssue();
+				setIssue();
 				addComment();
+				controller.updateMainWindow();
 				setVisible(false);
 			}
 		});
@@ -352,7 +353,7 @@ public class IssueWindow extends JFrame {
 	}
 	
 	public void initPriorityCBox() {
-		priorityComboBox.removeAll();
+		priorityComboBox.removeAllItems();
 		if(controller != null) {
 			ArrayList<String> list = controller.getPriorities();
 			String priority[] = list.toArray(new String[list.size()]);
@@ -365,7 +366,7 @@ public class IssueWindow extends JFrame {
 	}
 	
 	public void initStateCBox() {
-		stateComboBox.removeAll();
+		stateComboBox.removeAllItems();
 		if(controller != null) {
 			ArrayList<String> list = controller.getStatus();
 			String status[] = list.toArray(new String[list.size()]);
@@ -376,7 +377,7 @@ public class IssueWindow extends JFrame {
 	}
 
 	public void initAssigneeCBox() {
-		assigneeComboBox.removeAll();
+		assigneeComboBox.removeAllItems();
 		if(controller != null) {
 			ArrayList<String> list = controller.getUserByLevel(2);
 			String devs[] = list.toArray(new String[list.size()]);
