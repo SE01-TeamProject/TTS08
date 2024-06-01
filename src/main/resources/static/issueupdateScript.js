@@ -261,3 +261,13 @@ async function setIssue() {
                       recommendContainer.textContent = 'N/A';
                   });
         }
+
+        function applyRecommendedAssignee() {
+                const statusContainer = document.getElementById('status-input');
+                if(statusContainer.value === 'Closed') {
+                    alert("You cannot change \"Closed\" issue's assignee");
+                    return;
+                }
+                const assigneeSelectContainer = document.getElementById('assignee-input');
+                assigneeSelectContainer.value = document.getElementById('recommended-assignee').textContent;
+        }
