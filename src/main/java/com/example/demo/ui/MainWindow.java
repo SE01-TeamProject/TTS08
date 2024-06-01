@@ -91,7 +91,7 @@ public class MainWindow extends JFrame {
 		btnPanel.add(adminBtn);
 		
 		// Add Btn
-		addBtn = makeAddBtn("Add Ticekt");
+		addBtn = makeAddBtn("Add Ticket");
 		contentPane.add(addBtn);
 		
 		// Logout Btn
