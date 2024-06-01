@@ -34,7 +34,7 @@ public class AdminPanel extends JPanel {
 		add(addProjectBtn);
 		
 		projectUserManageBtn = makeProjectUserManageBtn("Project Users");
-		add(projectUserManageBtn);
+		//add(projectUserManageBtn);
 	}
 	
 	// Buttons
