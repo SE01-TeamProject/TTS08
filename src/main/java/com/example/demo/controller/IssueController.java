@@ -89,8 +89,8 @@ public class IssueController {
 	@GetMapping("/issueTrend")
 	public String getIssueTrend() { return is.getIssueTrend(); }
 	
-	@GetMapping("/suggestAssignee")
-	public String suggestAssignee(@RequestParam String description) {
+	@GetMapping("/suggestAssignee/{desc}")
+	public String suggestAssignee(@PathVariable("desc") String description) {
 		return is.suggestAssignee(description);
 	}
 }

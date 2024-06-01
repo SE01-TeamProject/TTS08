@@ -31,7 +31,14 @@ function addUser() {
                   });
           }
 
+          function clearUsersInProjectAdd() {
+              document.getElementById('PL-select').replaceChildren();
+              document.getElementById('developer-select').replaceChildren();
+              document.getElementById('tester-select').replaceChildren();
+          }
+
           function displayUsersInProjectAdd() {
+              clearUsersInProjectAdd();
               fetch('http://localhost:8080/listUser')
                 .then(response => {
                     if (!response.ok) {
