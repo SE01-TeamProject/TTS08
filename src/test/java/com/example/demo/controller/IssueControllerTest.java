@@ -185,7 +185,7 @@ class IssueControllerTest {
                 .status(Issue.getStatusFromString("Fixed"))
                 .assignee(testMemberName)
                 .build();
-        MvcResult mvcResult =this.mvc.perform(patch("/setIssue")
+        MvcResult mvcResult =this.mvc.perform(post("/setIssue")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(issueSetDto)))
                 .andExpect(status().isOk())
