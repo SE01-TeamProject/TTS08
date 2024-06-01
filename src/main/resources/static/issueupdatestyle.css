@@ -117,7 +117,7 @@
             left : 230px;
         }
         .assignee-head {
-            left : 305px;
+            left : 333px;
         }
         textarea {
             width : 800px;
@@ -146,10 +146,13 @@
             border : 1px solid black;
         }
         #recommended-assignee {
-            margin-left : 95px;
+            margin-left : 42px;
             padding : 5px;
             border : 4px solid royalblue;
         }
         .recommend-head {
-            left : 385px;
+            left : 440px;
+        }
+        #assignee-input {
+            width: 150px;
         }
