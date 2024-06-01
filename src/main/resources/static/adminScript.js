@@ -1,3 +1,7 @@
+document.addEventListener('DOMContentLoaded', function() {
+    getAllProjects();
+});
+
 function addUser() {
               const fullName = document.getElementById('name-input').value;
               const name = document.getElementById('id-input').value;
@@ -60,8 +64,15 @@ function addUser() {
                       console.error('There was a problem with the fetch operation:', error);
                   });
           }
-          function displayUsersInUserManage() {
-              fetch('http://localhost:8080/listUser')
+
+          function clearProjectUsers() {
+                document.getElementById('user-table-body').replaceChildren();
+          }
+
+          function showProjectUsers() {
+                clearProjectUsers();
+                const projectTitle = document.getElementById('project-list').value;
+                fetch('http://localhost:8080/projectTitle/' + projectTitle)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);
@@ -69,32 +80,50 @@ function addUser() {
                     return response.json();
                 })
                   .then(data => {
-                      if (Array.isArray(data)) {
-                          data.forEach(user => {// id name fullName password level
-                              switch(user.level) {
-                                  case 1://PL
-                                      break;
-                                  case 2://Developer
-
-                                      break;
-                                  case 3://Tester
-
-                                      break;
-                                  default:
-                                      console.log("undefined level detected");
-                              }
-                          });
-                      } else {
-                          console.error('Expected an array but received:', data);
-                      }
+                       showUser(data.PL);
+                       showUser(data.developer1);
+                       showUser(data.developer2);
+                       showUser(data.developer3);
+                       showUser(data.tester1);
+                       showUser(data.tester2);
+                       showUser(data.tester3);
+                       alert("Load Project Users Complete.");
                   })
                   .catch(error => {
                       console.error('There was a problem with the fetch operation:', error);
                   });
           }
 
-          function addTable(parentId, userId, userLevel) {
+          function showUser(userName) {
+                fetch('http://localhost:8080/userName/' + userName)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                  .then(data => {
+                      addUserTable(userName, data.level);
+                  })
+                  .catch(error => {
+                      console.error('There was a problem with the fetch operation:', error);
+                  });
+          }
 
+          function addUserTable(userName, userLevel) {
+                const tableBody = document.getElementById('user-table-body');
+                const newRow = document.createElement('tr');
+                newRow.className = 'tc';
+
+                const nameCell = document.createElement('td');
+                nameCell.textContent = userName;
+                newRow.appendChild(nameCell);
+
+                const levelCell = document.createElement('td');
+                levelCell.textContent = getLevel(userLevel);
+                newRow.appendChild(levelCell);
+
+                tableBody.appendChild(newRow);
           }
 
 		  function addProject() {
@@ -144,3 +173,18 @@ function addUser() {
   	                  }
   	              });
   	      }
+
+          async function getAllProjects() {
+            try {
+                const response = await fetch('http://localhost:8080/listProject');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const projectLists = await response.json();
+                projectLists.forEach(project => {
+                        addOption('project-list', project.title);
+                });
+            } catch (error) {
+                console.error('Fetch error:', error);
+            }
+          }

@@ -16,7 +16,7 @@
     <div class="button-set center">
         <button onclick="openPopUp('useradd-pop')">Add User</button>
         <button onclick="openPopUp('projectadd-pop');displayUsersInProjectAdd()">Add Project</button>
-        <button onclick="openPopUp('usermanage-pop')">User Management</button>
+        <button onclick="openPopUp('usermanage-pop')">Project Users</button>
     </div>
 
     <!----------------------------user add modal --------------------------->
@@ -75,32 +75,25 @@
      <!----------------------------user manage modal --------------------------->
     <div id="usermanage-pop" class="popup-page hide">
          <button class="xbutton" onclick="closePopUp('usermanage-pop')">X</button>
-         <h1 class="tc">User Manage</h1>
-         <select id="project-list" class="projectlist"> <!---get으로 모든 프로젝트 받아와서 여기에서 보여줘야함--->
-             <option>project1</option>
-             <option>project2</option>
-             <option>project3</option>
+         <h1 class="tc">Project Users</h1>
+         <span id='project-head'>Project</span>
+         <select id="project-list" class="projectlist">
+             <!---All projects will be added by getAPI--->
          </select>
         <div class="user-table center">
             <table>
                 <thead>
                     <tr>
-                        <th>Name</th>
+                        <th>UserName</th>
                         <th>Level</th>
-                        <th>Check</th>
                     </tr>
                 </thead>
-                <tbody id="user-table-body"> <!---여기서 모든 user를 get으로 받아와서 보여줘야함--->
-                    <tr>
-                        <td>Sihun</td>
-                        <td>Developer</td>
-                        <td><input type="checkbox"></td>
-                    </tr>
-                <!-- User info will be appended here -->
+                <tbody id="user-table-body">
+                <!-- All users of specific project will be added by get API -->
                 </tbody>
             </table>
         </div>
-        <button class="confirmbutton">Confirm</button>
+        <button class="applybutton" onclick="showProjectUsers()">Apply</button>
     </div>
 
     <div id="bg-page" class="hide"></div>

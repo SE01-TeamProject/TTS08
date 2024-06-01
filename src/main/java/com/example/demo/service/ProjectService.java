@@ -155,6 +155,33 @@ public class ProjectService {
 		return obj.toString();
 	}
 
+	//title을 받고 해당 프로젝트 정보를 가져오는 메소드
+	public String getProjectByTitle(String title) {
+		Optional<Project> prj = Optional.ofNullable(projectRepository.findByTitle(title));
+		if (prj.isEmpty()) return "";
+
+		JSONObject obj = new JSONObject();
+		Optional<Member> user;
+		obj.put("title", prj.get().getTitle());
+		obj.put("description", prj.get().getDescription());
+		user = memberRepository.findById(prj.get().getPL());
+		obj.put("PL", user.isEmpty() ? "N/A" : user.get().getName());
+		user = memberRepository.findById(prj.get().getDeveloper1());
+		obj.put("developer1", user.isEmpty() ? "N/A" : user.get().getName());
+		user = memberRepository.findById(prj.get().getDeveloper2());
+		obj.put("developer2", user.isEmpty() ? "N/A" : user.get().getName());
+		user = memberRepository.findById(prj.get().getDeveloper3());
+		obj.put("developer3", user.isEmpty() ? "N/A" : user.get().getName());
+		user = memberRepository.findById(prj.get().getTester1());
+		obj.put("tester1", user.isEmpty() ? "N/A" : user.get().getName());
+		user = memberRepository.findById(prj.get().getTester2());
+		obj.put("tester2", user.isEmpty() ? "N/A" : user.get().getName());
+		user = memberRepository.findById(prj.get().getTester3());
+		obj.put("tester3", user.isEmpty() ? "N/A" : user.get().getName());
+		obj.put("date", prj.get().getDate().format(formatter));
+		return obj.toString();
+	}
+
 	public List<ProjectDto> getAllProjects() {  //project 조회
 		return projectRepository.findAll().stream()
 				.map(ProjectDto::from)

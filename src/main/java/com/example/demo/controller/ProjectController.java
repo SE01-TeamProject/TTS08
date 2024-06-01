@@ -64,6 +64,9 @@ public class ProjectController {
 		return ps.getProject(id);
 	}
 
+	@GetMapping("/projectTitle/{title}")
+	public String getProjectByTitle(@PathVariable("title") String title) { return ps.getProjectByTitle(title);}
+
 	@GetMapping("/project/id/{title}") //특정 프로젝트의 title을 받아 그 프로젝트의 id를 반환
-	public String getProjectIdByTitle(@PathVariable("title") String title) {return ps.getProjectId(title);}
+    public String getProjectIdByTitle(@PathVariable("title") String title) {return ps.getProjectId(title);}
 }
