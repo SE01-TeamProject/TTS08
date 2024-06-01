@@ -45,15 +45,6 @@
               document.getElementById(pageId).classList.remove('hide');
               document.getElementById('bg-page').classList.remove('hide');
         }
-
-        function openSecondPopUp(pageId) {
-             document.getElementById(pageId).classList.remove('hide');
-             document.getElementById('bg-secondpage').classList.remove('hide');
-        }
-        function closeSecondPopUp(pageId) {
-             document.getElementById(pageId).classList.add('hide');
-             document.getElementById('bg-secondpage').classList.add('hide');
-        }
         function addOption(parentId, value) {
             const parent = document.getElementById(parentId);
             const newOption = document.createElement('option');
