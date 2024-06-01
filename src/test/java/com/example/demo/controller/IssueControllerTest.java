@@ -36,30 +36,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @ActiveProfiles
 class IssueControllerTest {
-    @Mock
-    private IssueService issueService;
-
     @Autowired
     private MockMvc mvc;
-
     @Autowired
     private ObjectMapper objectMapper;
 
     @Autowired
-    private MemberService memberService;
-
-    @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private IssueRepository issueRepository;
 
     private Integer testIssueId;
     private String testMemberName;
-    private Integer testProjectId;
-    @Autowired
-    private IssueRepository issueRepository;
-    @Autowired
-    private ProjectRepository projectRepository;
-    @Autowired
-    private StringHttpMessageConverter stringHttpMessageConverter;
 
     @BeforeEach
     void setUp() throws Exception{
@@ -84,17 +72,12 @@ class IssueControllerTest {
                 .build();
         this.mvc.perform(post("/addProject").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(testProjectAdd)))
                 .andExpect(status().isOk());
-        testProjectId=projectRepository.findByTitle(testProjectAdd.getTitle()).getId();
 
         IssueAddDto issueAddDto = IssueAddDto.builder().project("0").title("test2").description("test2").reporter("tester").priority("Major").type("New")
                 .build();
-        MvcResult mvcResult=this.mvc.perform(post("/addIssue").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(issueAddDto)))
-                .andExpect(status().isOk())
-                .andReturn();
-        String response=mvcResult.getResponse().getContentAsString();
-        System.out.println("http response : "+response);
+        this.mvc.perform(post("/addIssue").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(issueAddDto)))
+                .andExpect(status().isOk());
         testIssueId=issueRepository.findByTitle(issueAddDto.getTitle()).getId();
-        System.out.println("testIssueId : "+testIssueId);
     }
 
     @Test
@@ -118,8 +101,29 @@ class IssueControllerTest {
         System.out.println("Http response : "+ response);
 
     }
+    @Test
+    @DisplayName("addIssue Fail: duplicated title")
+    void addIssueFail()throws Exception {
+        IssueAddDto issueAddDto=IssueAddDto.builder()
+                .project("0")
+                .title("test2")
+                .description("test")
+                .reporter("tester")
+                .priority("Major")
+                .type("New")
+                .build();
+        MvcResult mvcResult=this.mvc.perform(post("/addIssue")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(issueAddDto)))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response =mvcResult.getResponse().getContentAsString();
+        assertEquals("false", response);
+        System.out.println("Http response : "+ response);
 
-    @Test //assignee가 비었을때 getIssue가 동작하지 않는 문제있음
+    }
+
+    @Test //assignee가 비었을때 getIssue가 동작하지 않는 문제있음/ 아마 null값 가져오는 과정에서 문제 생기는 듯
     @DisplayName("getIssue by Id Success")
     void getIssue()throws Exception {
         IssueSetDto testIssueSet=IssueSetDto.builder()
@@ -155,34 +159,22 @@ class IssueControllerTest {
     @Test
     @DisplayName("getIssueList Success")
     void getIssueList()throws Exception {
-        this.mvc.perform(get("/listIssue"))
-                .andExpect(status().isOk());
+        MvcResult mvcResult= this.mvc.perform(get("/listIssue"))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response=mvcResult.getResponse().getContentAsString();
+        System.out.println("Http response : "+ response);
     }
 
     @Test
     @DisplayName("getIssueList by project id Success")
     void getIssueListByProjectId()throws Exception {
-        this.mvc.perform(get("/listIssue/"+testProjectId))
-                .andExpect(status().isOk());
+        MvcResult mvcResult=this.mvc.perform(get("/listIssue/"+0))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response=mvcResult.getResponse().getContentAsString();
+        System.out.println("Http response : "+ response);
     }
-
-//    @Test
-//    @DisplayName("setAssignee Success")
-//    void setAssignee()throws Exception {
-//        IssueSetDto testIssueSet=IssueSetDto.builder()
-//                .id(testIssueId)
-//                .priority(issueRepository.findById(testIssueId).orElseThrow().getPriority())
-//                .status(issueRepository.findById(testIssueId).orElseThrow().getStatus())
-//                .assignee(testMemberName)
-//                .build();
-//        MvcResult mvcResult = this.mvc.perform(post("/setAssignee")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(objectMapper.writeValueAsString(testIssueSet)))
-//                .andExpect(status().isOk())
-//                .andReturn();
-//
-//        assertEquals(memberRepository.findByName(testMemberName).getId(),issueRepository.findById(testIssueId).orElseThrow().getAssignee());
-//    }//set assignee 기능 제거
 
     @Test
     @DisplayName("setstate Success")
@@ -198,11 +190,47 @@ class IssueControllerTest {
                     .content(objectMapper.writeValueAsString(issueSetDto)))
                 .andExpect(status().isOk())
                 .andReturn();
-        String response=mvcResult.getResponse().getContentAsString();
+        assertEquals(memberRepository.findByName(testMemberName).getId(),issueRepository.findById(testIssueId).orElseThrow().getAssignee());
         assertEquals(issueSetDto.getPriority(),issueRepository.findById(testIssueId).get().getPriority());
         assertEquals(issueSetDto.getStatus(),issueRepository.findById(testIssueId).get().getStatus());
     }
 
+    @Test
+    @DisplayName("getIssueStatics Success")
+    void getIssueStatics()throws Exception {
+        MvcResult mvcResult=this.mvc.perform(get("/issueStatics"))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response=mvcResult.getResponse().getContentAsString();
+        System.out.println("Http response : "+ response);
+    }
+    @Test
+    @DisplayName("getIssueTrend Success")
+    void getIssueTrend()throws Exception {
+        MvcResult mvcResult=this.mvc.perform(get("/issueTrend"))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response=mvcResult.getResponse().getContentAsString();
+        System.out.println("Http response : "+ response);
+    }
+
+//    @Test
+//    @DisplayName("suggestAssignee Success")
+//    void suggestAssignee()throws Exception {
+//        IssueSetDto issueSetDto=IssueSetDto.builder()
+//                .id(testIssueId)
+//                .priority(Issue.getPriorityFromString("Minor"))
+//                .status(Issue.getStatusFromString("Fixed"))
+//                .assignee(testMemberName)
+//                .build();
+//        MvcResult mvcResult=this.mvc.perform(post("/suggestAssinee")
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(objectMapper.writeValueAsString(issueSetDto)))
+//                .andExpect(status().isOk())
+//                .andReturn();
+//        String response=mvcResult.getResponse().getContentAsString();
+//        System.out.println("Http response : "+ response);
+//    }
 
 //    @Test
 //    @DisplayName("setstate Fail : wrong Id")

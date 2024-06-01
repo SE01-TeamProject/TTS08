@@ -31,8 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 class ProjectControllerTest {
-    @Mock
-    private ProjectService projectService;
     @Autowired
     private MockMvc mvc;
 
@@ -173,10 +171,31 @@ class ProjectControllerTest {
     }
 
     @Test
+    @DisplayName("getProject by title Success")
+    void getProjectByTitle()throws Exception {
+        MvcResult mvcResult=this.mvc.perform(get("/project/id/{title}",projectRepository.findById(testProjectId).get().getTitle()))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response =mvcResult.getResponse().getContentAsString();
+        assertEquals(Integer.toString(testProjectId), response);
+        System.out.println("Http response : "+response);
+    }
+//    @Test
+//    @DisplayName("getProject by title Fail: wrong title")
+//    void getProjectByTitleFail()throws Exception {
+//        MvcResult mvcResult=this.mvc.perform(get("/project/id/{title}","wrong title"))
+//                .andExpect(status().isBadRequest())
+//                .andReturn();
+//    }
+
+    @Test
     @DisplayName("getProjectList Success")
     void getProjectList() throws Exception {
-        this.mvc.perform(get("/listProject"))
-                .andExpect(status().isOk());
+        MvcResult mvcResult= this.mvc.perform(get("/listProject"))
+                .andExpect(status().isOk())
+                .andReturn();
+        String response =mvcResult.getResponse().getContentAsString();
+        System.out.println("Http response : "+response);
     }
 
     @Test
