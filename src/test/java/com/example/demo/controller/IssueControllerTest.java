@@ -36,24 +36,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Transactional
 @ActiveProfiles
 class IssueControllerTest {
-
     @Autowired
     private MockMvc mvc;
-
     @Autowired
     private ObjectMapper objectMapper;
 
-
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private IssueRepository issueRepository;
 
     private Integer testIssueId;
     private String testMemberName;
 
-    @Autowired
-    private IssueRepository issueRepository;
-    @Autowired
-    private ProjectRepository projectRepository;
     @BeforeEach
     void setUp() throws Exception{
         MemberAddDto admin =MemberAddDto.builder().name("admin").fullName("admin").password("admin").level("0")
@@ -80,13 +75,9 @@ class IssueControllerTest {
 
         IssueAddDto issueAddDto = IssueAddDto.builder().project("0").title("test2").description("test2").reporter("tester").priority("Major").type("New")
                 .build();
-        MvcResult mvcResult=this.mvc.perform(post("/addIssue").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(issueAddDto)))
-                .andExpect(status().isOk())
-                .andReturn();
-        String response=mvcResult.getResponse().getContentAsString();
-        System.out.println("http response : "+response);
+        this.mvc.perform(post("/addIssue").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(issueAddDto)))
+                .andExpect(status().isOk());
         testIssueId=issueRepository.findByTitle(issueAddDto.getTitle()).getId();
-        System.out.println("testIssueId : "+testIssueId);
     }
 
     @Test
@@ -132,7 +123,7 @@ class IssueControllerTest {
 
     }
 
-    @Test //assignee가 비었을때 getIssue가 동작하지 않는 문제있음
+    @Test //assignee가 비었을때 getIssue가 동작하지 않는 문제있음/ 아마 null값 가져오는 과정에서 문제 생기는 듯
     @DisplayName("getIssue by Id Success")
     void getIssue()throws Exception {
         IssueSetDto testIssueSet=IssueSetDto.builder()
@@ -185,41 +176,6 @@ class IssueControllerTest {
         System.out.println("Http response : "+ response);
     }
 
-//    @Test
-//    @DisplayName("setAssignee Success")
-//    void setAssignee()throws Exception {
-//        IssueSetDto testIssueSet=IssueSetDto.builder()
-//                .id(testIssueId)
-//                .priority(issueRepository.findById(testIssueId).orElseThrow().getPriority())
-//                .status(issueRepository.findById(testIssueId).orElseThrow().getStatus())
-//                .assignee(testMemberName)
-//                .build();
-//        MvcResult mvcResult = this.mvc.perform(post("/setAssignee")
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(objectMapper.writeValueAsString(testIssueSet)))
-//                .andExpect(status().isOk())
-//                .andReturn();
-//
-//        assertEquals(memberRepository.findByName(testMemberName).getId(),issueRepository.findById(testIssueId).orElseThrow().getAssignee());
-//    }//set assignee 기능 제거
-
-    @Test
-    @DisplayName("setAssignee Success")
-    void setAssignee()throws Exception {
-        IssueSetDto testIssueSet=IssueSetDto.builder()
-                .id(testIssueId)
-                .priority(issueRepository.findById(testIssueId).orElseThrow().getPriority())
-                .status(issueRepository.findById(testIssueId).orElseThrow().getStatus())
-                .assignee(testMemberName)
-                .build();
-        MvcResult mvcResult = this.mvc.perform(patch("/setIssue")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(testIssueSet)))
-                .andExpect(status().isOk())
-                .andReturn();
-        assertEquals(memberRepository.findByName(testMemberName).getId(),issueRepository.findById(testIssueId).orElseThrow().getAssignee());
-    }
-
     @Test
     @DisplayName("setstate Success")
     void setState() throws Exception{
@@ -234,7 +190,7 @@ class IssueControllerTest {
                     .content(objectMapper.writeValueAsString(issueSetDto)))
                 .andExpect(status().isOk())
                 .andReturn();
-        String response=mvcResult.getResponse().getContentAsString();
+        assertEquals(memberRepository.findByName(testMemberName).getId(),issueRepository.findById(testIssueId).orElseThrow().getAssignee());
         assertEquals(issueSetDto.getPriority(),issueRepository.findById(testIssueId).get().getPriority());
         assertEquals(issueSetDto.getStatus(),issueRepository.findById(testIssueId).get().getStatus());
     }

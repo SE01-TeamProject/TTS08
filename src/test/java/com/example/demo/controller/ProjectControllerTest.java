@@ -31,8 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 class ProjectControllerTest {
-    @Mock
-    private ProjectService projectService;
     @Autowired
     private MockMvc mvc;
 
