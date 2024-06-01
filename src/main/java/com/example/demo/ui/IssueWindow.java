@@ -28,6 +28,7 @@ public class IssueWindow extends JFrame {
 	private JTextArea descriptionTextArea = new JTextArea();
 	private JTextArea commentTextArea = new JTextArea();
 	private JTextField newCommentTextField = new JTextField();
+	private JTextField recommendTextField = new JTextField();
 	
 	private JLabel numberLabel = new JLabel();
 	private JLabel titleLabel = new JLabel();
@@ -76,6 +77,10 @@ public class IssueWindow extends JFrame {
 		
 		updateValues(ticketTitle);
 		lockAccessibility();
+		
+
+		recommendTextField.setText(recommendAssignee());
+		
 		redraw();
 	}
 	
@@ -149,6 +154,10 @@ public class IssueWindow extends JFrame {
 		newCommentLabel.setBounds(12, 660, 140, 15);
 		contentPane.add(newCommentLabel);
 		
+			// Recommend Assignee
+		JLabel recommendLabel = new JLabel("Recommend");
+		recommendLabel.setBounds(344, 29, 103, 15);
+		contentPane.add(recommendLabel);
 		
 		// Buttons
 			// Save btn
@@ -162,7 +171,7 @@ public class IssueWindow extends JFrame {
 				setVisible(false);
 			}
 		});
-		saveBtn.setBounds(475, 54, 97, 38);
+		saveBtn.setBounds(475, 110, 97, 38);
 		contentPane.add(saveBtn);
 		
 			// Edit btn
@@ -173,7 +182,7 @@ public class IssueWindow extends JFrame {
 				unlockAccessibility();
 			}
 		});
-		editBtn.setBounds(475, 6, 97, 38);
+		editBtn.setBounds(475, 47, 97, 38);
 		contentPane.add(editBtn);
 		
 		// Combo Boxes		
@@ -197,6 +206,12 @@ public class IssueWindow extends JFrame {
 		newCommentTextField.setBounds(12, 679, 450, 32);
 		contentPane.add(newCommentTextField);
 		newCommentTextField.setColumns(10);
+		
+		
+		recommendTextField.setBounds(346, 51, 116, 32);
+		contentPane.add(recommendTextField);
+		recommendTextField.setColumns(10);
+		recommendTextField.setEditable(false);
 	}
 	
 	public void addComment() {
@@ -387,6 +402,13 @@ public class IssueWindow extends JFrame {
 				assigneeComboBox.addItem(dev);
 			}
 		}
+	}
+	
+	private String recommendAssignee() {
+		String description = descriptionTextArea.getText();
+		String assignee = controller.recommendAssignee(description);
+		System.out.println("recommend: " + assignee);
+		return assignee;
 	}
 	
  	private void redraw() {

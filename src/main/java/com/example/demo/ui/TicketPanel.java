@@ -13,7 +13,7 @@ public class TicketPanel extends JPanel {
 	private SwingController controller;
 	private JTable tickets;
 	private JScrollPane scrollPane;
-	
+	private TableRowSorter<DefaultTableModel> sorter;
 	
 	public TicketPanel(SwingController sc) {
 		this();
@@ -39,6 +39,17 @@ public class TicketPanel extends JPanel {
 		*/
 
 	}
+	
+	public void search(String text, int columnIndex) {
+        if (text.trim().length() == 0) {
+            sorter.setRowFilter(null);
+        } else {
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + text, columnIndex));
+        }
+        
+        repaint();
+        revalidate();
+    }
 	
 	public void setTable(){
 		tickets = getTable();
@@ -121,7 +132,7 @@ public class TicketPanel extends JPanel {
 			}
 		});
 		
-		TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(tableModel);
+		sorter = new TableRowSorter<>(tableModel);
         table.setRowSorter(sorter);
 		
 		return table;
