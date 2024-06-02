@@ -62,4 +62,6 @@ TTS08을 실행하기 위해서는 다음과 같은 프로그램이 필요합니
    ```
 로 설정한 후, Settings > Build Tools > gradle > gradeJVM을 21로 설정하고 다시 실행하세요.
 
+그 이후에도 오류가 발생할 경우, Module Setting > Moduel SDK도 21로 설정한 후 다시 실행하세요.
+
 4. 프로젝트를 실행하고 localhost:8080에 접속합니다.

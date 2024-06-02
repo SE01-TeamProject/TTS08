@@ -34,6 +34,8 @@ async function initializeIssueData() {
     const issuenumContainer = document.getElementById('issue-num');
     const reporterContainer = document.getElementById('reporter-name');
     const assigneeContainer = document.getElementById('assignee-name');
+    const fixerContainer = document.getElementById('fixer-name');
+    const dateContainer = document.getElementById('date');
     const titleContainer = document.getElementById('title-input');
     const priorityContainer = document.getElementById('priority-input');
     const statusContainer = document.getElementById('status-input');
@@ -57,8 +59,14 @@ async function initializeIssueData() {
         beforeAssignee = data.assignee;
         reporterContainer.textContent = data.reporter;
         titleContainer.value = data.title;
+        dateContainer.textContent = data.date;
         priorityContainer.value = getPriority(data.priority);
         statusContainer.value = getStatus(data.status);
+        if(data.status >= 3) {//resolved이상의 상태
+            fixerContainer.textContent = data.assignee;
+        } else {
+            fixerContainer.textContent = "N/A";
+        }
         localStorage.setItem('status', getStatus(data.status));
         typeContainer.value = getType(data.type);
         assigneeSelectContainer.value = data.assignee;
@@ -90,6 +98,10 @@ async function setIssue() {
     }
     if(localStorage.getItem('status') === 'Closed' && getStatus(status) !== 'Reopened') {
         alert("You can only change \"Closed\" to \"Reopened\".");
+        return;
+    }
+    if(beforeAssignee !== assignee && (getStatus(status) === 'Resolved' || getStatus(status) === 'Reopened')) {
+        alert("you cannot change assignee when the issue is fixed.");
         return;
     }
     const description = document.getElementById('description-input').value;
