@@ -31,16 +31,18 @@ public class MainWindow extends JFrame {
 	private JButton searchBtn;
 	private JTextField userIdTextField;
 	private JTextField searchTextField;
+	private JComboBox<String> searchTypeComboBox = new JComboBox<String>();
 
 	public MainWindow(SwingController sc) {
 		this();
-		System.out.println("Main Window Create with Controller");
-		
-		controller = sc;
+		controller = sc;		
 		projectPanel = new ProjectPanel(controller);
 		ticketPanel = new TicketPanel(controller);
 		statisticPanel = new StatisticPanel(controller);
 		adminPanel = new AdminPanel(controller);
+		
+		setComboBox();
+		
 		this.setDpPanel(projectPanel);
 	}
 	
@@ -109,15 +111,30 @@ public class MainWindow extends JFrame {
 		
 		// About Searching
 		searchTextField = new JTextField();
-		searchTextField.setBounds(12, 761, 167, 21);
+		searchTextField.setBounds(107, 760, 160, 23);
 		contentPane.add(searchTextField);
 		searchTextField.setColumns(10);
 		
-		JButton searchBtn = makeSearchBtn("Search");		
+		JButton searchBtn = makeSearchBtn("Search");		//189, 760, 93, 23 (search btn bound)
 		contentPane.add(searchBtn);
 		
+		searchTypeComboBox.setBounds(12, 760, 90, 23);
+		contentPane.add(searchTypeComboBox);
 	}
 	
+	public void setComboBox() {
+		searchTypeComboBox.removeAllItems();
+		String[] types = controller.getIssueHeader();
+		
+		for(String type : types) {
+			searchTypeComboBox.addItem(type);
+		}
+		
+		revalidate();
+		repaint();
+	}
+	
+	// Panels
 	public void setDpPanel(JPanel panel) {
 		System.out.print("setDpPanel: ");
 		System.out.println(panel);
@@ -249,12 +266,15 @@ public class MainWindow extends JFrame {
 				System.out.println("Search btn pressed!");
 				if(controller.getProjectFlag()) {
 					String text = searchTextField.getText();
-					System.out.println("Search with [" + text + "]");
+					int type = searchTypeComboBox.getSelectedIndex();
+					System.out.println("Search with [" + type + " / " + text + "]");
 					searchTextField.setText("");
+					
+					ticketPanel.search(text, type);
 				}
 			}
 		});
-		btn.setBounds(189, 760, 93, 23);
+		btn.setBounds(272, 760, 93, 23);
 		return btn;	
 	}
 }

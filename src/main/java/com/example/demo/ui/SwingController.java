@@ -17,6 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 
 
 public class SwingController {
@@ -197,6 +198,27 @@ public class SwingController {
 		String inputString = obj.toString();
 		
 		requestPOST("/addIssue", inputString);
+	}
+	
+	//GET
+	public String recommendAssignee(String description) {
+		String recommend = "";
+		try {
+			
+			String encodedParameter = URLEncoder.encode(description, StandardCharsets.UTF_8.toString());
+			System.out.println("/suggestAssignee/" + encodedParameter);
+			String response = requestGET("/suggestAssignee/" + encodedParameter);
+			JSONObject obj = new JSONObject(response);
+			
+			recommend = obj.getString("assignee");
+			
+			return recommend;
+			
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
+		return recommend;
 	}
 	
 	// Users ---------------------------------------------------------------------------------
@@ -471,6 +493,7 @@ public class SwingController {
 	    				
 	    				loginWindow.setVisible(false);
 	    				mainWindow.setVisible(true);
+	    				setProjectFlag(false);
 	    				return true;
 	    			}
 	                
