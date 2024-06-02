@@ -10,7 +10,7 @@ public class AdminPanel extends JPanel {
 	private SwingController controller;
 	private JButton addUserBtn;
 	private JButton addProjectBtn;
-	private JButton projectUserManageBtn;
+	private JButton projectUserBtn;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -33,8 +33,8 @@ public class AdminPanel extends JPanel {
 		addProjectBtn = makeAddProjectBtn("Add Project");
 		add(addProjectBtn);
 		
-		projectUserManageBtn = makeProjectUserManageBtn("Project Users");
-		//add(projectUserManageBtn);
+		projectUserBtn = makeProjectUserManageBtn("Project Users");
+		add(projectUserBtn);
 	}
 	
 	// Buttons

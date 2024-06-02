@@ -2,30 +2,49 @@ package com.example.demo.ui;
 
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableRowSorter;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
+//project title -> title api -> project info get -> attribute (dev123, tester123, pl) -> get userlevel (already exist)
 
 public class ProjectUserWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private SwingController controller;
-	private JPanel userCheckBoxPanel = new JPanel();
 	private JScrollPane scrollPane = new JScrollPane();
-	private JButton confirmBtn = new JButton();
+	private JButton findBtn = new JButton();
 	
 	private JComboBox<String> projectComboBox = new JComboBox<String>();
 	private JComboBox<String> searchCategotyBox = new JComboBox<String>();
 	
+	private JTable userTable;
+	private TableRowSorter<DefaultTableModel> sorter;
+	
 	public ProjectUserWindow(SwingController sc) {
 		this();
 		controller = sc;
+		setComboBox();
 		
-		// Confirm Btn
-
-		setFrame();
+		findBtn = new JButton("Find");
+		findBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				setTable();
+			}
+		});
+		
+		contentPane.add(findBtn, BorderLayout.SOUTH);
+		contentPane.add(projectComboBox, BorderLayout.NORTH);
+		
+		
+		scrollPane = new JScrollPane(userTable);
+		scrollPane.setBorder(new LineBorder(new Color(0, 128, 255), 2, true));
+		contentPane.add(scrollPane, BorderLayout.CENTER);
 	}
 	
 	public ProjectUserWindow() {
@@ -42,66 +61,16 @@ public class ProjectUserWindow extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
-		contentPane.setLayout(new BorderLayout(10, 10));
-		
-		userCheckBoxPanel.setBorder(new LineBorder(new Color(30, 144, 255), 2, true));	
-		userCheckBoxPanel.setLayout(new BoxLayout(userCheckBoxPanel, BoxLayout.Y_AXIS));
-		
-		scrollPane.setViewportView(userCheckBoxPanel);
-		contentPane.add(scrollPane);
-		
+		contentPane.setLayout(new BorderLayout(10, 10));		
 
-		JCheckBox testCheckBox = new JCheckBox("New check box");
-		userCheckBoxPanel.add(testCheckBox);
-		
-		JCheckBox testCheckBox2 = new JCheckBox("New check box2");
-		userCheckBoxPanel.add(testCheckBox2);
-		
-		confirmBtn = new JButton("confirm");
-		confirmBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ArrayList<String> selectedUsers = new ArrayList<String>();
-				
-				for(Component component : userCheckBoxPanel.getComponents()) {
-					if(component instanceof JCheckBox) {
-						JCheckBox box = (JCheckBox) component;
-						if(box.isSelected()) {
-							//selectedUsers.add(box.getText());
-						}
-					}
-				}
-				
-				System.out.println(selectedUsers);
-				setVisible(false);
-			}
-		});
-		contentPane.add(confirmBtn, BorderLayout.SOUTH);
+
 		
 		
-		contentPane.add(projectComboBox, BorderLayout.NORTH);
-		
-	}
-	
-	public void setCheckBoxes() {
-		// init check boxes
-		userCheckBoxPanel.removeAll();
-		
-		ArrayList<String> users = controller.getUserByLevel(-1);
-		
-		for(String user : users) {
-			JCheckBox box = new JCheckBox(user);
-			System.out.println("CheckBox - " + user);
-			// if user in this project -> box.setSelected(true)
-			userCheckBoxPanel.add(box);
-		}
-		
-		revalidate();
-		repaint();
 	}
 	
 	public void setComboBox() {
 		// init combobox
-		projectComboBox.removeAll();
+		projectComboBox.removeAllItems();
 		
 		ArrayList<String> projects = controller.getProjectTitles();
 		for(String project : projects) {
@@ -113,8 +82,63 @@ public class ProjectUserWindow extends JFrame {
 	}
 	
 	public void setFrame() {
-		setCheckBoxes();
 		setComboBox();
+		//System.out.println(userTable);
+	}
+	
+	public void setTable() {
+		contentPane.remove(scrollPane);
+		userTable = getTable((String) projectComboBox.getSelectedItem());		
+		scrollPane = new JScrollPane(userTable);
+		scrollPane.setBorder(new LineBorder(new Color(0, 128, 255), 2, true));
+		contentPane.add(scrollPane, BorderLayout.CENTER);
+		
+		revalidate();
+		repaint();
+	}
+	
+	public JTable getTable(String projectTitle) {
+		String[] header = controller.getProjectUsersHeader();
+		String[][] contents = controller.getProjectUserContents(projectTitle);
+		
+		JTable table = new JTable();
+		DefaultTableModel tableModel = new DefaultTableModel(contents, header) {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};		
+		table.setModel(tableModel);
+		
+		// Table Header
+		JTableHeader tableHeader = table.getTableHeader();
+		
+		tableHeader.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getClickCount() < 2) {
+					return;
+				}
+				int columnIndex = tableHeader.columnAtPoint(e.getPoint());
+				String columnName = table.getColumnName(columnIndex);
+				System.out.println(columnName);
+			}
+			public void mousePressed(MouseEvent e) {
+			}
+			public void mouseReleased(MouseEvent e) {
+			}
+			public void mouseEntered(MouseEvent e) {
+			}
+			public void mouseExited(MouseEvent e) {
+			}
+		});
+		
+		sorter = new TableRowSorter<>(tableModel);
+        table.setRowSorter(sorter);
+		
+		return table;
+		
 	}
 	
 }
+
+

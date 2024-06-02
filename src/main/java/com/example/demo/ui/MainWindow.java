@@ -231,11 +231,10 @@ public class MainWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// Admin Btn ACtion Listener
 				System.out.println("Admin btn pressed!");
-				if(controller.getCurrUserInfo("level").equals("0")) {
+				if(controller.getUserLevel() == 0) {
 					updateTicketPanel();
 					setDpPanel(adminPanel);
 				}
-				
 			}
 		});
 		return btn;

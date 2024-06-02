@@ -67,8 +67,6 @@ public class SwingController {
 		
 		JSONObject obj = statistic.getJSONObject(keys.get(index));
 		return obj.toString();
-		
-		
 	}
 	
 	//GET
@@ -204,7 +202,6 @@ public class SwingController {
 	public String recommendAssignee(String description) {
 		String recommend = "";
 		try {
-			
 			String encodedParameter = URLEncoder.encode(description, StandardCharsets.UTF_8.toString());
 			System.out.println("/suggestAssignee/" + encodedParameter);
 			String response = requestGET("/suggestAssignee/" + encodedParameter);
@@ -226,11 +223,11 @@ public class SwingController {
 		return userID;
 	}
 	
-	public void addUser(String id, String pw, String name, int level) {
+	public void addUser(String id, String pw, String name, String level) {
 		System.out.println("Add User - [ID: " + id + "] [PW: " + pw + "] [Name: " + name + "] [Level: " + level + "]");
 		JSONObject obj = new JSONObject();
 		obj.put("name", id);
-		obj.put("fullName", name);
+		obj.put("fullname", name);
 		obj.put("password", pw);
 		obj.put("level", level);
 		String inputString = obj.toString();
@@ -242,6 +239,8 @@ public class SwingController {
 	//GET
 	public String getCurrUserInfo(String key) {
 		String response = requestGET("/userName/" + getCurrUser() + "");
+		System.out.println("/userName/" + getCurrUser() + "");
+		
 		if(response != null) {
 			//System.out.println("Response: " + response);
 			JSONObject obj = new JSONObject(response);
@@ -258,8 +257,8 @@ public class SwingController {
 	}
 	
 	//GET
-	public String getUserLeve(String userID) {
-		String response = requestGET("/userName/" + userID + "");
+	public String getUserLevel(String userID) {
+		String response = requestGET("/userName/" + userID);
 		if(response != null) {
 			//System.out.println("Response: " + response);
 			JSONObject obj = new JSONObject(response);
@@ -280,8 +279,48 @@ public class SwingController {
 		String levelString = getCurrUserInfo("level");
 		level = Integer.valueOf(levelString);
 		
+		System.out.println("" + this.userID + " / ");
+		
 		return level;
 	}
+	
+	
+	public String[] getProjectUsersHeader() {
+		String[] header = {"level", "userID"};
+		return header;
+	}
+	//GET	
+	public String[][] getProjectUserContents(String projectTitle){
+		//project title -> title api -> project info get -> attribute (dev123, tester123, pl) -> get userlevel (already exist)
+		String response = requestGET("/projectTitle/" + projectTitle);
+		
+		System.out.println("Project User Contents Response: " + response);
+		
+		JSONObject obj = new JSONObject(response);
+		
+		String dev1 = obj.getString("developer1");
+		String dev2 = obj.getString("developer2");
+		String dev3 = obj.getString("developer3");
+		
+		String tester1 = obj.getString("tester1");
+		String tester2 = obj.getString("tester2");
+		String tester3 = obj.getString("tester3");
+		
+		String pl = obj.getString("PL");
+		
+		String[][] users = {
+				{getUserLevelString(getUserLevel(pl)), pl},
+				{getUserLevelString(getUserLevel(dev1)), dev1},
+				{getUserLevelString(getUserLevel(dev2)), dev2},
+				{getUserLevelString(getUserLevel(dev3)), dev3},
+				{getUserLevelString(getUserLevel(tester1)), tester1},
+				{getUserLevelString(getUserLevel(tester2)), tester2},
+				{getUserLevelString(getUserLevel(tester3)), tester3},
+		};
+		return users;
+		
+	}
+	
 	
 	// Projects -------------------------------------------------------------------------------
 	//GET
@@ -442,6 +481,7 @@ public class SwingController {
 	}
 	
 	// Log in & out --------------------------------------------------------------------------	
+	//POST
 	public boolean login(String id, String password){
 		/* Ask Model to Login -> if True, on the Main, off the Login
 		 * */
@@ -813,6 +853,18 @@ public class SwingController {
 		 mainWindow.updateProjectPanel();
 		 mainWindow.updateStatisticPanel();
 		 mainWindow.updateTicketPanel();
+	 }
+	 
+	 public String getUserLevelString(String index) {
+		 int intIndex = Integer.valueOf(index);
+		 ArrayList<String> levels = this.getLevelString();
+		 
+		 return levels.get(intIndex);
+	 }
+	 
+	 public String getUserLevelString(int index) {
+		 ArrayList<String> levels = this.getLevelString();
+		 return levels.get(index);		 
 	 }
 	 
 	 public enum Priority {
