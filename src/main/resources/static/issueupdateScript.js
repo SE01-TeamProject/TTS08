@@ -62,7 +62,7 @@ async function initializeIssueData() {
         dateContainer.textContent = data.date;
         priorityContainer.value = getPriority(data.priority);
         statusContainer.value = getStatus(data.status);
-        if(data.status >= 2) {//fixed이상의 상태
+        if(data.status >= 3) {//resolved이상의 상태
             fixerContainer.textContent = data.assignee;
         } else {
             fixerContainer.textContent = "N/A";
@@ -100,7 +100,7 @@ async function setIssue() {
         alert("You can only change \"Closed\" to \"Reopened\".");
         return;
     }
-    if(beforeAssignee !== assignee && (getStatus(status) === "Fixed" || getStatus(status) === 'Resolved' || getStatus(status) === 'Reopened')) {
+    if(beforeAssignee !== assignee && (getStatus(status) === 'Resolved' || getStatus(status) === 'Reopened')) {
         alert("you cannot change assignee when the issue is fixed.");
         return;
     }
