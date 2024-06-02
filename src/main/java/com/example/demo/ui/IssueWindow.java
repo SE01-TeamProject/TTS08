@@ -29,6 +29,7 @@ public class IssueWindow extends JFrame {
 	private JTextArea commentTextArea = new JTextArea();
 	private JTextField newCommentTextField = new JTextField();
 	private JTextField recommendTextField = new JTextField();
+	private JTextField fixerTextField = new JTextField();
 	
 	private JLabel numberLabel = new JLabel();
 	private JLabel titleLabel = new JLabel();
@@ -80,7 +81,6 @@ public class IssueWindow extends JFrame {
 		
 
 		recommendTextField.setText(recommendAssignee());
-		
 		redraw();
 	}
 	
@@ -159,6 +159,10 @@ public class IssueWindow extends JFrame {
 		recommendLabel.setBounds(344, 29, 103, 15);
 		contentPane.add(recommendLabel);
 		
+		JLabel fixerLabel = new JLabel("Fixer");
+		fixerLabel.setBounds(178, 29, 103, 15);
+		contentPane.add(fixerLabel);
+		
 		// Buttons
 			// Save btn
 		saveBtn = new JButton("Save");
@@ -207,11 +211,17 @@ public class IssueWindow extends JFrame {
 		contentPane.add(newCommentTextField);
 		newCommentTextField.setColumns(10);
 		
-		
 		recommendTextField.setBounds(346, 51, 116, 32);
 		contentPane.add(recommendTextField);
 		recommendTextField.setColumns(10);
 		recommendTextField.setEditable(false);
+		
+		fixerTextField.setBounds(178, 51 , 116, 32);
+		contentPane.add(fixerTextField);
+		fixerTextField.setText("N/A");
+		fixerTextField.setEditable(false);
+		
+		
 	}
 	
 	public void addComment() {
@@ -272,6 +282,11 @@ public class IssueWindow extends JFrame {
 		
 		setDescription(description);
 		setComment(id);
+		
+		if(!(priority.equals("Assigned") || priority.equals("New") || priority.equals("Resolved"))) {
+			fixerTextField.setText(assignee);
+		}
+		
 	}
 	
 	public void setNumber(String str) {

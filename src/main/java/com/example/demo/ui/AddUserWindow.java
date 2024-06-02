@@ -6,6 +6,7 @@ import javax.swing.border.*;
 import java.awt.event.*;
 import java.util.*;
 
+
 public class AddUserWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -107,7 +108,7 @@ public class AddUserWindow extends JFrame {
 					String id = idTextField.getText();
 					String pw = pwTextField.getText();
 					String name = nameTextField.getText();
-					int level = levelComboBox.getSelectedIndex();
+					String level = (String) levelComboBox.getSelectedItem();
 					
 					System.out.println(id.isEmpty());
 					

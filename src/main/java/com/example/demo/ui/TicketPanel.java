@@ -79,7 +79,6 @@ public class TicketPanel extends JPanel {
 				if(e.getClickCount() < 2) {
 					return;
 				}
-				// TODO Get Double-Clicked Table's Header -> Use if-else to do Sorting & Updating
 				int columnIndex = tableHeader.columnAtPoint(e.getPoint());
 				String columnName = table.getColumnName(columnIndex);
 				System.out.println(columnName);
