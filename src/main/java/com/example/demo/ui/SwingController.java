@@ -594,7 +594,7 @@ public class SwingController {
 		/* Return levels into String list -> Used in adding new users
 		 * */
 		ArrayList<String> array = new ArrayList<String>();
-		ArrayList<String> levels = new ArrayList<String>(Arrays.asList("Admin", "PL", "Dev", "Tester"));		// Change this -> Use model call
+		ArrayList<String> levels = new ArrayList<String>(Arrays.asList("Admin", "PL", "Developer", "Tester"));		// Change this -> Use model call
 		
 		for(String level : levels) {
 			array.add(level);
