@@ -284,7 +284,10 @@ public class IssueService {
 		commentRepository.findAll().forEach(item -> {
 			Integer uid = item.getWriter(); // by comment writer
 			Optional<Member> user = memberRepository.findById(uid);
-			if (user.get().getLevel() == Member.Level.DEVELOPER.ordinal()) {
+			Optional<Issue> issue = issueRepository.findById(item.getIssue());
+			if ((issue.get().getStatus() == Issue.Status.CLOSED.ordinal() || 
+				issue.get().getStatus() == Issue.Status.RESOLVED.ordinal()) &&
+				user.get().getLevel() == Member.Level.DEVELOPER.ordinal()) {
 				if (score.containsKey(uid) == false) score.put(uid, 0.);
 				matcher.set(description, item.getNote());
 				score.put(uid, score.get(uid) + matcher.ratio());
