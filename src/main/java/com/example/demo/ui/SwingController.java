@@ -118,7 +118,8 @@ public class SwingController {
 	
 	//GET
 	public String getIssueJsonByTitle(String title) {
-		String issue = requestGET("/issueTitle/" + title);
+		String titleFixed = title.replaceAll("\\s","%20");
+		String issue = requestGET("/issueTitle/" + titleFixed);
 		JSONObject obj = new JSONObject(issue);
 		System.out.println("ISSUE: " + issue);
 		
