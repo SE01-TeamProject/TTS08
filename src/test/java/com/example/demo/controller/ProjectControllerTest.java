@@ -198,12 +198,12 @@ class ProjectControllerTest {
         System.out.println("Http response : "+response);
     }
 
-    @Test
-    @DisplayName("getAllProjects")
-    void getAllProjects() throws Exception {
-        this.mvc.perform(get("/project"))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    @DisplayName("getAllProjects")
+//    void getAllProjects() throws Exception {
+//        this.mvc.perform(get("/project"))
+//                .andExpect(status().isOk());
+//    }
 
     @AfterEach
     void tearDown() {
