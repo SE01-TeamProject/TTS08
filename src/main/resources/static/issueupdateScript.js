@@ -100,6 +100,10 @@ async function setIssue() {
         alert("You can only change \"Closed\" to \"Reopened\".");
         return;
     }
+    if(localStorage.getItem('status') !== 'Closed' && getStatus(status) === 'Reopened') {
+        alert("You can only change \"Closed\" to \"Reopened\"");
+        return;
+    }
     if(beforeAssignee !== assignee && (getStatus(status) === 'Resolved' || getStatus(status) === 'Reopened')) {
         alert("you cannot change assignee when the issue is fixed.");
         return;
