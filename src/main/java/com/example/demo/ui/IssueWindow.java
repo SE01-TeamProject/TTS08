@@ -284,7 +284,7 @@ public class IssueWindow extends JFrame {
 		setComment(id);
 		
 		
-		if(!(status.equals("Assigned") || status.equals("New") || status.equals("Resolved"))) {
+		if(!(status.equals("Assigned") || status.equals("New") || status.equals("Fixed"))) {
 			fixerTextField.setText(assignee);
 		}
 		
