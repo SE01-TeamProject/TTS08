@@ -877,6 +877,12 @@ public class SwingController {
 		 return pri[index];
  	 }
 	 
+	 public int getStatusIndex(String sta) {
+		 ArrayList<String> list = getStatus();
+		 int index = list.indexOf(sta);
+		 return index;
+	 }
+	 
 	 public enum Status {
 		 NEW, ASSIGNED, FIXED, RESOLVED, CLOSED, REOPENED
 	 }

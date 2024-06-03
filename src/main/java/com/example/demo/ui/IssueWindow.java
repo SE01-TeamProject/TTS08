@@ -78,8 +78,7 @@ public class IssueWindow extends JFrame {
 		
 		updateValues(ticketTitle);
 		lockAccessibility();
-		
-
+				
 		recommendTextField.setText(recommendAssignee());
 		redraw();
 	}
@@ -241,7 +240,11 @@ public class IssueWindow extends JFrame {
 		obj.put("description", description);*/
 		String id = ticketIDString;
 		int priority = priorityComboBox.getSelectedIndex();
-		int status = stateComboBox.getSelectedIndex();
+		
+		String sta = (String) stateComboBox.getSelectedItem();
+		int status = controller.getStatusIndex(sta);
+		
+		//int status = stateComboBox.getSelectedIndex();
 		String assignee = (String) assigneeComboBox.getSelectedItem();
 		String description = descriptionTextArea.getText();
 		
@@ -283,6 +286,7 @@ public class IssueWindow extends JFrame {
 		setDescription(description);
 		setComment(id);
 		
+		this.restrictStateCBox(status);
 		
 		if(!(status.equals("Assigned") || status.equals("New") || status.equals("Fixed"))) {
 			fixerTextField.setText(assignee);
@@ -393,6 +397,8 @@ public class IssueWindow extends JFrame {
 				priorityComboBox.addItem(pri);
 			}
 			
+			
+			
 		}
 	}
 	
@@ -401,12 +407,52 @@ public class IssueWindow extends JFrame {
 		if(controller != null) {
 			ArrayList<String> list = controller.getStatus();
 			String status[] = list.toArray(new String[list.size()]);
+			
 			for(String sta : status) {
 				stateComboBox.addItem(sta);
 			}
 		}
 	}
-
+	
+	public void restrictStateCBox(String status) {
+		stateComboBox.removeAllItems();
+		stateComboBox.addItem(status);
+		
+		if(status.equals("New")) {
+			stateComboBox.addItem("Assigned");
+		}
+		
+		if(status.equals("Assigned")) {
+			stateComboBox.addItem("Fixed");
+			stateComboBox.addItem("Resolved");
+			stateComboBox.addItem("Closed");
+		}
+		
+		if(status.equals("Fixed")) {
+			stateComboBox.addItem("Resolved");
+			stateComboBox.addItem("Closed");
+			stateComboBox.addItem("Assigned");
+		}
+		
+		if(status.equals("Resolved")) {
+			stateComboBox.addItem("Closed");
+			stateComboBox.addItem("Assigned");
+			stateComboBox.addItem("Fixed");
+			
+		}
+		
+		if(status.equals("Closed")) {
+			stateComboBox.addItem("Reopened");
+		}
+		
+		if(status.equals("Reopened")) {
+			stateComboBox.addItem("Assigned");
+			stateComboBox.addItem("Fixed");
+			stateComboBox.addItem("Resolved");
+			stateComboBox.addItem("Closed");			
+		}
+	}
+	
 	public void initAssigneeCBox() {
 		assigneeComboBox.removeAllItems();
 		if(controller != null) {
