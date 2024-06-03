@@ -130,8 +130,9 @@ class IssueControllerTest {
                 .priority(issueRepository.findById(testIssueId).orElseThrow().getPriority())
                 .status(issueRepository.findById(testIssueId).orElseThrow().getStatus())
                 .assignee(testMemberName)
+                .description("test")
                 .build();
-        this.mvc.perform(patch("/setIssue")
+        this.mvc.perform(post("/setIssue")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(testIssueSet)))
                 .andExpect(status().isOk());
