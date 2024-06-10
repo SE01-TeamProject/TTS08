@@ -63,7 +63,7 @@ public class CommentService {
 	public String getCommentList(Integer iid) {
 		JSONArray comments = new JSONArray();
 		commentRepository.findAll().forEach(item -> {
-			if (item.getIssue() == iid) {
+			if (item.getIssue().equals(iid)) {
 				JSONObject obj = new JSONObject();
 				Optional<Member> user = memberRepository.findById(item.getWriter());
 				obj.put("writer", user.isEmpty() ? "N/A" : user.get().getName());
