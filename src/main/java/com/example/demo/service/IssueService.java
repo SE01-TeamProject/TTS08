@@ -139,7 +139,7 @@ public class IssueService {
 	public String getIssueList(Integer pid) {
 		JSONArray issues = new JSONArray();
 		issueRepository.findAll().forEach(item -> {
-			if (item.getProject() == pid) {
+			if (item.getProject().equals(pid)) {
 				issues.put(issueToJSON(item));
 			}
 		});
@@ -191,7 +191,7 @@ public class IssueService {
 		JSONArray issues = new JSONArray();
 		issueRepository.findAll().forEach(item -> {
 			Member user = memberRepository.findByName(reporter);
-			if (item.getProject() == user.getId()) {
+			if (item.getProject().equals(user.getId())) {
 				issues.put(issueToJSON(item));
 			}
 		});
@@ -202,7 +202,7 @@ public class IssueService {
 		JSONArray issues = new JSONArray();
 		issueRepository.findAll().forEach(item -> {
 			Member user = memberRepository.findByName(assignee);
-			if (item.getProject() == user.getId()) {
+			if (item.getProject().equals(user.getId())) {
 				issues.put(issueToJSON(item));
 			}
 		});
